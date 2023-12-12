@@ -21,7 +21,7 @@ export default function PostScreen({ navigation, route: { params } }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "lightpink",
+    backgroundColor: 'yellow',
     alignItems: "center",
     justifyContent: "center",
   },

@@ -1,42 +1,34 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useSelector } from 'react-redux';
+import { View, Text, TouchableOpacity } from 'react-native';
+import SignUp from './SignUp.jsx';
+import SignIn from './SignIn.jsx';
 
-const LoginComponent = () => {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
+function LoginComponent({ navigation }) {
+  const user = useSelector((state) => state.user.value);
 
-  const handleLogin = async () => {
-    try {
-      const response = await fetch('http://localhost3000/signin', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          username: username,
-          password: password,
-        }),
-      });
+  const [isSignUp, setIsSignUp] = useState(false);
 
-      if (response.ok) {
-        // La requête a réussi, on peut traiter la réponse ici
-        const data = await response.json();
-        console.log(data);
-      } else {
-        // La requête a échoué, gère l'erreur ici
-        console.error('Échec de la requête');
-      }
-    } catch (error) {
-      console.error('Erreur lors de la requête', error);
-    }
-  };
+  if (isSignUp) {
+    return <SignUp />
+  } else {
+    return <SignIn />
+  }
+
+  
 
   return (
-    <div>
-      <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} />
-      <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
-      <button onClick={handleLogin}>Se connecter</button>
-    </div>
+    <View>
+      <View>
+        <Text>Login page</Text>
+        <View> 
+          <TouchableOpacity onPress={()=>setIsSignUp(true)}><Text>Sign Up</Text></TouchableOpacity> 
+          <TouchableOpacity onPress={()=>setIsSignUp(false)}><Text>Sign In</Text></TouchableOpacity> 
+          </View>
+          
+      </View>
+    </View>
   );
-};
+}
 
 export default LoginComponent;

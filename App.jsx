@@ -21,6 +21,7 @@ import Inbox from "./screens/InboxScreen.jsx";
 import MyAccount from "./screens/MyAccountScreen.jsx";
 import PostScreen from "./screens/PostScreen.jsx";
 import CheckoutScreen from "./screens/CheckoutScreen.jsx";
+import LoginComponent from "./components/login.jsx";
 
 const persistConfig = {
   key: "ToyChange",
@@ -88,6 +89,7 @@ export default function App() {
             <Stack.Screen name="PostScreen" component={PostScreen} />
             <Stack.Screen name="CheckoutScreen" component={CheckoutScreen} />
             <Stack.Screen name="TabNavigator" component={TabNavigator} />
+            <Stack.Screen name="LoginScreen" component={LoginComponent} />
           </Stack.Navigator>
         </NavigationContainer>
       </PersistGate>

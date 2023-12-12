@@ -12,7 +12,7 @@ export default function CheckoutScreen({ navigation, route: { params } }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "lightpink",
+    backgroundColor: "red",
     alignItems: "center",
     justifyContent: "center",
   },
