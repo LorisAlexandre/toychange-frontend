@@ -37,7 +37,7 @@ const persistor = persistStore(store);
 const TabNavigator = () => {
   return (
     <Tab.Navigator
-      initialRouteName="Search"
+      initialRouteName="Recherche"
       screenOptions={({ route }) => ({
         tabBarIcon: ({ color, size }) => {
           let iconName = "";
