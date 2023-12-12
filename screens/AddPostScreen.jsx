@@ -11,7 +11,7 @@ export default function AddPostScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "lightpink",
+    backgroundColor: "blue",
     alignItems: "center",
     justifyContent: "center",
   },
