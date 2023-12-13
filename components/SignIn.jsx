@@ -18,6 +18,7 @@ function SignIn() {
   const [password, setPassword] = useState('');
 
   const handleSignIn = async () => {
+    
     try {
       const response = await fetch('https://toychange-backend.vercel.app/users/signin', {
         method: 'POST',
@@ -31,7 +32,7 @@ function SignIn() {
       });
 
       const data = await response.json();
-
+console.log(data);
       // Dispatch l'action login avec les informations de l'utilisateur connecté
       dispatch(login(data.authToken));
       Alert.alert('Success !', 'Welcome')
@@ -41,17 +42,15 @@ function SignIn() {
   };
 
   return (
-    <KeyboardAvoidingView style={styles.container} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+    
       <View style={styles.formContainer}>
-       
-        <Text style={styles.signin}>SignIn</Text>
+        <Text style={styles.signin}>Connectez avec votre compte !</Text>
         <TextInput placeholder="Votre Email" value={email} onChangeText={(text) => setEmail(text)} style={styles.input} />
         <TextInput placeholder="Mot de passe" value={password} onChangeText={(text) => setPassword(text)} style={styles.input} />
         <TouchableOpacity onPress={() => handleSignIn()} style={styles.button} activeOpacity={0.8}>
           <Text style={styles.textButton}>C'est partit !</Text>
         </TouchableOpacity>
       </View>
-    </KeyboardAvoidingView>
     
   );
 }
@@ -71,7 +70,7 @@ const styles = StyleSheet.create({
         marginBottom: 20,
       },
       signin: {
-        marginTop:40,
+        marginTop: 50,
         fontSize: 18,
         color: '#FF8B0A',
         marginBottom: 20,

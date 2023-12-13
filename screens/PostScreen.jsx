@@ -8,12 +8,27 @@ export default function PostScreen({ navigation, route: { params } }) {
       </TouchableOpacity>
       <Text>PostScreen</Text>
       <Text>{params.title}</Text>
-      <Text>{params.price}</Text>
-      <TouchableOpacity
-        onPress={() => navigation.navigate("CheckoutScreen", params)}
-      >
-        <Text>Acheter</Text>
-      </TouchableOpacity>
+      <Text>{params.type}</Text>
+      {params.deliveryMethod === "inPerson" ? (
+        <TouchableOpacity
+          onPress={() => navigation.navigate("Messages", params)}
+        >
+          <Text>Contacter</Text>
+        </TouchableOpacity>
+      ) : (
+        <View>
+          <TouchableOpacity
+            onPress={() => navigation.navigate("Messages", params)}
+          >
+            <Text>Contacter</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => navigation.navigate("CheckoutScreen", params)}
+          >
+            <Text>Acheter</Text>
+          </TouchableOpacity>
+        </View>
+      )}
     </View>
   );
 }

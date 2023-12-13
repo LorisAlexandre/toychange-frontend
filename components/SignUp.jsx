@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { addUser } from '../reducers/user';  
+import { addUser, login } from '../reducers/user';  
 import {
   KeyboardAvoidingView,
   Platform,
@@ -31,7 +31,7 @@ function SignUp() {
         console.log(data);
         if (data.result || data.user) {
           // Dispatch l'action addUser avec les informations de l'utilisateur
-          dispatch(addUser({ authToken: data.authToken, username, firstname }));
+          dispatch(login({ authToken: data.authToken }));
 
           // Réinitialise le formulaire après le succès
           setUsername('');
@@ -55,7 +55,7 @@ function SignUp() {
   };
 
   return (
-    <KeyboardAvoidingView style={styles.container} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+    <View style={styles.container}>
       <View style={styles.formContainer}>
         <View >
           <Text style={styles.title}>Create your Toychange account</Text>
@@ -69,7 +69,7 @@ function SignUp() {
           <Text style={styles.title2}>Sign up</Text>
         </TouchableOpacity>
         </View>
-      </KeyboardAvoidingView>
+        </View>
   );
 }
 
@@ -87,7 +87,7 @@ const styles = StyleSheet.create({
     marginTop: 0,
     alignItems: 'center',
     justifyContent: 'center',
-    padding: 0,
+    paddingTop: 80,
 
   },
   title: {

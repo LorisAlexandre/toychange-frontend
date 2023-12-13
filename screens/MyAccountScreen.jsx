@@ -6,7 +6,7 @@ import InfosUserComponent from '../components/infosUser';
 
 const MyAccountScreen = () => {
    const user = useSelector((state) => state.user.value);
-
+console.log(user);
    if (!user || !user.authToken) {
    return (
     <LoginComponent />

@@ -1,21 +1,19 @@
 import React, { useState } from 'react';
-import SignIn from '../components/signin';
-import SignUp from '../components/signup';
-import { View, StyleSheet, Text, TouchableOpacity, KeyboardAvoidingView, Platform } from 'react-native';
+import SignIn from '../components/SignIn';
+import SignUp from '../components/SignUp';
+import { View, StyleSheet, Text, TouchableOpacity, KeyboardAvoidingView, Platform, ScrollView } from 'react-native';
 
 const LoginComponent = ({ navigation }) => {
   const [showSignIn, setShowSignIn] = useState(false);
   const [showSignUp, setShowSignUp] = useState(false);
 
   return (
-    <KeyboardAvoidingView style={styles.container} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+    <KeyboardAvoidingView style={styles.container} behavior='padding' keyboardVerticalOffset={Platform.OS === 'ios' ? 100 : 0}>
       <View style={styles.container2}>
         <View>
           <Text style={styles.title}>Ensemble, créons des sourires en partageant.</Text>
         </View>
         <View style={styles.box}>
-        
-            
               <TouchableOpacity onPress={() => setShowSignIn(true)} style={styles.signin} activeOpacity={0.8}>
                 <Text style={styles.textButton}>Sign In</Text>
               </TouchableOpacity>
@@ -26,7 +24,7 @@ const LoginComponent = ({ navigation }) => {
            { showSignIn ? (
             <SignIn />
           ) : (
-            <SignUp />
+            <ScrollView><SignUp /></ScrollView>
           )}
         
       </View>
@@ -54,7 +52,7 @@ const styles = StyleSheet.create({
   },
   box: {
     width: '90%',
-    height: '15%',
+    height: '10%',
     display:'flex',
     flexDirection:'row',
     alignItems: 'center',
@@ -83,7 +81,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     fontSize: 18,
     width: '40%',
-    height: '35%',
+    height: '45%',
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: '#f56e00',
@@ -92,7 +90,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     fontSize: 18,
     width: '40%',
-    height: '35%',
+    height: '45%',
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: '#f56e00',
