@@ -9,16 +9,11 @@ export const userSlice = createSlice({
   name: "user",
   initialState,
   reducers: {
-    addUser: (state, action) => {
-      state.value = { ...state.value, ...action.payload }; 
-    },
     login: (state, action) => {
-      state.value.email = action.payload.email;
-      state.value.password = action.payload.password;
+      state.value.authToken = action.payload.authToken;
     },
     logout: (state) => {
-      state.value.username = null;
-      state.value.firstName = null;
+      return { authToken: null, email: null, password: null };
     },
   },
 });
