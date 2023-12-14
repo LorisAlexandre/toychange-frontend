@@ -10,6 +10,7 @@ import {
   View,
 } from "react-native";
 import { useStripe } from "@stripe/stripe-react-native";
+import * as Notifications from "expo-notifications";
 
 export default function CheckoutScreen({ navigation, route: { params } }) {
   const user = {
@@ -20,6 +21,7 @@ export default function CheckoutScreen({ navigation, route: { params } }) {
     postal_code: "66140",
     telephone: "+33769395249",
     email: "loris.alexandre@gmail.com",
+    _id: "657abe9a610232ebea32150b",
   };
 
   const item = params;
@@ -101,6 +103,19 @@ export default function CheckoutScreen({ navigation, route: { params } }) {
     }
   };
 
+  const sendNotificationToSeller = async (article) => {
+    if (!article.donor.notifToken) {
+      return;
+    }
+    await Notifications.scheduleNotificationAsync({
+      content: {
+        title: `${article.title} a créé un sourir !`,
+        body: `Merci à vous pour ce partage !`,
+      },
+      to: article.donor,
+    });
+  };
+
   const createParcel = () => {
     fetch("https://toychange-backend.vercel.app/sendcloudAPI/createParcel", {
       method: "POST",
@@ -122,10 +137,6 @@ export default function CheckoutScreen({ navigation, route: { params } }) {
       .then((res) => res.json())
       .then((data) => {
         if (data) {
-          // navigation.navigate("Mon Compte", {
-          //   parcel: data.data.parcel,
-          //   redirect: "MyAnnouncesScreen",
-          // });
           const parcel = data.data.parcel;
           fetch(
             `https://toychange-backend.vercel.app/sendcloudAPI/downloadLabel/${parcel.id}`,
@@ -138,7 +149,39 @@ export default function CheckoutScreen({ navigation, route: { params } }) {
           )
             .then((res) => res.json())
             .then((data) => {
-              console.log(data);
+              if (data.result) {
+                console.log(item._id, user._id);
+                fetch(
+                  "https://toychange-backend.vercel.app/order/createOrder",
+                  {
+                    method: "POST",
+                    headers: {
+                      "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                      announce: item._id,
+                      user: user._id,
+                      parcel: {
+                        tracking_number: parcel.tracking_number,
+                        label_url: data.url,
+                        parcel_id: parcel.id,
+                      },
+                    }),
+                  }
+                )
+                  .then((res) => res.json())
+                  .then((data) => {
+                    if (data.result) {
+                      console.log("order created ok");
+                      sendNotificationToSeller(data.order);
+                      const order = data.order;
+                      navigation.navigate("Mon Compte", {
+                        order,
+                        redirect: "MyOrdersScreen",
+                      });
+                    }
+                  });
+              }
             });
         }
       });

@@ -24,6 +24,8 @@ import MyAccount from "./screens/MyAccountScreen.jsx";
 import PostScreen from "./screens/PostScreen.jsx";
 import CheckoutScreen from "./screens/CheckoutScreen.jsx";
 import MyAnnouncesScreen from "./screens/MyAnnouncesScreen.jsx";
+import MyOrdersScreen from "./screens/MyOrdersScreen.jsx";
+import MyOrderScreen from "./screens/MyOrderScreen.jsx";
 
 const store = configureStore({
   reducer: { user },
@@ -102,6 +104,8 @@ export default function App() {
               name="MyAnnouncesScreen"
               component={MyAnnouncesScreen}
             />
+            <Stack.Screen name="MyOrdersScreen" component={MyOrdersScreen} />
+            <Stack.Screen name="MyOrderScreen" component={MyOrderScreen} />
             <Stack.Screen name="TabNavigator" component={TabNavigator} />
           </Stack.Navigator>
         </NavigationContainer>

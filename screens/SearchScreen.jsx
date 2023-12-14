@@ -19,9 +19,7 @@ const data = [
     __v: 0,
   },
   {
-    _id: {
-      $oid: "657820755a69d016b360119a",
-    },
+    _id: "657820755a69d016b360119a",
     title: "Batman",
     type: "donnation",
     deliveryMethod: "postalDelivery",

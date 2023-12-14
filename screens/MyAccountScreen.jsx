@@ -16,7 +16,7 @@ const MyAccountScreen = ({ navigation, route: { params } }) => {
     return <LoginComponent />;
   } else {
     // Si l'utilisateur est authentifié, affiche le composant d'informations utilisateur
-    return <InfosUserComponent />;
+    return <InfosUserComponent navigation={navigation} />;
   }
 };
 
