@@ -23,19 +23,21 @@ import Inbox from "./screens/InboxScreen.jsx";
 import MyAccount from "./screens/MyAccountScreen.jsx";
 import PostScreen from "./screens/PostScreen.jsx";
 import CheckoutScreen from "./screens/CheckoutScreen.jsx";
-import LoginComponent from "./components/login.jsx";
 
-const persistConfig = {
-  key: "ToyChange",
-  storage: AsyncStorage,
-  blacklist: ["user"],
-};
 const store = configureStore({
-  reducer: persistReducer(persistConfig, reducers),
-  middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware({ serializableCheck: false }),
+  reducer: { user },
 });
-const persistor = persistStore(store);
+// const persistConfig = {
+//   key: "ToyChange",
+//   storage: AsyncStorage,
+//   blacklist: ["user"],
+// };
+// const store = configureStore({
+//   reducer: persistReducer(persistConfig, reducers),
+//   middleware: (getDefaultMiddleware) =>
+//     getDefaultMiddleware({ serializableCheck: false }),
+// });
+// const persistor = persistStore(store);
 
 const TabNavigator = () => {
   return (
@@ -82,24 +84,24 @@ const TabNavigator = () => {
 export default function App() {
   return (
     <Provider store={store}>
-      <PersistGate persistor={persistor}>
-        <StripeProvider
-          publishableKey="pk_test_51OACi2BvdD53AmibPhkwBMa2sYBVRUkt50bPhHuTVUqQ1fMSntJRl5jE8yg3owQFcEzMlk8CfXL62aBI5uejU3cO00OubHVXO0"
-          urlScheme=""
-          merchantIdentifier=""
-        >
-          <NavigationContainer>
-            <Stack.Navigator
-              initialRouteName="TabNavigator"
-              screenOptions={{ headerShown: false }}
-            >
-              <Stack.Screen name="PostScreen" component={PostScreen} />
-              <Stack.Screen name="CheckoutScreen" component={CheckoutScreen} />
-              <Stack.Screen name="TabNavigator" component={TabNavigator} />
-            </Stack.Navigator>
-          </NavigationContainer>
-        </StripeProvider>
-      </PersistGate>
+      {/* <PersistGate persistor={persistor}> */}
+      <StripeProvider
+        publishableKey="pk_test_51OACi2BvdD53AmibPhkwBMa2sYBVRUkt50bPhHuTVUqQ1fMSntJRl5jE8yg3owQFcEzMlk8CfXL62aBI5uejU3cO00OubHVXO0"
+        urlScheme=""
+        merchantIdentifier=""
+      >
+        <NavigationContainer>
+          <Stack.Navigator
+            initialRouteName="TabNavigator"
+            screenOptions={{ headerShown: false }}
+          >
+            <Stack.Screen name="PostScreen" component={PostScreen} />
+            <Stack.Screen name="CheckoutScreen" component={CheckoutScreen} />
+            <Stack.Screen name="TabNavigator" component={TabNavigator} />
+          </Stack.Navigator>
+        </NavigationContainer>
+      </StripeProvider>
+      {/* </PersistGate> */}
     </Provider>
   );
 }
