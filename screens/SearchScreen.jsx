@@ -2,7 +2,7 @@ import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 const data = [
   {
-    _id: "65781d32e0d7234905e2f8cc",
+    _id: "65782037b95cb256a0256ef2",
     title: "SpiderMan",
     type: "exchange",
     deliveryMethod: "inPerson",

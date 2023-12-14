@@ -15,7 +15,6 @@ export default function InboxScreen({ navigation, route: { params } }) {
     if (params) {
       navigation.navigate(params.redirect, params);
     }
-    console.log("fetch channels");
     fetch(`https://toychange-backend.vercel.app/pusherAPI/channels/${userId}`)
       .then((res) => res.json())
       .then((data) => {
@@ -23,7 +22,7 @@ export default function InboxScreen({ navigation, route: { params } }) {
           setChannels(data.channels);
         }
       });
-  }, []);
+  }, [params]);
 
   return (
     <View style={styles.container}>
