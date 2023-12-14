@@ -122,21 +122,24 @@ export default function CheckoutScreen({ navigation, route: { params } }) {
       .then((res) => res.json())
       .then((data) => {
         if (data) {
-          // const parcel = data.data.parcel;
-          // console.log(parcel.id);
-          // fetch(
-          //   `https://toychange-backend.vercel.app/sendcloudAPI/downloadLabel/${parcel.id}`,
-          //   {
-          //     method: "GET",
-          //     headers: {
-          //       "Content-Type": "application/json",
-          //     },
-          //   }
-          // )
-          //   .then((res) => res.json())
-          //   .then((data) => {
-          //     console.log(data);
-          //   });
+          // navigation.navigate("Mon Compte", {
+          //   parcel: data.data.parcel,
+          //   redirect: "MyAnnouncesScreen",
+          // });
+          const parcel = data.data.parcel;
+          fetch(
+            `https://toychange-backend.vercel.app/sendcloudAPI/downloadLabel/${parcel.id}`,
+            {
+              method: "GET",
+              headers: {
+                "Content-Type": "application/json",
+              },
+            }
+          )
+            .then((res) => res.json())
+            .then((data) => {
+              console.log(data);
+            });
         }
       });
   };
