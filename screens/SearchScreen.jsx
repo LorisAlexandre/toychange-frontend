@@ -2,9 +2,7 @@ import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 const data = [
   {
-    _id: {
-      $oid: "65781d32e0d7234905e2f8cc",
-    },
+    _id: "65781d32e0d7234905e2f8cc",
     title: "SpiderMan",
     type: "exchange",
     deliveryMethod: "inPerson",
@@ -13,9 +11,7 @@ const data = [
     category: "test",
     condition: "new",
     description: "Magnifique",
-    donor: {
-      $oid: "65772983d6956600debc663b",
-    },
+    donor: "65772983d6956600debc663b",
     __v: 0,
   },
   {
@@ -29,9 +25,7 @@ const data = [
     condition: "new",
     description: "de toute beauté",
     weight: "2.0",
-    donor: {
-      $oid: "65772983d6956600debc663b",
-    },
+    donor: "65772983d6956600debc663b",
     __v: 0,
   },
 ];
