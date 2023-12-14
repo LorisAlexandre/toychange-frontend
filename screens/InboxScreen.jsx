@@ -1,16 +1,36 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
+import { useSelector } from "react-redux";
 
 export default function InboxScreen({ navigation, route: { params } }) {
-  console.log(params);
+  const user = useSelector((state) => state.user.value);
+  const userId = "657abe9a610232ebea32150b";
+
+  const [channels, setChannels] = useState([]);
 
   useEffect(() => {
-    // si chat existe charge le sinon créer le
+    if (!user.authToken) {
+      return;
+    }
+    if (params) {
+      navigation.navigate(params.redirect, params);
+    }
+    console.log("fetch channels");
+    fetch(`https://toychange-backend.vercel.app/pusherAPI/channels/${userId}`)
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.result) {
+          setChannels(data.channels);
+        }
+      });
   }, []);
 
   return (
     <View style={styles.container}>
       <Text>Inbox</Text>
+      {channels.map((channel) => (
+        <Text>{channel._id}</Text>
+      ))}
     </View>
   );
 }

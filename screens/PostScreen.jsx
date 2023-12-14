@@ -1,7 +1,6 @@
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 export default function PostScreen({ navigation, route: { params } }) {
-  console.log(params);
   const user = { _id: "657abe9a610232ebea32150b" };
   const handleRedirectMessage = () => {
     fetch(
@@ -19,17 +18,25 @@ export default function PostScreen({ navigation, route: { params } }) {
               },
               body: JSON.stringify({
                 buyer: user._id,
-                seller: params.donnor,
+                seller: params.donor,
                 annonce: params._id,
               }),
             }
           )
             .then((res) => res.json())
             .then((data) => {
-              console.log(data);
+              if (data.result) {
+                navigation.navigate("Messages", {
+                  channel: data.channelName,
+                  redirect: "MyChannelScreen",
+                });
+              }
             });
         } else {
-          navigation.navigate("Messages", data.channel);
+          navigation.navigate("Messages", {
+            channel: data.channel,
+            redirect: "MyChannelScreen",
+          });
         }
       });
   };
