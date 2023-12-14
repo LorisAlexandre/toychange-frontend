@@ -20,7 +20,7 @@ function SignIn() {
   const handleSignIn = async () => {
     try {
       const response = await fetch(
-        "https://toychange-backend.vercel.app/users/signin",
+        "http://192.168.1.11:3000/users/signin",
         {
           method: "POST",
           headers: {
@@ -36,7 +36,14 @@ function SignIn() {
       const data = await response.json();
       console.log(data);
       // Dispatch l'action login avec les informations de l'utilisateur connecté
-      dispatch(login({ authToken: data.authToken }));
+      dispatch(login({ 
+        authToken: data.authToken,
+      username: data.username,
+      firstname: data.firstname,
+      lastname: data.lastname,
+      email: data.email,})
+      );
+
       Alert.alert("Success !", "Welcome");
     } catch (error) {
       console.error("Erreur lors de la connexion :", error);
@@ -45,7 +52,7 @@ function SignIn() {
 
   return (
     <View style={styles.formContainer}>
-      <Text style={styles.signin}>Connectez avec votre compte !</Text>
+      <Text style={styles.signin}>Connectez-vous à votre compte !</Text>
       <TextInput
         placeholder="Votre Email"
         value={email}

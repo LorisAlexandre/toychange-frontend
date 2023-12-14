@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { login } from "../reducers/user";
+import { useNavigation } from "@react-navigation/native"; // Importe useNavigation depuis React Navigation
 import {
   KeyboardAvoidingView,
   Platform,
@@ -13,6 +14,7 @@ import {
 
 function SignUp() {
   const dispatch = useDispatch();
+  const navigation = useNavigation(); // Initialise useNavigation
 
   const [username, setUsername] = useState("");
   const [firstname, setFirstName] = useState("");
@@ -21,7 +23,7 @@ function SignUp() {
   const [password, setPassword] = useState("");
 
   const handleSubmit = () => {
-    fetch("https://toychange-backend.vercel.app/users/signup", {
+    fetch("http://192.168.1.11:3000/users/signup", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ firstname, lastname, username, email, password }),
@@ -30,29 +32,33 @@ function SignUp() {
       .then((data) => {
         console.log(data);
         if (data.result || data.user) {
-          // Dispatch l'action addUser avec les informations de l'utilisateur
-          dispatch(login({ authToken: data.authToken }));
+          dispatch(
+            login({
+              authToken: data.authToken,
+              username: data.username,
+              firstname: data.firstname,
+              lastname: data.lastname,
+              email: data.email,
+            })
+          );
 
-          // Réinitialise le formulaire après le succès
           setUsername("");
           setFirstName("");
           setLastName("");
           setEmail("");
           setPassword("");
 
-          // Redirige l'utilisateur vers la page de connexion
-          // Assurez-vous d'importer useRouter depuis 'next/router'
-          // router.push('/login');
+          // Utilise la navigation pour rediriger vers "InfosUser"
+          navigation.navigate("InfosUser");
         } else {
-          // Gère les erreurs d'inscription ici
-          console.error("Erreur lors de l'inscription :", data.error);
+          console.error("Erreur lors de l'inscription :", data);
         }
       })
       .catch((error) => {
-        // Gère les erreurs réseau ici
         console.error("Erreur réseau lors de l'inscription :", error);
       });
   };
+
 
   return (
     <View style={styles.container}>
@@ -91,7 +97,7 @@ function SignUp() {
         <TextInput
           type="password"
           style={styles.input}
-          onChangeText={(value) => setPassword(value)}
+          onChangeText={(value) => setPassword(value.toString())}
           value={password}
           placeholder="Password"
         />

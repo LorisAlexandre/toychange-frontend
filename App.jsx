@@ -24,6 +24,8 @@ import MyAccount from "./screens/MyAccountScreen.jsx";
 import PostScreen from "./screens/PostScreen.jsx";
 import CheckoutScreen from "./screens/CheckoutScreen.jsx";
 import MyAnnouncesScreen from "./screens/MyAnnouncesScreen.jsx";
+import UserInfoComponent from './components/infosUser.jsx'; // assure-toi d'importer correctement ton composant InfosUser
+
 
 const store = configureStore({
   reducer: { user },
@@ -103,6 +105,7 @@ export default function App() {
               component={MyAnnouncesScreen}
             />
             <Stack.Screen name="TabNavigator" component={TabNavigator} />
+            <Stack.Screen name="InfosUser" component={UserInfoComponent} />
           </Stack.Navigator>
         </NavigationContainer>
       </StripeProvider>

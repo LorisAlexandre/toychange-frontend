@@ -15,6 +15,7 @@
     "@react-navigation/native-stack": "^6.9.17",
     "@reduxjs/toolkit": "^2.0.1",
     "@stripe/stripe-react-native": "^0.35.0",
+    "cors": "^2.8.5",
     "expo": "~49.0.15",
     "expo-camera": "~13.4.4",
     "expo-file-system": "~15.4.5",
