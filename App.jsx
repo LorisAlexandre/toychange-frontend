@@ -6,6 +6,8 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 
+import { StripeProvider } from "@stripe/stripe-react-native";
+
 import { Provider } from "react-redux";
 import { persistStore, persistReducer } from "redux-persist";
 import { PersistGate } from "redux-persist/integration/react";
@@ -80,16 +82,22 @@ export default function App() {
   return (
     <Provider store={store}>
       <PersistGate persistor={persistor}>
-        <NavigationContainer>
-          <Stack.Navigator
-            initialRouteName="TabNavigator"
-            screenOptions={{ headerShown: false }}
-          >
-            <Stack.Screen name="PostScreen" component={PostScreen} />
-            <Stack.Screen name="CheckoutScreen" component={CheckoutScreen} />
-            <Stack.Screen name="TabNavigator" component={TabNavigator} />
-          </Stack.Navigator>
-        </NavigationContainer>
+        <StripeProvider
+          publishableKey="pk_test_51OACi2BvdD53AmibPhkwBMa2sYBVRUkt50bPhHuTVUqQ1fMSntJRl5jE8yg3owQFcEzMlk8CfXL62aBI5uejU3cO00OubHVXO0"
+          urlScheme=""
+          merchantIdentifier=""
+        >
+          <NavigationContainer>
+            <Stack.Navigator
+              initialRouteName="TabNavigator"
+              screenOptions={{ headerShown: false }}
+            >
+              <Stack.Screen name="PostScreen" component={PostScreen} />
+              <Stack.Screen name="CheckoutScreen" component={CheckoutScreen} />
+              <Stack.Screen name="TabNavigator" component={TabNavigator} />
+            </Stack.Navigator>
+          </NavigationContainer>
+        </StripeProvider>
       </PersistGate>
     </Provider>
   );

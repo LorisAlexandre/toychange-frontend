@@ -30,6 +30,7 @@ const data = [
     category: "test",
     condition: "new",
     description: "de toute beauté",
+    weight: "2.0",
     donor: {
       $oid: "65772983d6956600debc663b",
     },
