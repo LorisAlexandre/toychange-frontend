@@ -7,7 +7,7 @@ export default function MyOrdersScreen({ navigation, route: { params } }) {
 
   useEffect(() => {
     if (params?.redirect) {
-      navigation.navigate("MyOrderScreen", params);
+      navigation.navigate("MyOrderScreen", params.order);
     }
     fetch(`https://toychange-backend.vercel.app/order/orders/${user._id}`)
       .then((res) => res.json())

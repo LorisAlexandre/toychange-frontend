@@ -3,6 +3,7 @@ import * as FileSystem from "expo-file-system";
 import { shareAsync } from "expo-sharing";
 
 export default function MyOrderScreen({ navigation, route: { params } }) {
+  console.log(params);
   const order = { title: "Batmam" };
   const downloadLabel = async (url) => {
     const filename = `${order.title}-label.pdf`;
