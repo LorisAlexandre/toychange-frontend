@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 import {
+  ScrollView,
   StyleSheet,
   Text,
   TextInput,
@@ -9,30 +10,48 @@ import {
 import Pusher from "pusher-js/react-native";
 
 export default function MyChannelScreen({ navigation, route: { params } }) {
-  const user = { _id: "657abe9a610232ebea32150b" };
-  const pusher = new Pusher("d002a5433a19822c44de", { cluster: "eu" });
+  const user = { _id: "657c1a3848e419b2ec4d5f8e", username: "M" };
 
   const [messages, setMessages] = useState([]);
   const [messageText, setMessageText] = useState("");
+  const [recipient, setRecipient] = useState({});
 
   useEffect(() => {
-    const sub = pusher.subscribe(params.channel._id);
+    const pusher = new Pusher("d002a5433a19822c44de", { cluster: "eu" });
+
+    const sub = pusher.subscribe(params.channel);
 
     sub.bind("pusher:subscription_succeeded", () => {
       sub.bind("Message", handleReceiveMessage);
     });
-    // fetch(
-    //   `https://toychange-backend.vercel.app/pusherAPI/${params.channel._id}/messages`
-    // )
-    //   .then((res) => res.json())
-    //   .then((data) => {});
+    fetch(
+      `https://toychange-backend.vercel.app/pusherAPI/${params.channel}/messages`
+    )
+      .then((res) => res.json())
+      .then(({ result, channel }) => {
+        if (result) {
+          switch (user._id) {
+            case channel.buyer._id:
+              setRecipient(channel.seller);
+              break;
+            case channel.seller._id:
+              setRecipient(channel.buyer);
+              break;
+          }
+          if (channel.messages.length) {
+            handleReceiveOldMessage(channel.messages);
+          }
+        }
+      });
     return () => {
       sub.unbind_all();
-      pusher.unsubscribe(params.channel._id);
+      pusher.unsubscribe(params.channel);
     };
-  }, [navigation]);
+  }, []);
 
-  console.log("connection");
+  const handleReceiveOldMessage = (oldMessages) => {
+    setMessages((messages) => [...messages, ...oldMessages]);
+  };
 
   const handleReceiveMessage = (data) => {
     setMessages((messages) => [...messages, data]);
@@ -49,7 +68,7 @@ export default function MyChannelScreen({ navigation, route: { params } }) {
     };
 
     fetch(
-      `https://toychange-backend.vercel.app/pusherAPI/${params.channel._id}/message`,
+      `https://toychange-backend.vercel.app/pusherAPI/${params.channel}/message`,
       {
         method: "POST",
         headers: {
@@ -59,21 +78,27 @@ export default function MyChannelScreen({ navigation, route: { params } }) {
       }
     )
       .then((res) => res.json())
-      .then((data) => console.log(data.channel.messages));
+      .then((data) =>
+        console.log(data.channel.messages[data.channel.messages.length - 1])
+      );
 
     setMessageText("");
   };
 
   return (
     <View style={styles.container}>
-      <Text>Mon channel {params.channel._id}</Text>
+      <Text>Mon channel {params.channel}</Text>
       <Text>Mes messages {messages.length}</Text>
-      {messages.length > 0 &&
-        messages.map((mess) => (
-          <Text>
-            {mess.sender}: {mess.text}
-          </Text>
-        ))}
+      <ScrollView>
+        {messages.length > 0 &&
+          messages.map((mess, i) => (
+            <Text key={i}>
+              {mess.sender === user._id ? user.username : recipient.username}:{" "}
+              {mess.text}
+            </Text>
+          ))}
+      </ScrollView>
+
       <TextInput
         style={{ borderWidth: 1, width: "100%" }}
         value={messageText}

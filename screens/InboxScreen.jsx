@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { useSelector } from "react-redux";
 
 export default function InboxScreen({ navigation, route: { params } }) {
   const user = useSelector((state) => state.user.value);
-  const userId = "657abe9a610232ebea32150b";
+  const userId = "657c1a3848e419b2ec4d5f8e";
 
   const [channels, setChannels] = useState([]);
 
@@ -24,11 +24,20 @@ export default function InboxScreen({ navigation, route: { params } }) {
       });
   }, [params]);
 
+  // console.log(channels[0]);
+
   return (
     <View style={styles.container}>
       <Text>Inbox</Text>
-      {channels.map((channel) => (
-        <Text>{channel._id}</Text>
+      {channels.map((channel, i) => (
+        <TouchableOpacity
+          key={i}
+          onPress={() =>
+            navigation.navigate("MyChannelScreen", { channel: channel._id })
+          }
+        >
+          <Text>{channel._id}</Text>
+        </TouchableOpacity>
       ))}
     </View>
   );

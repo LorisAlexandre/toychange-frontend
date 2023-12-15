@@ -1,7 +1,7 @@
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 export default function PostScreen({ navigation, route: { params } }) {
-  const user = { _id: "657abe9a610232ebea32150b" };
+  const user = { _id: "657c1a3848e419b2ec4d5f8e" };
   const handleRedirectMessage = () => {
     fetch(
       `https://toychange-backend.vercel.app/pusherAPI/channel?buyer=${user._id}&annonce=${params._id}&seller=${params.donor}`
@@ -34,7 +34,7 @@ export default function PostScreen({ navigation, route: { params } }) {
             });
         } else {
           navigation.navigate("Messages", {
-            channel: data.channel,
+            channel: data.channel._id,
             redirect: "MyChannelScreen",
           });
         }
