@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { login } from "../reducers/user";
-import { useNavigation } from "@react-navigation/native"; // Importe useNavigation depuis React Navigation
+import { useNavigation } from "@react-navigation/native"; 
 import {
   KeyboardAvoidingView,
   Platform,
