@@ -23,7 +23,7 @@ function SignUp() {
   const [password, setPassword] = useState("");
 
   const handleSubmit = () => {
-    fetch("http://192.168.1.11:3000/users/signup", {
+    fetch("https://toychange-backend.vercel.app/users/signup", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ firstname, lastname, username, email, password }),
