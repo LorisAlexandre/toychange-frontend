@@ -36,9 +36,13 @@ export default function InboxScreen({ navigation, route: { params } }) {
                 navigation.navigate("MyChannelScreen", { channel: channel._id })
               }
             >
-              <Text>{channel.annonce.title}</Text>
-              <Text>{channel.annonce.type}</Text>
-              <Text>{channel.annonce.category}</Text>
+              {channel.annonce && (
+                <View>
+                  <Text>{channel.annonce.title}</Text>
+                  <Text>{channel.annonce.type}</Text>
+                  <Text>{channel.annonce.category}</Text>
+                </View>
+              )}
               {channel.messages.length > 0 && (
                 <Text>
                   {channel.messages[channel.messages.length - 1].createdAt}

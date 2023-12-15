@@ -1,7 +1,11 @@
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 export default function PostScreen({ navigation, route: { params } }) {
-  const user = { _id: "657c1a3848e419b2ec4d5f8e" };
+  const user = {
+    _id: "657c1a3848e419b2ec4d5f8e",
+    authToken:
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NTdjMWEzODQ4ZTQxOWIyZWM0ZDVmOGUiLCJpYXQiOjE3MDI2NjQ4MTMsImV4cCI6MTcwNTI1NjgxM30.UJNI74erBEgczCPsadMjX6COrqUyYeK2ahE5A7g26eI",
+  };
 
   const handleRedirectMessage = () => {
     fetch(
@@ -81,7 +85,7 @@ export default function PostScreen({ navigation, route: { params } }) {
                 navigation.navigate("Mon Compte");
                 return;
               }
-              navigation.navigate("CheckoutScreen", params);
+              handleRedirectMessage();
             }}
           >
             <Text>Acheter</Text>
