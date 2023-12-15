@@ -22,8 +22,11 @@ export const userSlice = createSlice({
         state.value[key] = null;
       });
     },
+    updateUserInfo: (state, action) => {
+      Object.assign(state.value, action.payload);
+    },
   },
 });
 
-export const { login, logout } = userSlice.actions;
+export const { login, logout, updateUserInfo } = userSlice.actions;
 export default userSlice.reducer;

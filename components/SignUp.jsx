@@ -64,7 +64,7 @@ function SignUp() {
     <View style={styles.container}>
       <View style={styles.formContainer}>
         <View>
-          <Text style={styles.title}>Create your Toychange account</Text>
+          <Text style={styles.title}>Créer votre compte ToyChange !</Text>
         </View>
         <TextInput
           type="text"
@@ -102,7 +102,7 @@ function SignUp() {
           placeholder="Password"
         />
         <TouchableOpacity style={styles.button} onPress={() => handleSubmit()}>
-          <Text style={styles.title2}>Sign up</Text>
+          <Text style={styles.title2}>S'enregistrer</Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -123,10 +123,10 @@ const styles = StyleSheet.create({
     marginTop: 0,
     alignItems: "center",
     justifyContent: "center",
-    paddingTop: 80,
+    paddingTop: 60,
   },
   title: {
-    fontSize: 16,
+    fontSize: 20,
     fontWeight: "bold",
     marginBottom: 20,
   },
@@ -138,8 +138,8 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   input: {
-    width: 300,
-    height: 40,
+    width: 330,
+    height: 48,
     marginTop: 10,
     borderColor: "#FF8B0A",
     borderWidth: 1,
@@ -151,8 +151,8 @@ const styles = StyleSheet.create({
     color: "#ffffff",
     alignItems: "center",
     justifyContent: "center",
-    width: 300,
-    height: 40,
+    width: 330,
+    height: 48,
     marginTop: 20,
     backgroundColor: "#f56e00",
     borderRadius: 8,

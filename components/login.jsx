@@ -41,7 +41,7 @@ const LoginComponent = ({ navigation }) => {
     <KeyboardAvoidingView style={styles.container} behavior='padding' keyboardVerticalOffset={Platform.OS === 'ios' ? 100 : 0}>
       <View style={styles.container2}>
         <View>
-          <Text style={styles.title}>Ensemble, créons des sourires en partageant.</Text>
+          <Text style={styles.title}>Ensemble, créons des sourires en partageant. 🎁</Text>
         </View>
         <View style={styles.box}>
           <TouchableOpacity onPress={handleSignInPress} style={[styles.signin, { backgroundColor: signInButtonStyles.backgroundColor }]} activeOpacity={0.8}>
@@ -82,8 +82,8 @@ const styles = StyleSheet.create({
     // justifyContent: 'center',
   },
   box: {
-    width: '80%',
-    height: '10%',
+    width: 330,
+    height: 58,
     display:'flex',
     flexDirection:'row',
     alignItems: 'center',
@@ -101,10 +101,11 @@ const styles = StyleSheet.create({
     paddingRight: 30,
     fontWeight: 'bold',
     
+    
   },
   textButton: {
     fontSize: 12,
-   color: '#f56e00',
+    color: '#f56e00',
     fontWeight: 'bold',
     padding: 0,
   },

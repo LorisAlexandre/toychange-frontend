@@ -1,4 +1,4 @@
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 
 const data = [
   {
@@ -41,7 +41,9 @@ const data = [
 export default function SearchScreen({ navigation }) {
   return (
     <View style={styles.container}>
-      <Text>Search</Text>
+      <View style={styles.title}></View>
+      <Text style={styles.titleText}>ToyChange</Text>
+      <TextInput style={styles.inputSearch} placeholder="Search"/>
       <View>
         {data.map((item, i) => (
           <View key={i}>
@@ -60,9 +62,40 @@ export default function SearchScreen({ navigation }) {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    backgroundColor: "grey",
-    alignItems: "center",
-    justifyContent: "center",
+    display: 'flex',
+    width: 390,
+    height: 844,
+    paddinTop: 30,
+    flexDirection: 'column',
+    alignItems: 'center',
+    gap: 20,
+  },
+  title: {
+    display: 'flex',
+    width: 319,
+    height: 68,
+    justifyContent: 'center',
+    alignItems: 'center',
+   
+  },
+  titleText: {
+    display: 'flex',
+    textAlign: 'center',
+    fontSize: 50,
+    fontStyle: 'normal',
+    fontWeight: 700,
+ 
+
+  },
+  inputSearch: {
+    display: 'flex',
+    width: 292,
+    height:48,
+    textAlign: 'center',
+    borderColor: "#FFA732",
+    borderWidth: 1,
+    borderRadius: 8,
+
+
   },
 });
