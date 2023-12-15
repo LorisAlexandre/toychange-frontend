@@ -1,7 +1,16 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  value: { authToken: null, email: null, favAnnounces: [], mySearches: [] },
+  value: {
+    authToken: null,
+    email: null,
+    favAnnounces: [],
+    mySearches: [],
+    geolocation: {
+      lat: null,
+      long: null,
+    },
+  },
 };
 
 export const userSlice = createSlice({
@@ -30,6 +39,10 @@ export const userSlice = createSlice({
         (e) => e !== action.payload
       );
     },
+    addUserLocation: (state, action) => {
+      state.value.geolocation.lat = action.payload.lat;
+      state.value.geolocation.long = action.payload.long;
+    },
   },
 });
 
@@ -40,5 +53,6 @@ export const {
   removeFav,
   addSearchQuery,
   removeSearchQuery,
+  addUserLocation,
 } = userSlice.actions;
 export default userSlice.reducer;

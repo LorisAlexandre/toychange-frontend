@@ -20,8 +20,9 @@ export default function FavoriesScreen({ navigation }) {
       </View>
       {showAnnounces ? (
         <View>
-          {favAnnounces.map((announce) => (
+          {favAnnounces.map((announce, i) => (
             <TouchableOpacity
+              key={i}
               onPress={() => navigation.navigate("PostScreen", announce)}
             >
               <Text>{announce.title}</Text>
@@ -30,8 +31,9 @@ export default function FavoriesScreen({ navigation }) {
         </View>
       ) : (
         <View>
-          {mySearches.map((search) => (
+          {mySearches.map((search, i) => (
             <TouchableOpacity
+              key={i}
               onPress={() =>
                 navigation.navigate("ResultSearchScreen", { query: search })
               }

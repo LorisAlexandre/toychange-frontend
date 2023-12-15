@@ -1,9 +1,9 @@
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 export default function AddPostScreen() {
   return (
     <View style={styles.container}>
-      <Text>AddPost</Text>
+      <Text>Add Post</Text>
     </View>
   );
 }
