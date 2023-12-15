@@ -24,6 +24,7 @@ import MyAccount from "./screens/MyAccountScreen.jsx";
 import PostScreen from "./screens/PostScreen.jsx";
 import CheckoutScreen from "./screens/CheckoutScreen.jsx";
 import MyAnnouncesScreen from "./screens/MyAnnouncesScreen.jsx";
+import MyAnnounceScreen from "./screens/MyAnnounceScreen.jsx";
 import MyOrdersScreen from "./screens/MyOrdersScreen.jsx";
 import MyOrderScreen from "./screens/MyOrderScreen.jsx";
 import MyChannelScreen from "./screens/MyChannelScreen.jsx";
@@ -75,6 +76,7 @@ const TabNavigator = () => {
         tabBarActiveTintColor: "#F56E00",
         tabBarInactiveTintColor: "lightgray",
         headerShown: false,
+        unmountOnBlur: true,
       })}
     >
       <Tab.Screen name="Favoris" component={Favories} />
@@ -105,6 +107,10 @@ export default function App() {
             <Stack.Screen
               name="MyAnnouncesScreen"
               component={MyAnnouncesScreen}
+            />
+            <Stack.Screen
+              name="MyAnnounceScreen"
+              component={MyAnnounceScreen}
             />
             <Stack.Screen name="MyOrdersScreen" component={MyOrdersScreen} />
             <Stack.Screen name="MyOrderScreen" component={MyOrderScreen} />

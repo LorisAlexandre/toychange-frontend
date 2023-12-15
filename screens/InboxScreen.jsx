@@ -3,14 +3,15 @@ import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { useSelector } from "react-redux";
 
 export default function InboxScreen({ navigation, route: { params } }) {
-  const user = useSelector((state) => state.user.value);
+  const { authToken } = useSelector((state) => state.user.value);
   const userId = "657c1a3848e419b2ec4d5f8e";
 
   const [channels, setChannels] = useState([]);
 
   useEffect(() => {
-    if (!user.authToken) {
-      return;
+    if (!authToken) {
+      Alert.alert("Connectez vous !");
+      navigation.navigate("Mon Compte");
     }
     if (params) {
       navigation.navigate(params.redirect, params);
@@ -27,33 +28,29 @@ export default function InboxScreen({ navigation, route: { params } }) {
   return (
     <View style={styles.container}>
       <Text>Inbox</Text>
-      {user.authToken ? (
-        <View>
-          {channels.map((channel, i) => (
-            <TouchableOpacity
-              key={i}
-              onPress={() =>
-                navigation.navigate("MyChannelScreen", { channel: channel._id })
-              }
-            >
-              {channel.annonce && (
-                <View>
-                  <Text>{channel.annonce.title}</Text>
-                  <Text>{channel.annonce.type}</Text>
-                  <Text>{channel.annonce.category}</Text>
-                </View>
-              )}
-              {channel.messages.length > 0 && (
-                <Text>
-                  {channel.messages[channel.messages.length - 1].createdAt}
-                </Text>
-              )}
-            </TouchableOpacity>
-          ))}
-        </View>
-      ) : (
-        <Text>Not connected</Text>
-      )}
+      <View>
+        {channels.map((channel, i) => (
+          <TouchableOpacity
+            key={i}
+            onPress={() =>
+              navigation.navigate("MyChannelScreen", { channel: channel._id })
+            }
+          >
+            {channel.annonce && (
+              <View>
+                <Text>{channel.annonce.title}</Text>
+                <Text>{channel.annonce.type}</Text>
+                <Text>{channel.annonce.category}</Text>
+              </View>
+            )}
+            {channel.messages.length > 0 && (
+              <Text>
+                {channel.messages[channel.messages.length - 1].createdAt}
+              </Text>
+            )}
+          </TouchableOpacity>
+        ))}
+      </View>
     </View>
   );
 }
