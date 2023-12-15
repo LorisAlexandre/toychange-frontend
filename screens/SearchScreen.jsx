@@ -1,51 +1,76 @@
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from "react-native";
+import { addSearchQuery } from "../reducers/user";
+import NearbyAnnounces from "../components/NearbyAnnounces";
+import NewAnnounces from "../components/NewAnnounces";
 
-const data = [
-  {
-    _id: "65782037b95cb256a0256ef2",
-    title: "SpiderMan",
-    type: "exchange",
-    deliveryMethod: "inPerson",
-    address: "4 allée Jean Sébastien Bach, 51100 Reims",
-    images: ["test"],
-    category: "test",
-    condition: "new",
-    description: "Magnifique",
-    donor: "657b479ea04d2e5063b61220",
-    __v: 0,
-  },
-  {
-    _id: "657820755a69d016b360119a",
-    title: "Batman",
-    type: "donnation",
-    deliveryMethod: "postalDelivery",
-    address: "4 allée Jean Sébastien Bach, 51100 Reims",
-    images: ["test"],
-    category: "test",
-    condition: "new",
-    description: "de toute beauté",
-    weight: "2.0",
-    donor: "65772983d6956600debc663b",
-    __v: 0,
-  },
-];
+export default function SearchScreen({ navigation, route: { params } }) {
+  const dispatch = useDispatch();
+  const mySearches = useSelector((state) => state.user.value.mySearches);
+  const [query, setQuery] = useState("");
+  const [focus, setFocus] = useState(false);
 
-export default function SearchScreen({ navigation }) {
+  useEffect(() => {}, []);
+
+  const handleSearch = (query, queryNeeded = true) => {
+    if (queryNeeded) {
+      if (!query.trim()) {
+        return;
+      }
+    }
+    if (!mySearches.some((e) => e === query)) {
+      dispatch(addSearchQuery(query));
+    }
+    navigation.navigate("ResultSearchScreen", { query });
+  };
+
   return (
     <View style={styles.container}>
-      <Text>Search</Text>
-      <View>
-        {data.map((item, i) => (
-          <View key={i}>
-            <Text>{item.title}</Text>
-            <TouchableOpacity
-              onPress={() => navigation.navigate("PostScreen", item)}
-            >
-              <Text>Go to this post</Text>
+      <TextInput
+        onFocus={() => setFocus(true)}
+        onBlur={() => setFocus(false)}
+        style={{ borderWidth: 1, width: "100%" }}
+        value={query}
+        onChangeText={(val) => setQuery(val)}
+      />
+      <TouchableOpacity onPress={() => handleSearch(query)}>
+        <Text>search</Text>
+      </TouchableOpacity>
+      {query || focus ? (
+        <View>
+          <View>
+            <Text>Suggestion: </Text>
+            <TouchableOpacity onPress={() => handleSearch(query)}>
+              <Text>{query}</Text>
             </TouchableOpacity>
           </View>
-        ))}
-      </View>
+          <View>
+            <Text>Last searches: </Text>
+            {mySearches
+              .filter((e) => new RegExp(query, "i").test(e))
+              .map((e, i) => (
+                <TouchableOpacity
+                  key={i}
+                  onPress={() => handleSearch(e, false)}
+                >
+                  <Text>{e}</Text>
+                </TouchableOpacity>
+              ))}
+          </View>
+        </View>
+      ) : (
+        <View>
+          <NewAnnounces />
+          <NearbyAnnounces />
+        </View>
+      )}
     </View>
   );
 }

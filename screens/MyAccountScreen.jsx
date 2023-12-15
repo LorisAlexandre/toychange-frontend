@@ -1,8 +1,8 @@
 import React, { useEffect } from "react";
 import { View, Text } from "react-native";
 import { useSelector } from "react-redux";
-import LoginComponent from "../components/login";
-import InfosUserComponent from "../components/infosUser";
+import LoginComponent from "../components/Login";
+import InfosUserComponent from "../components/InfosUser";
 
 const MyAccountScreen = ({ navigation, route: { params } }) => {
   const user = useSelector((state) => state.user.value);

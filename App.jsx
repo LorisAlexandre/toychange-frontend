@@ -27,6 +27,7 @@ import MyAnnouncesScreen from "./screens/MyAnnouncesScreen.jsx";
 import MyOrdersScreen from "./screens/MyOrdersScreen.jsx";
 import MyOrderScreen from "./screens/MyOrderScreen.jsx";
 import MyChannelScreen from "./screens/MyChannelScreen.jsx";
+import ResultSearchScreen from "./screens/ResultSearchScreen.jsx";
 
 const store = configureStore({
   reducer: { user },
@@ -108,6 +109,10 @@ export default function App() {
             <Stack.Screen name="MyOrdersScreen" component={MyOrdersScreen} />
             <Stack.Screen name="MyOrderScreen" component={MyOrderScreen} />
             <Stack.Screen name="MyChannelScreen" component={MyChannelScreen} />
+            <Stack.Screen
+              name="ResultSearchScreen"
+              component={ResultSearchScreen}
+            />
             <Stack.Screen name="TabNavigator" component={TabNavigator} />
           </Stack.Navigator>
         </NavigationContainer>

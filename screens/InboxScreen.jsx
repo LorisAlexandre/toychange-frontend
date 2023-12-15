@@ -24,28 +24,32 @@ export default function InboxScreen({ navigation, route: { params } }) {
       });
   }, [params]);
 
-  console.log(channels[0]);
-
   return (
     <View style={styles.container}>
       <Text>Inbox</Text>
-      {channels.map((channel, i) => (
-        <TouchableOpacity
-          key={i}
-          onPress={() =>
-            navigation.navigate("MyChannelScreen", { channel: channel._id })
-          }
-        >
-          <Text>{channel.annonce.title}</Text>
-          <Text>{channel.annonce.type}</Text>
-          <Text>{channel.annonce.category}</Text>
-          {channel.messages.length > 0 && (
-            <Text>
-              {channel.messages[channel.messages.length - 1].createdAt}
-            </Text>
-          )}
-        </TouchableOpacity>
-      ))}
+      {user.authToken ? (
+        <View>
+          {channels.map((channel, i) => (
+            <TouchableOpacity
+              key={i}
+              onPress={() =>
+                navigation.navigate("MyChannelScreen", { channel: channel._id })
+              }
+            >
+              <Text>{channel.annonce.title}</Text>
+              <Text>{channel.annonce.type}</Text>
+              <Text>{channel.annonce.category}</Text>
+              {channel.messages.length > 0 && (
+                <Text>
+                  {channel.messages[channel.messages.length - 1].createdAt}
+                </Text>
+              )}
+            </TouchableOpacity>
+          ))}
+        </View>
+      ) : (
+        <Text>Not connected</Text>
+      )}
     </View>
   );
 }
