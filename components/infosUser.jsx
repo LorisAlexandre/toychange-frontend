@@ -12,7 +12,15 @@ const UserInfoComponent = ({ navigation }) => {
       {/* <Text>Email: {user.email}</Text> */}
       <Text>Token: {user.authToken}</Text>
       <TouchableOpacity onPress={() => navigation.navigate("MyOrdersScreen")}>
-        <Text>My orders go to </Text>
+        <Text>My orders (0) </Text>
+      </TouchableOpacity>
+      <TouchableOpacity onPress={() => navigation.navigate("Messages")}>
+        <Text>My mails</Text>
+      </TouchableOpacity>
+      <TouchableOpacity
+        onPress={() => navigation.navigate("MyAnnouncesScreen")}
+      >
+        <Text>My announces (0) </Text>
       </TouchableOpacity>
       {/* Ajoute d'autres informations selon les besoins */}
     </View>
