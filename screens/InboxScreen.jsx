@@ -24,7 +24,7 @@ export default function InboxScreen({ navigation, route: { params } }) {
       });
   }, [params]);
 
-  // console.log(channels[0]);
+  console.log(channels[0]);
 
   return (
     <View style={styles.container}>
@@ -36,7 +36,14 @@ export default function InboxScreen({ navigation, route: { params } }) {
             navigation.navigate("MyChannelScreen", { channel: channel._id })
           }
         >
-          <Text>{channel._id}</Text>
+          <Text>{channel.annonce.title}</Text>
+          <Text>{channel.annonce.type}</Text>
+          <Text>{channel.annonce.category}</Text>
+          {channel.messages.length > 0 && (
+            <Text>
+              {channel.messages[channel.messages.length - 1].createdAt}
+            </Text>
+          )}
         </TouchableOpacity>
       ))}
     </View>
