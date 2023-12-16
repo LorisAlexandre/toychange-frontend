@@ -1,10 +1,11 @@
 import React from "react";
-import { View, Text, StyleSheet, TouchableOpacity, TextInput } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity, TextInput, ScrollView } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigation } from "@react-navigation/native";
 import { logout, updateUserInfo } from "../reducers/user";
 import { FontAwesome } from "@expo/vector-icons";
 import { useState } from "react";
+
 
 const UserInfoComponent = () => {
   const user = useSelector((state) => state.user.value);
@@ -51,19 +52,23 @@ const UserInfoComponent = () => {
     setIsEditingEmail(false);
   };
   // État et fonctions pour gérer l'édition du password
-  const [isEditingPassword, setIsEditingPassword] = useState(false);
-  const [editablePassword, setEditablePassword] = useState(user.email);
-  const handleEditPassword = () => setIsEditingPassword(true);
-  const handleSavePassword = async () => {
-    dispatch(updateUserInfo({ password: editableEmail }));
-    await updateBackend({ password: editablePassword });
-    setIsEditingPassword(false);
-  };
+//   const [isEditingPassword, setIsEditingPassword] = useState(false);
+// const [editablePassword, setEditablePassword] = useState(user.email);
+// const handleEditPassword = () => setIsEditingPassword(true);
+// const handleSavePassword = async () => {
+//   dispatch(updateUserInfo({ password: editablePassword }));
+//   await updateBackend({ password: editablePassword });
+//   setIsEditingPassword(false);
+// };
+  const [showChangePassword, setShowChangePassword] = useState(false);
+  const handleShowChangePassword = () => {
+    navigation.navigate('PasswordScreen');  };
 
   const logoutUser = () => {
     dispatch(logout());
     // Redirige l'utilisateur vers l'écran de connexion 
-    
+    navigation.navigate("Mon Compte");
+
   };
   // État global pour gérer l'état d'édition global
   const [isEditing, setIsEditing] = useState(false);
@@ -99,6 +104,7 @@ const UserInfoComponent = () => {
       <View style={styles.boxTitle}>
         <Text style={styles.title}>Mes informations</Text>
       </View>
+      <ScrollView>  
       <View style={styles.box}>
         {/* Champ Prénom */}
         <Text>Prénom :</Text>
@@ -180,11 +186,18 @@ const UserInfoComponent = () => {
               <FontAwesome name="check" size={24} color="#00f500" />
             ) : (
               <FontAwesome name="pencil" size={24} color="#f56e00" />
-            )}
+              )}
           </TouchableOpacity>
         </View>
         {/* Champ Password */}
-        <Text>Password :</Text>
+
+        <TouchableOpacity onPress={handleShowChangePassword}>
+        <Text>Modifier votre mot de passe
+              <FontAwesome name="hand-o-left" size={24} color="#f56e00" /></Text>
+      </TouchableOpacity>
+
+      {showChangePassword && <ChangePasswordForm />}
+        {/* <Text>Password :</Text>
         <View style={styles.boxPassword}>
           {isEditingPassword ? (
             <TextInput
@@ -202,7 +215,7 @@ const UserInfoComponent = () => {
               <FontAwesome name="pencil" size={24} color="#f56e00" />
             )}
           </TouchableOpacity>
-        </View>
+        </View> */}
 
         {/* Token et Bouton de déconnexion */}
         <Text style={styles.token}>Token: {user.authToken}</Text>
@@ -210,6 +223,7 @@ const UserInfoComponent = () => {
           <Text style={styles.logoutButtonText}>Déconnexion</Text>
         </TouchableOpacity>
       </View>
+      </ScrollView>
     </View>
   );
 };

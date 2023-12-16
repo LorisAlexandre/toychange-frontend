@@ -24,7 +24,8 @@ import MyAccount from "./screens/MyAccountScreen.jsx";
 import PostScreen from "./screens/PostScreen.jsx";
 import CheckoutScreen from "./screens/CheckoutScreen.jsx";
 import MyAnnouncesScreen from "./screens/MyAnnouncesScreen.jsx";
-import UserInfoComponent from './components/infosUser.jsx'; // assure-toi d'importer correctement ton composant InfosUser
+import UserInfoComponent from './components/infosUser.jsx'; 
+import ChangePasswordForm from './components/ChangePasswordForm.jsx'; 
 
 
 const store = configureStore({
@@ -106,6 +107,7 @@ export default function App() {
             />
             <Stack.Screen name="TabNavigator" component={TabNavigator} />
             <Stack.Screen name="InfosUser" component={UserInfoComponent} />
+            <Stack.Screen name="PasswordScreen" component={ChangePasswordForm} />
           </Stack.Navigator>
         </NavigationContainer>
       </StripeProvider>
