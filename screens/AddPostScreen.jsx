@@ -12,8 +12,7 @@ import * as ImagePicker from "expo-image-picker";
 import { useSelector } from "react-redux";
 
 export default function AddPostScreen({ navigation }) {
-  const { authToken } = useSelector((state) => state.user.value);
-  const userId = "657b479ea04d2e5063b61220";
+  const { authToken, _id } = useSelector((state) => state.user.value);
   const [payloadInput, setPayloadInput] = useState({
     title: "",
     description: "",
@@ -77,7 +76,7 @@ export default function AddPostScreen({ navigation }) {
     }
     const payload = {
       ...payloadInput,
-      donor: userId,
+      donor: _id,
     };
     fetch("https://toychange-backend.vercel.app/announce/addAnnounce", {
       method: "POST",

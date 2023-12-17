@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import {
   Image,
+  KeyboardAvoidingView,
   ScrollView,
   StyleSheet,
   Text,
@@ -10,16 +11,20 @@ import {
 } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 import Pusher from "pusher-js/react-native";
+import Message from "../components/Message";
+import { useSelector } from "react-redux";
 
 export default function MyChannelScreen({ navigation, route: { params } }) {
-  const user = { _id: "657c1a3848e419b2ec4d5f8e", username: "M" };
+  const user = useSelector((state) => state.user.value);
 
   const [messages, setMessages] = useState([]);
   const [messageText, setMessageText] = useState("");
   const [recipient, setRecipient] = useState({});
   const [announce, setAnnounce] = useState({});
-  const [proposal, setPorposal] = useState(false);
+  const [label, setLabel] = useState("");
+  const [traded, setTraded] = useState(false);
   const [imagesToSend, setImagesToSend] = useState([]);
+  const [replyToMess, setReplyToMess] = useState({});
 
   useEffect(() => {
     const pusher = new Pusher("d002a5433a19822c44de", { cluster: "eu" });
@@ -55,9 +60,21 @@ export default function MyChannelScreen({ navigation, route: { params } }) {
     };
   }, []);
 
-  // messages.map((e) => {
-  //   console.log(e);
-  // });
+  const handleReady = () => {
+    // L'échangeur doit créer son "annonce" et payer ses frais de livraisons une fois les frais de livraison payer vendeur reçois ses frais de livraisons à payer
+  };
+
+  const handleAccept = (mess) => {
+    setLabel("replyTo");
+    setReplyToMess(mess);
+    setMessageText("I accept your deal");
+    setTraded(true);
+  };
+  const handleDecline = (mess) => {
+    setLabel("replyTo");
+    setReplyToMess(mess);
+    setMessageText("I decline your deal");
+  };
 
   const handleReceiveOldMessage = (oldMessages) => {
     setMessages((messages) => [...messages, ...oldMessages]);
@@ -74,9 +91,16 @@ export default function MyChannelScreen({ navigation, route: { params } }) {
 
     if (messageText) {
       const payloadText = {
-        label: proposal ? "proposal" : "",
+        label,
+        traded,
         text: messageText,
         sender: user._id,
+        replyTo: label === "replyTo" && {
+          label: replyToMess.label,
+          sender: replyToMess.sender,
+          images: [...replyToMess.images],
+          text: replyToMess.text,
+        },
       };
       fetch(
         `https://toychange-backend.vercel.app/pusherAPI/${params.channel}/message`,
@@ -89,8 +113,10 @@ export default function MyChannelScreen({ navigation, route: { params } }) {
         }
       )
         .then((res) => res.json())
-        .then((data) =>
-          console.log(data.channel.messages[data.channel.messages.length - 1])
+        .then(
+          (data) =>
+            console.log(data.channel.messages[data.channel.messages.length - 1])
+          // if traded true envoie notif !!
         );
     }
 
@@ -104,7 +130,7 @@ export default function MyChannelScreen({ navigation, route: { params } }) {
         })
       );
       fetch(
-        `https://toychange-backend.vercel.app/pusherAPI/${params.channel}/image`,
+        `https://toychange-backend.vercel.app/pusherAPI/${params.channel}/image?sender=${user._id}&label=${label}`,
         {
           method: "POST",
           body: formData,
@@ -118,6 +144,9 @@ export default function MyChannelScreen({ navigation, route: { params } }) {
 
     setMessageText("");
     setImagesToSend([]);
+    setReplyToMess({});
+    setLabel("");
+    setTraded(false);
   };
 
   const pickImage = async () => {
@@ -144,48 +173,85 @@ export default function MyChannelScreen({ navigation, route: { params } }) {
     <View style={styles.container}>
       <Text>Mon channel {params.channel}</Text>
       <Text>Mes messages {messages.length}</Text>
+
       <ScrollView>
+        {messages.some((e) => e.traded) && (
+          <TouchableOpacity
+            disabled={messages.find((e) => e.traded).sender === user._id}
+            onPress={() => handleReady(user._id)}
+          >
+            <Text>
+              Echanger pour: {messages.find((e) => e.traded).replyTo.text}
+            </Text>
+            <Text>
+              {messages.find((e) => e.traded).sender === user._id
+                ? "Me"
+                : recipient.username}{" "}
+              est chaud
+            </Text>
+          </TouchableOpacity>
+        )}
         {messages.length > 0 &&
           messages.map((mess, i) => (
-            <View key={i}>
-              <Text>{mess.sender}:</Text>
-              {mess.text ? (
-                <Text>{mess.text}</Text>
-              ) : (
-                <View>
-                  {mess.images.map((img, i) => (
-                    <Image
-                      key={i}
-                      source={{ uri: img }}
-                      width={50}
-                      height={50}
-                    />
-                  ))}
-                </View>
-              )}
-            </View>
+            <TouchableOpacity
+              key={i}
+              onLongPress={() => {
+                setLabel("replyTo");
+                setReplyToMess(mess);
+              }}
+            >
+              <Message
+                {...mess}
+                messSender={
+                  mess.sender === user._id ? "Me" : recipient.username
+                }
+                handleAccept={handleAccept}
+                handleDecline={handleDecline}
+              />
+            </TouchableOpacity>
           ))}
       </ScrollView>
 
-      <TextInput
-        style={{ borderWidth: 1, width: "100%" }}
-        value={messageText}
-        onChangeText={(value) => setMessageText(value)}
-      />
-      <TouchableOpacity onPress={handleSendMessage}>
-        <Text>Send</Text>
-      </TouchableOpacity>
-      <TouchableOpacity onPress={pickImage}>
-        <Text>Images</Text>
-      </TouchableOpacity>
-      {imagesToSend.map((img) => (
-        <Image source={{ uri: img }} width={50} height={50} />
-      ))}
-      {announce.type === "exchange" && (
-        <TouchableOpacity onPress={() => setPorposal(true)}>
-          <Text>Exchange proposal</Text>
-        </TouchableOpacity>
+      {!!replyToMess.text && (
+        <View>
+          <Text>reply to : {replyToMess.text}</Text>
+          <TouchableOpacity onPress={() => setReplyToMess({})}>
+            <Text>x</Text>
+          </TouchableOpacity>
+        </View>
       )}
+      {label === "proposal" && (
+        <View>
+          <Text>Proposal:</Text>
+          <TouchableOpacity onPress={() => setLabel("")}>
+            <Text>x</Text>
+          </TouchableOpacity>
+        </View>
+      )}
+      <KeyboardAvoidingView style={{ width: "100%" }}>
+        <TextInput
+          style={{ borderWidth: 1, width: "100%" }}
+          value={messageText}
+          onChangeText={(value) => setMessageText(value)}
+        />
+        <TouchableOpacity onPress={handleSendMessage}>
+          <Text>Send</Text>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={pickImage}>
+          <Text>Images</Text>
+        </TouchableOpacity>
+        {imagesToSend.map((img) => (
+          <Image source={{ uri: img }} width={50} height={50} />
+        ))}
+        {announce.type === "exchange" && (
+          <TouchableOpacity
+            disabled={announce.donor === user._id}
+            onPress={() => setLabel("proposal")}
+          >
+            <Text>Exchange proposal</Text>
+          </TouchableOpacity>
+        )}
+      </KeyboardAvoidingView>
     </View>
   );
 }

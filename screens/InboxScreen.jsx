@@ -3,8 +3,7 @@ import { Alert, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { useSelector } from "react-redux";
 
 export default function InboxScreen({ navigation, route: { params } }) {
-  const { authToken } = useSelector((state) => state.user.value);
-  const userId = "657c1a3848e419b2ec4d5f8e";
+  const { authToken, _id } = useSelector((state) => state.user.value);
 
   const [channels, setChannels] = useState([]);
 
@@ -16,7 +15,7 @@ export default function InboxScreen({ navigation, route: { params } }) {
     if (params) {
       navigation.navigate(params.redirect, params);
     }
-    fetch(`https://toychange-backend.vercel.app/pusherAPI/channels/${userId}`)
+    fetch(`https://toychange-backend.vercel.app/pusherAPI/channels/${_id}`)
       .then((res) => res.json())
       .then((data) => {
         if (data.result) {

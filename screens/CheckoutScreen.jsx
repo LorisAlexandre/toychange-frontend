@@ -21,7 +21,7 @@ export default function CheckoutScreen({ navigation, route: { params } }) {
     postal_code: "66140",
     telephone: "+33769395249",
     email: "loris.alexandre@gmail.com",
-    _id: "657abe9a610232ebea32150b",
+    _id: "657c1a3848e419b2ec4d5f8e",
   };
 
   const item = params;
@@ -83,7 +83,6 @@ export default function CheckoutScreen({ navigation, route: { params } }) {
   };
 
   const fetchShippingPrice = async (to_postal_code, from_postal_code) => {
-    console.log(to_postal_code, from_postal_code);
     const res = await fetch(
       "https://toychange-backend.vercel.app/sendcloudAPI/shippingPrice",
       {
@@ -99,7 +98,6 @@ export default function CheckoutScreen({ navigation, route: { params } }) {
       }
     );
     const data = await res.json();
-    console.log(data);
     if (data.result) {
       if (data.data) {
         setShippingFees(data.data[1].countries[0].price);
@@ -164,6 +162,7 @@ export default function CheckoutScreen({ navigation, route: { params } }) {
                     body: JSON.stringify({
                       announce: item._id,
                       user: user._id,
+                      seller: item.donor,
                       parcel: {
                         tracking_number: parcel.tracking_number,
                         label_url: data.url,

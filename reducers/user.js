@@ -4,6 +4,10 @@ const initialState = {
   value: {
     authToken: null,
     email: null,
+    username: null,
+    lastname: null,
+    firstname: null,
+    _id: null,
     favAnnounces: [],
     mySearches: [],
     geolocation: {
@@ -19,9 +23,19 @@ export const userSlice = createSlice({
   reducers: {
     login: (state, action) => {
       state.value.authToken = action.payload.authToken;
+      state.value.email = action.payload.email;
+      state.value.username = action.payload.username;
+      state.value.lastname = action.payload.lastname;
+      state.value.firstname = action.payload.firstname;
+      state.value._id = action.payload._id;
     },
     logout: (state) => {
-      return { authToken: null, email: null, password: null };
+      state.value.authToken = null;
+      state.value.email = null;
+      state.value.username = null;
+      state.value.lastname = null;
+      state.value.firstname = null;
+      state.value._id = null;
     },
     addFav: (state, action) => {
       state.value.favAnnounces.push(action.payload);

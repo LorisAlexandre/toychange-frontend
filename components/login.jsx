@@ -12,8 +12,7 @@ import {
 } from "react-native";
 
 const LoginComponent = ({ navigation }) => {
-  const [showSignIn, setShowSignIn] = useState(false);
-  const [showSignUp, setShowSignUp] = useState(false);
+  const [showSignIn, setShowSignIn] = useState(true);
 
   return (
     <KeyboardAvoidingView

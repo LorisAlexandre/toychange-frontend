@@ -1,16 +1,14 @@
 import React from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { logout } from "../reducers/user";
 
 const UserInfoComponent = ({ navigation }) => {
   const user = useSelector((state) => state.user.value);
+  const dispatch = useDispatch();
   return (
     <View style={styles.container}>
-      {/* <Text>Nom: {user.firstname}</Text> */}
-      {/* <Text>Prénom: {user.lastname}</Text> */}
-      {/* <Text>Username: {user.username}</Text> */}
-      {/* <Text>Email: {user.email}</Text> */}
-      <Text>Token: {user.authToken}</Text>
+      <Text>{user.username}</Text>
       <TouchableOpacity onPress={() => navigation.navigate("MyOrdersScreen")}>
         <Text>My orders (0) </Text>
       </TouchableOpacity>
@@ -23,6 +21,9 @@ const UserInfoComponent = ({ navigation }) => {
         <Text>My announces (0) </Text>
       </TouchableOpacity>
       {/* Ajoute d'autres informations selon les besoins */}
+      <TouchableOpacity onPress={() => dispatch(logout())}>
+        <Text>Logout</Text>
+      </TouchableOpacity>
     </View>
   );
 };

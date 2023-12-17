@@ -3,8 +3,7 @@ import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { useSelector } from "react-redux";
 
 export default function FavoriesScreen({ navigation }) {
-  const mySearches = useSelector((state) => state.user.value.mySearches);
-  const favAnnounces = useSelector((state) => state.user.value.favAnnounces);
+  const { favAnnounces, mySearches } = useSelector((state) => state.user.value);
   const [showAnnounces, setShowAnnounces] = useState(true);
 
   return (

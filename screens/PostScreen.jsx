@@ -1,15 +1,12 @@
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { useSelector } from "react-redux";
 
 export default function PostScreen({ navigation, route: { params } }) {
-  const user = {
-    _id: "657c1a3848e419b2ec4d5f8e",
-    authToken:
-      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NTdjMWEzODQ4ZTQxOWIyZWM0ZDVmOGUiLCJpYXQiOjE3MDI2NjQ4MTMsImV4cCI6MTcwNTI1NjgxM30.UJNI74erBEgczCPsadMjX6COrqUyYeK2ahE5A7g26eI",
-  };
+  const { authToken, _id } = useSelector((state) => state.user.value);
 
   const handleRedirectMessage = () => {
     fetch(
-      `https://toychange-backend.vercel.app/pusherAPI/channel?buyer=${user._id}&annonce=${params._id}&seller=${params.donor}`
+      `https://toychange-backend.vercel.app/pusherAPI/channel?buyer=${_id}&annonce=${params._id}&seller=${params.donor}`
     )
       .then((res) => res.json())
       .then((data) => {
@@ -22,7 +19,7 @@ export default function PostScreen({ navigation, route: { params } }) {
                 "Content-Type": "application/json",
               },
               body: JSON.stringify({
-                buyer: user._id,
+                buyer: _id,
                 seller: params.donor,
                 annonce: params._id,
               }),
@@ -57,7 +54,7 @@ export default function PostScreen({ navigation, route: { params } }) {
       {params.deliveryMethod === "inPerson" || params.type === "exchange" ? (
         <TouchableOpacity
           onPress={() => {
-            if (!user.authToken) {
+            if (!authToken) {
               navigation.navigate("Mon Compte");
               return;
             }
@@ -70,7 +67,7 @@ export default function PostScreen({ navigation, route: { params } }) {
         <View>
           <TouchableOpacity
             onPress={() => {
-              if (!user.authToken) {
+              if (!authToken) {
                 navigation.navigate("Mon Compte");
                 return;
               }
@@ -81,7 +78,7 @@ export default function PostScreen({ navigation, route: { params } }) {
           </TouchableOpacity>
           <TouchableOpacity
             onPress={() => {
-              if (!user.authToken) {
+              if (!authToken) {
                 navigation.navigate("Mon Compte");
                 return;
               }

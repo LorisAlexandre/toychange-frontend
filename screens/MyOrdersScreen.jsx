@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { useSelector } from "react-redux";
 
 export default function MyOrdersScreen({ navigation, route: { params } }) {
-  const user = { _id: "657abe9a610232ebea32150b" };
+  const user = useSelector((state) => state.user.value);
   const [userOrders, setUserOrders] = useState([]);
 
   useEffect(() => {
@@ -27,7 +28,7 @@ export default function MyOrdersScreen({ navigation, route: { params } }) {
         onPress={() => navigation.navigate("MyOrderScreen", order)}
       >
         <View>
-          <Text>{order.parcel.tracking_number}</Text>
+          <Text>{order.announce.title}</Text>
         </View>
       </TouchableOpacity>
     );
