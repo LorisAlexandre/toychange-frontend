@@ -11,20 +11,13 @@ import {
 } from "react-native";
 import { useStripe } from "@stripe/stripe-react-native";
 import * as Notifications from "expo-notifications";
+import { useSelector } from "react-redux";
 
 export default function CheckoutScreen({ navigation, route: { params } }) {
-  const user = {
-    name: "Loris",
-    address: "avenue du Canigou",
-    house_number: "36",
-    city: "Canet-en-Roussillon",
-    postal_code: "66140",
-    telephone: "+33769395249",
-    email: "loris.alexandre@gmail.com",
-    _id: "657c1a3848e419b2ec4d5f8e",
-  };
+  const user = useSelector((state) => state.user.value);
 
-  const item = params;
+  console.log(params);
+  const { announce, redirectTo, recipient } = params;
 
   const [to_postal_code, setTo_postal_code] = useState("");
   const [shippingFees, setShippingFees] = useState(null);
@@ -93,7 +86,7 @@ export default function CheckoutScreen({ navigation, route: { params } }) {
         body: JSON.stringify({
           to_postal_code,
           from_postal_code,
-          weight: item.weight,
+          weight: announce.weight,
         }),
       }
     );
@@ -126,13 +119,13 @@ export default function CheckoutScreen({ navigation, route: { params } }) {
       },
       body: JSON.stringify({
         name: user.name,
-        address: user.address,
-        house_number: user.house_number,
-        city: user.city,
-        postal_code: user.postal_code,
-        telephone: user.telephone,
-        email: user.email,
-        weight: item.weight,
+        address: "avenue du Canigou",
+        house_number: "36",
+        city: "Canet-en-Roussillon",
+        postal_code: "66140",
+        telephone: "+33769395249",
+        email: "loris.alexandre@gmail.com",
+        weight: announce.weight,
         total_order_value: shippingFees,
       }),
     })
@@ -160,9 +153,9 @@ export default function CheckoutScreen({ navigation, route: { params } }) {
                       "Content-Type": "application/json",
                     },
                     body: JSON.stringify({
-                      announce: item._id,
+                      announce: announce._id,
                       user: user._id,
-                      seller: item.donor,
+                      seller: announce.donor,
                       parcel: {
                         tracking_number: parcel.tracking_number,
                         label_url: data.url,
@@ -195,8 +188,8 @@ export default function CheckoutScreen({ navigation, route: { params } }) {
   return (
     <View style={styles.container}>
       <Text>Your Cart</Text>
-      <Text>{item.title}</Text>
-      <Text>{item.type}</Text>
+      <Text>{announce.title}</Text>
+      <Text>{announce.type}</Text>
       <TextInput
         style={{ borderWidth: 1, width: "100%" }}
         keyboardType="number-pad"
@@ -205,7 +198,7 @@ export default function CheckoutScreen({ navigation, route: { params } }) {
         clearTextOnFocus
         returnKeyType="done"
         onSubmitEditing={() =>
-          fetchShippingPrice(to_postal_code, item.address.postalCode)
+          fetchShippingPrice(to_postal_code, announce.address.postalCode)
         }
         value={to_postal_code}
         onChangeText={(value) => setTo_postal_code(value)}

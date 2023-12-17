@@ -61,7 +61,14 @@ export default function MyChannelScreen({ navigation, route: { params } }) {
   }, []);
 
   const handleReady = () => {
-    // L'échangeur doit créer son "annonce" et payer ses frais de livraisons une fois les frais de livraison payer vendeur reçois ses frais de livraisons à payer
+    // L'échangeur doit créer son "annonce" et payer ses frais de livraisons, order créer
+    // Si order créer alors annonce Acheté donc vendeur va dans annonce Acheté et paye ses shippingFees
+    // download des labels et les users s'envoient leur colis
+    navigation.navigate("AddExchangePostScreen", {
+      recipient,
+      announce,
+      redirectTo: "CheckoutScreen",
+    });
   };
 
   const handleAccept = (mess) => {

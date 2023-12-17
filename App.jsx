@@ -29,6 +29,7 @@ import MyOrdersScreen from "./screens/MyOrdersScreen.jsx";
 import MyOrderScreen from "./screens/MyOrderScreen.jsx";
 import MyChannelScreen from "./screens/MyChannelScreen.jsx";
 import ResultSearchScreen from "./screens/ResultSearchScreen.jsx";
+import AddExchangePostScreen from "./screens/AddExchangePostScreen.jsx";
 
 const store = configureStore({
   reducer: { user },
@@ -118,6 +119,10 @@ export default function App() {
             <Stack.Screen
               name="ResultSearchScreen"
               component={ResultSearchScreen}
+            />
+            <Stack.Screen
+              name="AddExchangePostScreen"
+              component={AddExchangePostScreen}
             />
             <Stack.Screen name="TabNavigator" component={TabNavigator} />
           </Stack.Navigator>
