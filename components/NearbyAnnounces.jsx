@@ -16,7 +16,6 @@ export default function NearbyAnnounces({ navigation }) {
     )
       .then((res) => res.json())
       .then(({ result, announcesSorted }) => {
-        console.log(announcesSorted);
         if (result) {
           setAnnounces(announcesSorted);
         }

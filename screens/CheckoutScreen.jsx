@@ -83,6 +83,7 @@ export default function CheckoutScreen({ navigation, route: { params } }) {
   };
 
   const fetchShippingPrice = async (to_postal_code, from_postal_code) => {
+    console.log(to_postal_code, from_postal_code);
     const res = await fetch(
       "https://toychange-backend.vercel.app/sendcloudAPI/shippingPrice",
       {
@@ -98,8 +99,11 @@ export default function CheckoutScreen({ navigation, route: { params } }) {
       }
     );
     const data = await res.json();
+    console.log(data);
     if (data.result) {
-      setShippingFees(data.data[1].countries[0].price);
+      if (data.data) {
+        setShippingFees(data.data[1].countries[0].price);
+      }
     }
   };
 
@@ -150,7 +154,6 @@ export default function CheckoutScreen({ navigation, route: { params } }) {
             .then((res) => res.json())
             .then((data) => {
               if (data.result) {
-                console.log(item._id, user._id);
                 fetch(
                   "https://toychange-backend.vercel.app/order/createOrder",
                   {
@@ -172,7 +175,6 @@ export default function CheckoutScreen({ navigation, route: { params } }) {
                   .then((res) => res.json())
                   .then((data) => {
                     if (data.result) {
-                      console.log("order created ok");
                       sendNotificationToSeller(data.order);
                       const order = data.order;
                       navigation.navigate("Mon Compte", {
@@ -204,7 +206,7 @@ export default function CheckoutScreen({ navigation, route: { params } }) {
         clearTextOnFocus
         returnKeyType="done"
         onSubmitEditing={() =>
-          fetchShippingPrice(to_postal_code, user.postal_code)
+          fetchShippingPrice(to_postal_code, item.address.postalCode)
         }
         value={to_postal_code}
         onChangeText={(value) => setTo_postal_code(value)}

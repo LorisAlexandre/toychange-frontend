@@ -20,6 +20,7 @@ export default function AddPostScreen({ navigation }) {
     type: "donation",
     condition: "likeNew",
     deliveryMethod: "both",
+    weight: "1",
     address: {
       houseNumber: "",
       street: "",
@@ -87,8 +88,10 @@ export default function AddPostScreen({ navigation }) {
     })
       .then((res) => res.json())
       .then(({ result, announce }) => {
+        console.log(result);
         if (result) {
-          if (images) {
+          if (images.length) {
+            console.log("fetch images");
             const formData = new FormData();
             images.map((uri) =>
               formData.append("photosFromFront", {
@@ -105,13 +108,17 @@ export default function AddPostScreen({ navigation }) {
               }
             )
               .then((res) => res.json())
-              .then((data) => {
+              .then(({ result, announce }) => {
+                if (!result) {
+                  Alert.alert("Images fail to upload");
+                }
                 navigation.navigate("Mon Compte", {
                   redirect: "MyAnnounceScreen",
                   announce,
                 });
               });
           } else {
+            console.log("redirect");
             navigation.navigate("Mon Compte", {
               redirect: "MyAnnounceScreen",
               announce,
@@ -155,8 +162,17 @@ export default function AddPostScreen({ navigation }) {
         />
         <TextInput
           style={{ borderWidth: 1, width: "100%" }}
+          placeholder="weight"
+          keyboardType="numeric"
+          maxLength={3}
+          value={payloadInput.weight.toString()}
+          onChangeText={(value) => handleChange("weight", value)}
+        />
+        <TextInput
+          style={{ borderWidth: 1, width: "100%" }}
           placeholder="address houseNumber"
-          value={payloadInput.address.houseNumber}
+          keyboardType="numeric"
+          value={payloadInput.address.houseNumber.toString()}
           onChangeText={(value) =>
             handleChange("address", value, "houseNumber")
           }
@@ -176,7 +192,9 @@ export default function AddPostScreen({ navigation }) {
         <TextInput
           style={{ borderWidth: 1, width: "100%" }}
           placeholder="address postalCode"
-          value={payloadInput.address.postalCode}
+          keyboardType="numeric"
+          maxLength={5}
+          value={payloadInput.address.postalCode.toString()}
           onChangeText={(value) => handleChange("address", value, "postalCode")}
         />
         <TextInput

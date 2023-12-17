@@ -84,7 +84,7 @@ export default function SearchScreen({ navigation, route: { params } }) {
       ) : (
         <View>
           <NewAnnounces navigation={navigation} />
-          <NearbyAnnounces navigation={navigation} />
+          {/* <NearbyAnnounces navigation={navigation} /> */}
         </View>
       )}
     </View>

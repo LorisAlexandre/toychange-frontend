@@ -54,7 +54,7 @@ export default function PostScreen({ navigation, route: { params } }) {
       <Text>PostScreen</Text>
       <Text>{params.title}</Text>
       <Text>{params.type}</Text>
-      {params.deliveryMethod === "inPerson" ? (
+      {params.deliveryMethod === "inPerson" || params.type === "exchange" ? (
         <TouchableOpacity
           onPress={() => {
             if (!user.authToken) {
@@ -85,7 +85,7 @@ export default function PostScreen({ navigation, route: { params } }) {
                 navigation.navigate("Mon Compte");
                 return;
               }
-              handleRedirectMessage();
+              navigation.navigate("CheckoutScreen", params);
             }}
           >
             <Text>Acheter</Text>
