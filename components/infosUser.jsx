@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, StyleSheet, TouchableOpacity, TextInput, ScrollView } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity, TextInput, ScrollView, KeyboardAvoidingView } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigation } from "@react-navigation/native";
 import { logout, updateUserInfo } from "../reducers/user";
@@ -100,12 +100,13 @@ const UserInfoComponent = () => {
   };
 
   return (
-    <View style={styles.container}>
+    <KeyboardAvoidingView style={styles.container} behavior='padding' keyboardVerticalOffset={Platform.OS === 'ios' ? 100 : 0}>
+   
       <View style={styles.boxTitle}>
         <Text style={styles.title}>Mes informations</Text>
       </View>
-      <ScrollView>  
       <View style={styles.box}>
+      <ScrollView style={styles.scrollView}>  
         {/* Champ Prénom */}
         <Text>Prénom :</Text>
         <View style={styles.boxFirstname}>
@@ -191,12 +192,12 @@ const UserInfoComponent = () => {
         </View>
         {/* Champ Password */}
 
-        <TouchableOpacity onPress={handleShowChangePassword}>
-        <Text>Modifier votre mot de passe
-              <FontAwesome name="hand-o-left" size={24} color="#f56e00" /></Text>
+        <TouchableOpacity onPress={handleShowChangePassword} style={styles.changePassword}>
+        <Text>Modifier votre mot de passe</Text>
+              <FontAwesome name="hand-o-left" size={24} color="#f56e00" style={styles.iconChangePassword}/>
       </TouchableOpacity>
 
-      {showChangePassword && <ChangePasswordForm />}
+      {showChangePassword && <ChangePasswordForm navigation={navigation} />}
         {/* <Text>Password :</Text>
         <View style={styles.boxPassword}>
           {isEditingPassword ? (
@@ -222,16 +223,16 @@ const UserInfoComponent = () => {
         <TouchableOpacity onPress={logoutUser} style={styles.logoutButton}>
           <Text style={styles.logoutButtonText}>Déconnexion</Text>
         </TouchableOpacity>
-      </View>
       </ScrollView>
-    </View>
+      </View>
+      </KeyboardAvoidingView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#FFF2D3",
+    backgroundColor: "#ffffff",
     alignItems:'center',
 
   },
@@ -239,6 +240,12 @@ const styles = StyleSheet.create({
     fontSize: 24,
     color:'#FFF2D3',
     fontWeight: "bold",
+  },
+  scrollView: {
+    width: 440,
+    paddingLeft: 80,
+    marginRight: 0,
+    marginHorizontal: 0,
   },
   input: {
     fontSize: 18,
@@ -256,7 +263,6 @@ const styles = StyleSheet.create({
     alignItems:'center',
     justifyContent: "center",
     marginTop: 20,
-    
     paddingTop:10,
     borderRadius: 8,
     borderColor: "#FF8B0A",
@@ -347,11 +353,29 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     width: '80%',
-    height: 48,
+    height: 58,
     backgroundColor: "#f56e00",
     borderRadius: 8,
     marginTop: 5,
     marginBottom: 20,
+  },
+  changePassword: {
+    display: 'flex',
+    flexDirection:'row',
+    alignItems: "center",
+    justifyContent: "space-between",
+    width: '80%',
+    height: 58,
+    backgroundColor: "#FFF2D3",
+    borderRadius: 8,
+    marginTop: 5,
+    marginBottom: 20,
+    paddingLeft: 25,
+    paddingRight: 35,
+  },
+  iconChangePassword: {
+    marginLeft: 45,
+  
   },
   token: {
     display: 'none',

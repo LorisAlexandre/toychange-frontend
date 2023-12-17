@@ -7,11 +7,13 @@ import { FontAwesome } from '@expo/vector-icons';
 
 
 
-const ChangePasswordForm = () => {
-    const navigation = useNavigation();
+const ChangePasswordForm = ({navigation}) => {
+    // const navigation = useNavigation();
     
     const handleGoBack = () => {
-        navigation.navigate("InfosUser");
+      console.log("Handle Go Back Called");
+
+        navigation.goBack();
       };
 
   const dispatch = useDispatch();
@@ -47,10 +49,13 @@ const ChangePasswordForm = () => {
 
   return (
     <View style={styles.container}>
-        <View style={styles.formContainer}>
-        <TouchableOpacity onPress={handleGoBack}>
-        <FontAwesome name="angle-left" size={24} color="#f56e00" />
+      
+        <TouchableOpacity onPress={handleGoBack} style={styles.iconBack}>
+        <FontAwesome name="angle-left" size={56} color="#f56e00" />
       </TouchableOpacity>
+      
+        <View style={styles.formContainer}>
+      <View>
             <View>
                 <Text style={styles.title}>Modifier votre mot de passe :</Text>
             </View>
@@ -76,8 +81,9 @@ const ChangePasswordForm = () => {
         secureTextEntry
       />
       <TouchableOpacity style={styles.button} onPress={handleSavePassword}>
-        <Text>Enregistrer le nouveau mot de passe</Text>
+        <Text style={styles.buttonText}>Enregistrer le nouveau mot de passe</Text>
       </TouchableOpacity>
+      </View>
       </View>
     </View>
   );
@@ -85,28 +91,56 @@ const ChangePasswordForm = () => {
 const styles = StyleSheet.create({
     container: {
       flex: 1,
+      justifyContent:'flex-start',
+    },
+    formContainer: {
+      width: "100%",
+      height: "30%",
+      fontSize: 18,
+      color: "#FF8B0A",
+      marginTop: 150,
       alignItems: "center",
       justifyContent: "center",
+      paddingTop: 60,
     },
     input: {
-        width: 330,
-        height: 48,
-        marginTop: 10,
-        borderColor: "#FF8B0A",
-        borderWidth: 1,
-        borderRadius: 8,
-        fontSize: 18,
-        padding: 10,
-      },
-      button: {
-        color: "#ffffff",
-        alignItems: "center",
-        justifyContent: "center",
-        width: 330,
-        height: 48,
-        marginTop: 20,
-        backgroundColor: "#f56e00",
-        borderRadius: 8,
-      },
+      width: 330,
+      height: 52,
+      marginTop: 10,
+      borderColor: "#FF8B0A",
+      borderWidth: 1,
+      borderRadius: 8,
+      fontSize: 18,
+      padding: 10,
+      marginBottom: 20,
+    },
+    button: {
+      color: "#ffffff",
+      alignItems: "center",
+      justifyContent: "center",
+      width: 330,
+      height: 58,
+      marginTop: 20,
+      backgroundColor: "#f56e00",
+      borderRadius: 8,
+      
+    },
+    iconBack: {
+    position: 'absolute',
+    top: 50,
+    left: 30,
+    backgroundColor: 'transparent', 
+    },
+    title: {
+      marginBottom: 40,
+      marginTop: 70,
+      fontSize: 24,
+      fontWeight: "bold",
+    },
+    buttonText: {
+      fontSize: 18,
+      color:'#FFF2D3',
+      fontWeight: "bold",
+    },
 })
 export default ChangePasswordForm;
