@@ -26,17 +26,11 @@ export const userSlice = createSlice({
       Object.assign(state.value, action.payload);
     },
     updatePassword: (state, action) => {
-      const { oldPassword, newPassword } = action.payload;
-    
-      // Vérifier si l'ancien mot de passe correspond à celui enregistré dans l'état
-      if (state.value.password === oldPassword) {
-        // Mise à jour réussie
+      
+      const {newPassword} = action.payload;
         state.value.password = newPassword;
         console.log('Mot de passe mis à jour avec succès');
-      } else {
-        // Gérer le cas où l'ancien mot de passe ne correspond pas
-        console.error('Erreur : L\'ancien mot de passe ne correspond pas.');
-      }
+      
     },
   },
 });
