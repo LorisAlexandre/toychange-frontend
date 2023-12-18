@@ -17,6 +17,10 @@ const UserInfoComponent = ({ navigation }) => {
   const user = useSelector((state) => state.user.value);
   const dispatch = useDispatch();
 
+  const handleGoBack = () => {
+    navigation.goBack();
+  };
+
   // État et fonctions pour gérer l'édition du prénom
   const [isEditingFirstname, setIsEditingFirstname] = useState(false);
   const [editableFirstname, setEditableFirstname] = useState(user.firstname);
@@ -98,11 +102,10 @@ const UserInfoComponent = ({ navigation }) => {
   };
 
   return (
-    <KeyboardAvoidingView
-      style={styles.container}
-      behavior="padding"
-      keyboardVerticalOffset={Platform.OS === "ios" ? 100 : 0}
-    >
+    <KeyboardAvoidingView style={styles.container} behavior='padding' keyboardVerticalOffset={Platform.OS === 'ios' ? 100 : 0}>
+   <TouchableOpacity onPress={handleGoBack} style={styles.iconBack}>
+        <FontAwesome name="angle-left" size={56} color="#f56e00" />
+      </TouchableOpacity>
       <View style={styles.boxTitle}>
         <Text style={styles.title}>Mes informations</Text>
       </View>
