@@ -4,8 +4,12 @@ import * as FileSystem from "expo-file-system";
 import { shareAsync } from "expo-sharing";
 
 export default function MyAnnounceScreen({ navigation, route: { params } }) {
+  const { announce, order } = params;
+
+  console.log(order);
+
   const downloadLabel = async (url) => {
-    const filename = `${order.title}-label.pdf`;
+    const filename = `${announce.title}-label.pdf`;
     FileSystem.downloadAsync(
       url,
       `${FileSystem.documentDirectory}${filename}`
@@ -20,15 +24,28 @@ export default function MyAnnounceScreen({ navigation, route: { params } }) {
 
   return (
     <View style={styles.container}>
-      <Text>{params.announce.title}</Text>
-      {params.order && (
-        <TouchableOpacity
-          onPress={() => downloadLabel(params.order.parcel.label_url)}
-        >
-          <Text>Download Label</Text>
-        </TouchableOpacity>
+      <Text>{announce.title}</Text>
+      {order && (
+        <View>
+          <Text>Obj à échanger: {announce.exchangeProposal.title}</Text>
+          <TouchableOpacity
+            onPress={() =>
+              navigation.navigate("CheckoutScreen", {
+                announce: announce,
+                exchangeProposal: announce.exchangeProposal,
+              })
+            }
+          >
+            <Text>Payer</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => downloadLabel(order.parcel.label_url)}
+          >
+            <Text>Download Label</Text>
+          </TouchableOpacity>
+        </View>
       )}
-      {!params.order && (
+      {!order && (
         <View>
           <TouchableOpacity>
             <Text>Supprimer</Text>

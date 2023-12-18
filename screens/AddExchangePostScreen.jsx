@@ -82,9 +82,9 @@ export default function AddExchangePostScreen({
       exchanger: _id,
     };
     console.log("all values good!");
-    console.log(params.announce._id);
+    console.log(payload);
     fetch(
-      `https://toychange-backend.vercel.app/announce/addExchangeAnnounce/${params.announce._id}}`,
+      `https://toychange-backend.vercel.app/announce/addExchangeAnnounce/${params.announce._id}`,
       {
         method: "PUT",
         headers: {
@@ -95,7 +95,7 @@ export default function AddExchangePostScreen({
     )
       .then((res) => res.json())
       .then(({ result, announce }) => {
-        console.log(result);
+        console.log(announce);
         if (result) {
           if (images.length) {
             const formData = new FormData();

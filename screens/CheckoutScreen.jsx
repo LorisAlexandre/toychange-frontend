@@ -16,13 +16,23 @@ import { useSelector } from "react-redux";
 export default function CheckoutScreen({ navigation, route: { params } }) {
   const user = useSelector((state) => state.user.value);
 
-  console.log(params);
-  const { announce, redirectTo, recipient } = params;
+  const { announce, exchangeProposal } = params;
 
   const [to_postal_code, setTo_postal_code] = useState("");
   const [shippingFees, setShippingFees] = useState(null);
   const { initPaymentSheet, presentPaymentSheet } = useStripe();
   const [loading, setLoading] = useState(false);
+  const [userInfos, setUserInfos] = useState({
+    address: "",
+    house_number: "",
+    city: "",
+    telephone: "",
+    email: "",
+  });
+
+  const handleChange = (name, value) => {
+    setUserInfos((payload) => ({ ...payload, [name]: value }));
+  };
 
   const fetchPaymentSheetParams = async () => {
     const response = await fetch(
@@ -70,7 +80,6 @@ export default function CheckoutScreen({ navigation, route: { params } }) {
       navigation.goBack();
     } else {
       createParcel();
-      Alert.alert("Success", "Your order is confirmed!");
       // navigation.navigate("", "");
     }
   };
@@ -118,20 +127,21 @@ export default function CheckoutScreen({ navigation, route: { params } }) {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        name: user.name,
-        address: "avenue du Canigou",
-        house_number: "36",
-        city: "Canet-en-Roussillon",
-        postal_code: "66140",
-        telephone: "+33769395249",
-        email: "loris.alexandre@gmail.com",
-        weight: announce.weight,
+        name: `${user.firstname} ${user.lastname}`,
+        address: userInfos.address,
+        house_number: userInfos.house_number,
+        city: userInfos.city,
+        postal_code: to_postal_code,
+        telephone: userInfos.telephone,
+        email: userInfos.email,
+        weight: exchangeProposal ? exchangeProposal.weight : announce.weight,
         total_order_value: shippingFees,
       }),
     })
       .then((res) => res.json())
       .then((data) => {
         if (data) {
+          console.log("parcel created");
           const parcel = data.data.parcel;
           fetch(
             `https://toychange-backend.vercel.app/sendcloudAPI/downloadLabel/${parcel.id}`,
@@ -145,6 +155,7 @@ export default function CheckoutScreen({ navigation, route: { params } }) {
             .then((res) => res.json())
             .then((data) => {
               if (data.result) {
+                console.log("label download");
                 fetch(
                   "https://toychange-backend.vercel.app/order/createOrder",
                   {
@@ -155,6 +166,9 @@ export default function CheckoutScreen({ navigation, route: { params } }) {
                     body: JSON.stringify({
                       announce: announce._id,
                       user: user._id,
+                      // seller: exchangeProposal
+                      //   ? exchangeProposal.exchanger
+                      //   : announce.donor,
                       seller: announce.donor,
                       parcel: {
                         tracking_number: parcel.tracking_number,
@@ -169,6 +183,7 @@ export default function CheckoutScreen({ navigation, route: { params } }) {
                     if (data.result) {
                       sendNotificationToSeller(data.order);
                       const order = data.order;
+                      Alert.alert("Success", "Your order is confirmed!");
                       navigation.navigate("Mon Compte", {
                         order,
                         redirect: "MyOrdersScreen",
@@ -191,6 +206,7 @@ export default function CheckoutScreen({ navigation, route: { params } }) {
       <Text>{announce.title}</Text>
       <Text>{announce.type}</Text>
       <TextInput
+        placeholder="postalcode"
         style={{ borderWidth: 1, width: "100%" }}
         keyboardType="number-pad"
         maxLength={5}
@@ -202,6 +218,30 @@ export default function CheckoutScreen({ navigation, route: { params } }) {
         }
         value={to_postal_code}
         onChangeText={(value) => setTo_postal_code(value)}
+      />
+      <TextInput
+        style={{ borderWidth: 1, width: "100%" }}
+        placeholder="rue du pissenlit"
+        value={userInfos.address}
+        onChangeText={(value) => handleChange("address", value)}
+      />
+      <TextInput
+        style={{ borderWidth: 1, width: "100%" }}
+        placeholder="Mimizan"
+        value={userInfos.city}
+        onChangeText={(value) => handleChange("city", value)}
+      />
+      <TextInput
+        style={{ borderWidth: 1, width: "100%" }}
+        placeholder="+33 6 06 06 06 06"
+        value={userInfos.telephone}
+        onChangeText={(value) => handleChange("telephone", value)}
+      />
+      <TextInput
+        style={{ borderWidth: 1, width: "100%" }}
+        placeholder="johndoe@gmail.com"
+        value={userInfos.email}
+        onChangeText={(value) => handleChange("email", value)}
       />
 
       <TouchableOpacity

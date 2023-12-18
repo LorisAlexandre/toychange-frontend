@@ -78,6 +78,7 @@ export default function AddPostScreen({ navigation }) {
       ...payloadInput,
       donor: _id,
     };
+    console.log("all values good");
     fetch("https://toychange-backend.vercel.app/announce/addAnnounce", {
       method: "POST",
       headers: {

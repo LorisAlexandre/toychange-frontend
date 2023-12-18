@@ -193,7 +193,7 @@ export default function MyChannelScreen({ navigation, route: { params } }) {
             <Text>
               {messages.find((e) => e.traded).sender === user._id
                 ? "Me"
-                : recipient.username}{" "}
+                : recipient?.username}{" "}
               est chaud
             </Text>
           </TouchableOpacity>
@@ -210,7 +210,7 @@ export default function MyChannelScreen({ navigation, route: { params } }) {
               <Message
                 {...mess}
                 messSender={
-                  mess.sender === user._id ? "Me" : recipient.username
+                  mess.sender === user._id ? "Me" : recipient?.username
                 }
                 handleAccept={handleAccept}
                 handleDecline={handleDecline}
