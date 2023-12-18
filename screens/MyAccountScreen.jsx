@@ -10,6 +10,13 @@ const MyAccountScreen = ({ navigation, route: { params } }) => {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user.value);
 
+  const logoutUser = () => {
+    dispatch(logout());
+    // Redirige l'utilisateur vers l'écran de connexion
+    navigation.navigate("Mon Compte");
+  };
+
+
 
   useEffect(() => {
     user.authToken && params && navigation.navigate(params.redirect, params);
@@ -22,20 +29,23 @@ const MyAccountScreen = ({ navigation, route: { params } }) => {
     return <View style={styles.container}>
       {/* <InfosUserComponent navigation={navigation}/> */}
       
-      <Text>Je suis dans MyAccountScreen</Text>
       <View style={styles.formContainer}>
-      <TouchableOpacity onPress={() => navigation.navigate('MyAnnounceScreen')}>
-  <Text>Annonces (0)</Text>
+      <Text style={styles.title}>Mon compte</Text>
+      <TouchableOpacity onPress={() => navigation.navigate('MyAnnounceScreen')} style={styles.button}>
+  <Text style={styles.textLink}>Annonces (0)</Text><FontAwesome name="angle-right" size={18} color="#461904" />
 </TouchableOpacity>
-      <TouchableOpacity onPress={() => navigation.navigate('MyOrdersScreen')}>
-  <Text>commandes (0)</Text>
+      <TouchableOpacity onPress={() => navigation.navigate('MyOrdersScreen')} style={styles.button}>
+  <Text style={styles.textLink}>commandes (0)</Text><FontAwesome name="angle-right" size={18} color="#461904" />
 </TouchableOpacity>
-      <TouchableOpacity onPress={() => navigation.navigate('Messages')}>
-  <Text>Ma messagerie</Text>
+      <TouchableOpacity onPress={() => navigation.navigate('Messages')} style={styles.button}>
+  <Text style={styles.textLink}>Ma messagerie</Text><FontAwesome name="angle-right" size={18} color="#461904" />
 </TouchableOpacity>
-      <TouchableOpacity onPress={() => navigation.navigate('InfosUser')}>
-  <Text>Mes infos</Text>
+      <TouchableOpacity onPress={() => navigation.navigate('InfosUser')} style={styles.button}>
+  <Text style={styles.textLink}>Mes informations</Text><FontAwesome name="angle-right" size={18} color="#461904" />
 </TouchableOpacity>
+<TouchableOpacity onPress={logoutUser} style={styles.logoutButton}>
+            <Text style={styles.logoutButtonText}>Se déconnecter</Text>
+          </TouchableOpacity>
 </View>
     </View>
   }
@@ -45,35 +55,70 @@ const MyAccountScreen = ({ navigation, route: { params } }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#ffffff",
+    backgroundColor: "#FFFFFF",
     alignItems:'center',
-
+  },
+  title: {
+    color: '#461904',
+    fontSize: 24,
+    fontWeight: "bold",
+    marginBottom: 30,
+  },
+  textLink: {
+    color: '#461904',
+    fontSize: 16,
+  },
+  logoutButtonText: {
+    color: '#FFF2D3',
+    fontSize: 16,
   },
   formContainer: {
     width: "100%",
-    height: "30%",
+    height: "100%",
     fontSize: 18,
     color: "#FF8B0A",
-    marginTop: 150,
+    marginTop: 50,
+    display: 'flex',
+    flexDirection: 'column',
     alignItems: "center",
-    justifyContent: "center",
-    paddingTop: 60,
-  },
-  iconBack: {
-    position: 'absolute',
-    top: 50,
-    left: 30,
-    backgroundColor: 'transparent',
+    justifyContent: "space between",
+    paddingTop: 10,
   },
   button: {
     color: "#ffffff",
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: "center",
+    justifyContent: "space-between",
+    width: 330,
+    height: 68,
+    marginTop: 20,
+    backgroundColor: "#FFFFFF",
+    borderRadius: 8,
+    paddingLeft: 25,
+    paddingRight: 40,
+    fontSize: 24,
+    shadowColor: "#FFF2D3",
+shadowOffset: {
+  width: 6,
+  height: 6,
+},
+shadowOpacity:  0.9,
+shadowRadius: 3.05,
+elevation: 5
+  },
+  logoutButton: {
+    display: "flex",
     alignItems: "center",
     justifyContent: "center",
-    width: 330,
-    height: 58,
-    marginTop: 20,
+    width: '85%',
+    height: 65,
     backgroundColor: "#f56e00",
     borderRadius: 8,
+    marginTop: 180,
+    marginBottom: 0,
+    color: 'FFF2D3',
   },
+  
 })
 export default MyAccountScreen;

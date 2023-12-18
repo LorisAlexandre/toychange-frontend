@@ -301,10 +301,10 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     width: "90%",
-    height: 80,
+    height: 50,
     backgroundColor: "#f56e00",
     borderRadius: 8,
-    marginTop: 70,
+    marginTop: 120,
   },
   boxFirstname: {
     display: "flex",
@@ -403,6 +403,12 @@ const styles = StyleSheet.create({
   },
   iconChangePassword: {
     marginLeft: 45,
+  },
+  iconBack: {
+    position: 'absolute',
+    top: 50,
+    left: 30,
+    backgroundColor: 'transparent',
   },
   token: {
     display: "none",

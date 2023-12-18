@@ -25,7 +25,7 @@ const LoginComponent = ({ navigation }) => {
   const handleSignInPress = () => {
     setShowSignIn(true);
     setSignInButtonStyles({
-      backgroundColor: '#f56e00',
+      backgroundColor:  '#f56e00',
       textColor: '#FFF2D3',
     });
     setSignUpButtonStyles({
