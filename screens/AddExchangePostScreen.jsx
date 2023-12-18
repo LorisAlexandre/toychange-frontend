@@ -79,16 +79,20 @@ export default function AddExchangePostScreen({
     }
     const payload = {
       ...payloadInput,
-      donor: _id,
-      exchangeProposal: true,
+      exchanger: _id,
     };
-    fetch("https://toychange-backend.vercel.app/announce/addAnnounce", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(payload),
-    })
+    console.log("all values good!");
+    console.log(params.announce._id);
+    fetch(
+      `https://toychange-backend.vercel.app/announce/addExchangeAnnounce/${params.announce._id}}`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(payload),
+      }
+    )
       .then((res) => res.json())
       .then(({ result, announce }) => {
         console.log(result);
@@ -103,7 +107,7 @@ export default function AddExchangePostScreen({
               })
             );
             fetch(
-              `https://toychange-backend.vercel.app/announce/uploadImages/${announce._id}`,
+              `https://toychange-backend.vercel.app/announce/uploadImages/exchangeProposal/${announce._id}`,
               {
                 method: "PUT",
                 body: formData,
@@ -207,8 +211,8 @@ export default function AddExchangePostScreen({
         <TouchableOpacity onPress={pickImage} disabled={images.length === 5}>
           <Text>Add images</Text>
         </TouchableOpacity>
-        {images.map((img) => (
-          <Image source={{ uri: img }} width={50} height={50} />
+        {images.map((img, i) => (
+          <Image key={i} source={{ uri: img }} width={50} height={50} />
         ))}
         <View>
           <TouchableOpacity onPress={() => handleChange("condition", "new")}>
