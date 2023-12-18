@@ -10,9 +10,6 @@ const MyAccountScreen = ({ navigation, route: { params } }) => {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user.value);
 
-  const handleGoBack = () => {
-    navigation.goBack();
-  };
 
   useEffect(() => {
     user.authToken && params && navigation.navigate(params.redirect, params);
@@ -24,18 +21,16 @@ const MyAccountScreen = ({ navigation, route: { params } }) => {
     // Si l'utilisateur est authentifié, affiche le composant d'informations utilisateur
     return <View style={styles.container}>
       {/* <InfosUserComponent navigation={navigation}/> */}
-      <TouchableOpacity onPress={handleGoBack} style={styles.iconBack}>
-        <FontAwesome name="angle-left" size={56} color="#f56e00" />
-      </TouchableOpacity>
+      
       <Text>Je suis dans MyAccountScreen</Text>
       <View style={styles.formContainer}>
       <TouchableOpacity onPress={() => navigation.navigate('MyAnnounceScreen')}>
   <Text>Annonces (0)</Text>
 </TouchableOpacity>
-      <TouchableOpacity onPress={() => navigation.navigate('MyOrderScreen')}>
+      <TouchableOpacity onPress={() => navigation.navigate('MyOrdersScreen')}>
   <Text>commandes (0)</Text>
 </TouchableOpacity>
-      <TouchableOpacity onPress={() => navigation.navigate('MyChannelScreen')}>
+      <TouchableOpacity onPress={() => navigation.navigate('Messages')}>
   <Text>Ma messagerie</Text>
 </TouchableOpacity>
       <TouchableOpacity onPress={() => navigation.navigate('InfosUser')}>

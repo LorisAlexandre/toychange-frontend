@@ -17,6 +17,7 @@ export default function MyOrdersScreen({ navigation, route: { params } }) {
           if (!data.orders.length) {
             return;
           }
+          console.log(data.orders);
           setUserOrders(data.orders);
         }
       });
@@ -28,7 +29,11 @@ export default function MyOrdersScreen({ navigation, route: { params } }) {
         onPress={() => navigation.navigate("MyOrderScreen", order)}
       >
         <View>
-          <Text>{order.announce.title}</Text>
+          {order.seller === order.user._id ? (
+            <Text>{order.announce.exchangeProposal.title}</Text>
+          ) : (
+            <Text>{order.announce.title}</Text>
+          )}
         </View>
       </TouchableOpacity>
     );

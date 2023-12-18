@@ -82,7 +82,7 @@ export default function PostScreen({ navigation, route: { params } }) {
                 navigation.navigate("Mon Compte");
                 return;
               }
-              navigation.navigate("CheckoutScreen", params);
+              navigation.navigate("CheckoutScreen", { announce: params });
             }}
           >
             <Text>Acheter</Text>
