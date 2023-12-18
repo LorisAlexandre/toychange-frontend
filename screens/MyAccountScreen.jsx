@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { View, Text, TouchableOpacity } from "react-native";
+import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import LoginComponent from "../components/Login";
 import InfosUserComponent from "../components/InfosUser";
@@ -17,8 +17,30 @@ const MyAccountScreen = ({ navigation, route: { params } }) => {
     return <LoginComponent />;
   } else {
     // Si l'utilisateur est authentifié, affiche le composant d'informations utilisateur
-    return <InfosUserComponent navigation={navigation} />;
+    return (
+      <View style={styles.container}>
+        <InfosUserComponent navigation={navigation} />
+        <TouchableOpacity
+          onPress={() => navigation.navigate("MyAnnouncesScreen")}
+        >
+          <Text>My Announces</Text>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => navigation.navigate("MyOrdersScreen")}>
+          <Text>My Orders</Text>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => navigation.navigate("InboxScreen")}>
+          <Text>My mails</Text>
+        </TouchableOpacity>
+      </View>
+    );
   }
 };
 
 export default MyAccountScreen;
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+});
