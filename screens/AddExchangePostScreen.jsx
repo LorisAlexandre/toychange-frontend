@@ -11,14 +11,17 @@ import {
 import * as ImagePicker from "expo-image-picker";
 import { useSelector } from "react-redux";
 
-export default function AddPostScreen({ navigation }) {
+export default function AddExchangePostScreen({
+  navigation,
+  route: { params },
+}) {
   const { authToken, _id } = useSelector((state) => state.user.value);
   const [payloadInput, setPayloadInput] = useState({
     title: "",
     description: "",
-    type: "donation",
+    type: "exchange",
     condition: "likeNew",
-    deliveryMethod: "both",
+    deliveryMethod: "postalDelivery",
     weight: "1",
     address: {
       houseNumber: "",
@@ -76,21 +79,25 @@ export default function AddPostScreen({ navigation }) {
     }
     const payload = {
       ...payloadInput,
-      donor: _id,
+      exchanger: _id,
     };
-    fetch("https://toychange-backend.vercel.app/announce/addAnnounce", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(payload),
-    })
+    console.log("all values good!");
+    console.log(params.announce._id);
+    fetch(
+      `https://toychange-backend.vercel.app/announce/addExchangeAnnounce/${params.announce._id}}`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(payload),
+      }
+    )
       .then((res) => res.json())
       .then(({ result, announce }) => {
         console.log(result);
         if (result) {
           if (images.length) {
-            console.log("fetch images");
             const formData = new FormData();
             images.map((uri) =>
               formData.append("photosFromFront", {
@@ -100,7 +107,7 @@ export default function AddPostScreen({ navigation }) {
               })
             );
             fetch(
-              `https://toychange-backend.vercel.app/announce/uploadImages/${announce._id}`,
+              `https://toychange-backend.vercel.app/announce/uploadImages/exchangeProposal/${announce._id}`,
               {
                 method: "PUT",
                 body: formData,
@@ -111,16 +118,15 @@ export default function AddPostScreen({ navigation }) {
                 if (!result) {
                   Alert.alert("Images fail to upload");
                 }
-                navigation.navigate("Mon Compte", {
-                  redirect: "MyAnnounceScreen",
-                  announce,
+                navigation.navigate("CheckoutScreen", {
+                  exchangeProposal: announce,
+                  announce: params.announce,
                 });
               });
           } else {
-            console.log("redirect");
-            navigation.navigate("Mon Compte", {
-              redirect: "MyAnnounceScreen",
-              announce,
+            navigation.navigate("CheckoutScreen", {
+              exchangeProposal: announce,
+              announce: params.announce,
             });
           }
         }
@@ -205,8 +211,8 @@ export default function AddPostScreen({ navigation }) {
         <TouchableOpacity onPress={pickImage} disabled={images.length === 5}>
           <Text>Add images</Text>
         </TouchableOpacity>
-        {images.map((img) => (
-          <Image source={{ uri: img }} width={50} height={50} />
+        {images.map((img, i) => (
+          <Image key={i} source={{ uri: img }} width={50} height={50} />
         ))}
         <View>
           <TouchableOpacity onPress={() => handleChange("condition", "new")}>
@@ -221,31 +227,7 @@ export default function AddPostScreen({ navigation }) {
             <Text>Good</Text>
           </TouchableOpacity>
         </View>
-        <View>
-          <TouchableOpacity
-            onPress={() => handleChange("deliveryMethod", "inPerson")}
-          >
-            <Text>In person</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => handleChange("deliveryMethod", "postalDelivery")}
-          >
-            <Text>Postal delivery</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => handleChange("deliveryMethod", "both")}
-          >
-            <Text>Both</Text>
-          </TouchableOpacity>
-        </View>
-        <View>
-          <TouchableOpacity onPress={() => handleChange("type", "donation")}>
-            <Text>Donation</Text>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={() => handleChange("type", "exchange")}>
-            <Text>Exchange</Text>
-          </TouchableOpacity>
-        </View>
+
         <TouchableOpacity onPress={handleCreateAnnounce}>
           <Text>Créer annonce</Text>
         </TouchableOpacity>

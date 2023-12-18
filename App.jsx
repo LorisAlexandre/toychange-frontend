@@ -24,9 +24,15 @@ import MyAccount from "./screens/MyAccountScreen.jsx";
 import PostScreen from "./screens/PostScreen.jsx";
 import CheckoutScreen from "./screens/CheckoutScreen.jsx";
 import MyAnnouncesScreen from "./screens/MyAnnouncesScreen.jsx";
-import UserInfoComponent from './components/infosUser.jsx'; 
+import UserInfoComponent from './components/InfosUser.jsx'; 
 import ChangePasswordForm from './components/ChangePasswordForm.jsx'; 
 
+import MyAnnounceScreen from "./screens/MyAnnounceScreen.jsx";
+import MyOrdersScreen from "./screens/MyOrdersScreen.jsx";
+import MyOrderScreen from "./screens/MyOrderScreen.jsx";
+import MyChannelScreen from "./screens/MyChannelScreen.jsx";
+import ResultSearchScreen from "./screens/ResultSearchScreen.jsx";
+import AddExchangePostScreen from "./screens/AddExchangePostScreen.jsx";
 
 const store = configureStore({
   reducer: { user },
@@ -74,6 +80,7 @@ const TabNavigator = () => {
         tabBarActiveTintColor: "#F56E00",
         tabBarInactiveTintColor: "lightgray",
         headerShown: false,
+        unmountOnBlur: true,
       })}
     >
       <Tab.Screen name="Favoris" component={Favories} />
@@ -104,6 +111,21 @@ export default function App() {
             <Stack.Screen
               name="MyAnnouncesScreen"
               component={MyAnnouncesScreen}
+            />
+            <Stack.Screen
+              name="MyAnnounceScreen"
+              component={MyAnnounceScreen}
+            />
+            <Stack.Screen name="MyOrdersScreen" component={MyOrdersScreen} />
+            <Stack.Screen name="MyOrderScreen" component={MyOrderScreen} />
+            <Stack.Screen name="MyChannelScreen" component={MyChannelScreen} />
+            <Stack.Screen
+              name="ResultSearchScreen"
+              component={ResultSearchScreen}
+            />
+            <Stack.Screen
+              name="AddExchangePostScreen"
+              component={AddExchangePostScreen}
             />
             <Stack.Screen name="TabNavigator" component={TabNavigator} />
             <Stack.Screen name="InfosUser" component={UserInfoComponent} />

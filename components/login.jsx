@@ -1,10 +1,18 @@
-import React, { useState } from 'react';
-import SignIn from '../components/SignIn';
-import SignUp from '../components/SignUp';
-import { View, StyleSheet, Text, TouchableOpacity, KeyboardAvoidingView, Platform, ScrollView } from 'react-native';
+import React, { useState } from "react";
+import SignIn from "./SignIn";
+import SignUp from "./SignUp";
+import {
+  View,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  KeyboardAvoidingView,
+  Platform,
+  ScrollView,
+} from "react-native";
 
 const LoginComponent = ({ navigation }) => {
-  const [showSignIn, setShowSignIn] = useState(false);
+  const [showSignIn, setShowSignIn] = useState(true);
   const [showSignUp, setShowSignUp] = useState(false);
   const [signInButtonStyles, setSignInButtonStyles] = useState({
     backgroundColor: '#FFF2D3',
@@ -38,7 +46,11 @@ const LoginComponent = ({ navigation }) => {
     });
   };
   return (
-    <KeyboardAvoidingView style={styles.container} behavior='padding' keyboardVerticalOffset={Platform.OS === 'ios' ? 100 : 0}>
+    <KeyboardAvoidingView
+      style={styles.container}
+      behavior="padding"
+      keyboardVerticalOffset={Platform.OS === "ios" ? 100 : 0}
+    >
       <View style={styles.container2}>
         <View>
           <Text style={styles.title}>Ensemble, créons des sourires en partageant. 🎁</Text>
@@ -63,20 +75,19 @@ const LoginComponent = ({ navigation }) => {
   );
 };
 
-
 const styles = StyleSheet.create({
   container: {
-    display: 'flex',
-    backgroundColor: '#ffffff',
+    display: "flex",
+    backgroundColor: "#ffffff",
     // alignItems: 'center',
     // justifyContent: 'center',
   },
   container2: {
-    width: '100%',
-    height: '100%',
+    width: "100%",
+    height: "100%",
     paddingTop: 70,
-    alignItems: 'center',
-    backgroundColor: '#ffffff',
+    alignItems: "center",
+    backgroundColor: "#ffffff",
     marginBottom: 0,
     // alignItems: 'center',
     // justifyContent: 'center',
@@ -92,8 +103,11 @@ const styles = StyleSheet.create({
     justifyContent:'space-around',
     borderRadius: 8,
 
+    backgroundColor: "#FFF2D3",
+    justifyContent: "space-around",
+    borderRadius: 16,
   },
-  
+
   title: {
     fontSize: 24,
     marginBottom: 20,
@@ -131,7 +145,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: '#FFF2D3',
   },
-
 });
 
 export default LoginComponent;

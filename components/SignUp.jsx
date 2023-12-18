@@ -31,13 +31,15 @@ function SignUp() {
       .then((response) => response.json())
       .then((data) => {
         console.log(data);
-        if (data.result || data.user) {
+        if (data.result) {
+          // Dispatch l'action addUser avec les informations de l'utilisateur
           dispatch(
             login({
               authToken: data.authToken,
               username: data.username,
               firstname: data.firstname,
               lastname: data.lastname,
+              _id: data._id,
               email: data.email,
             })
           );

@@ -7,7 +7,7 @@ import { FontAwesome } from "@expo/vector-icons";
 import { useState } from "react";
 
 
-const UserInfoComponent = () => {
+const UserInfoComponent = ({ navigation }) => {
   const user = useSelector((state) => state.user.value);
   const dispatch = useDispatch();
   const navigation = useNavigation();
@@ -51,15 +51,7 @@ const UserInfoComponent = () => {
     await updateBackend({ email: editableEmail });
     setIsEditingEmail(false);
   };
-  // État et fonctions pour gérer l'édition du password
-//   const [isEditingPassword, setIsEditingPassword] = useState(false);
-// const [editablePassword, setEditablePassword] = useState(user.email);
-// const handleEditPassword = () => setIsEditingPassword(true);
-// const handleSavePassword = async () => {
-//   dispatch(updateUserInfo({ password: editablePassword }));
-//   await updateBackend({ password: editablePassword });
-//   setIsEditingPassword(false);
-// };
+  
   const [showChangePassword, setShowChangePassword] = useState(false);
   const handleShowChangePassword = () => {
     navigation.navigate('PasswordScreen');  };
@@ -70,9 +62,7 @@ const UserInfoComponent = () => {
     navigation.navigate("Mon Compte");
 
   };
-  // État global pour gérer l'état d'édition global
-  const [isEditing, setIsEditing] = useState(false);
-
+  
   // Fonction pour enregistrer les modifications au backend
   const updateBackend = async (dataToUpdate) => {
     try {

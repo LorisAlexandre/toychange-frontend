@@ -10,19 +10,14 @@ import {
   View,
 } from "react-native";
 import { useStripe } from "@stripe/stripe-react-native";
+import * as Notifications from "expo-notifications";
+import { useSelector } from "react-redux";
 
 export default function CheckoutScreen({ navigation, route: { params } }) {
-  const user = {
-    name: "Loris",
-    address: "avenue du Canigou",
-    house_number: "36",
-    city: "Canet-en-Roussillon",
-    postal_code: "66140",
-    telephone: "+33769395249",
-    email: "loris.alexandre@gmail.com",
-  };
+  const user = useSelector((state) => state.user.value);
 
-  const item = params;
+  console.log(params);
+  const { announce, redirectTo, recipient } = params;
 
   const [to_postal_code, setTo_postal_code] = useState("");
   const [shippingFees, setShippingFees] = useState(null);
@@ -91,14 +86,29 @@ export default function CheckoutScreen({ navigation, route: { params } }) {
         body: JSON.stringify({
           to_postal_code,
           from_postal_code,
-          weight: item.weight,
+          weight: announce.weight,
         }),
       }
     );
     const data = await res.json();
     if (data.result) {
-      setShippingFees(data.data[1].countries[0].price);
+      if (data.data) {
+        setShippingFees(data.data[1].countries[0].price);
+      }
     }
+  };
+
+  const sendNotificationToSeller = async (article) => {
+    if (!article.donor.notifToken) {
+      return;
+    }
+    await Notifications.scheduleNotificationAsync({
+      content: {
+        title: `${article.title} a créé un sourir !`,
+        body: `Merci à vous pour ce partage !`,
+      },
+      to: article.donor,
+    });
   };
 
   const createParcel = () => {
@@ -109,23 +119,19 @@ export default function CheckoutScreen({ navigation, route: { params } }) {
       },
       body: JSON.stringify({
         name: user.name,
-        address: user.address,
-        house_number: user.house_number,
-        city: user.city,
-        postal_code: user.postal_code,
-        telephone: user.telephone,
-        email: user.email,
-        weight: item.weight,
+        address: "avenue du Canigou",
+        house_number: "36",
+        city: "Canet-en-Roussillon",
+        postal_code: "66140",
+        telephone: "+33769395249",
+        email: "loris.alexandre@gmail.com",
+        weight: announce.weight,
         total_order_value: shippingFees,
       }),
     })
       .then((res) => res.json())
       .then((data) => {
         if (data) {
-          // navigation.navigate("Mon Compte", {
-          //   parcel: data.data.parcel,
-          //   redirect: "MyAnnouncesScreen",
-          // });
           const parcel = data.data.parcel;
           fetch(
             `https://toychange-backend.vercel.app/sendcloudAPI/downloadLabel/${parcel.id}`,
@@ -138,7 +144,38 @@ export default function CheckoutScreen({ navigation, route: { params } }) {
           )
             .then((res) => res.json())
             .then((data) => {
-              console.log(data);
+              if (data.result) {
+                fetch(
+                  "https://toychange-backend.vercel.app/order/createOrder",
+                  {
+                    method: "POST",
+                    headers: {
+                      "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                      announce: announce._id,
+                      user: user._id,
+                      seller: announce.donor,
+                      parcel: {
+                        tracking_number: parcel.tracking_number,
+                        label_url: data.url,
+                        parcel_id: parcel.id,
+                      },
+                    }),
+                  }
+                )
+                  .then((res) => res.json())
+                  .then((data) => {
+                    if (data.result) {
+                      sendNotificationToSeller(data.order);
+                      const order = data.order;
+                      navigation.navigate("Mon Compte", {
+                        order,
+                        redirect: "MyOrdersScreen",
+                      });
+                    }
+                  });
+              }
             });
         }
       });
@@ -151,8 +188,8 @@ export default function CheckoutScreen({ navigation, route: { params } }) {
   return (
     <View style={styles.container}>
       <Text>Your Cart</Text>
-      <Text>{item.title}</Text>
-      <Text>{item.type}</Text>
+      <Text>{announce.title}</Text>
+      <Text>{announce.type}</Text>
       <TextInput
         style={{ borderWidth: 1, width: "100%" }}
         keyboardType="number-pad"
@@ -161,7 +198,7 @@ export default function CheckoutScreen({ navigation, route: { params } }) {
         clearTextOnFocus
         returnKeyType="done"
         onSubmitEditing={() =>
-          fetchShippingPrice(to_postal_code, user.postal_code)
+          fetchShippingPrice(to_postal_code, announce.address.postalCode)
         }
         value={to_postal_code}
         onChangeText={(value) => setTo_postal_code(value)}
