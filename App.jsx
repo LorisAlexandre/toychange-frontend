@@ -24,6 +24,9 @@ import MyAccount from "./screens/MyAccountScreen.jsx";
 import PostScreen from "./screens/PostScreen.jsx";
 import CheckoutScreen from "./screens/CheckoutScreen.jsx";
 import MyAnnouncesScreen from "./screens/MyAnnouncesScreen.jsx";
+import UserInfoComponent from './components/InfosUser.jsx'; 
+import ChangePasswordForm from './components/ChangePasswordForm.jsx'; 
+
 import MyAnnounceScreen from "./screens/MyAnnounceScreen.jsx";
 import MyOrdersScreen from "./screens/MyOrdersScreen.jsx";
 import MyOrderScreen from "./screens/MyOrderScreen.jsx";
@@ -125,6 +128,8 @@ export default function App() {
               component={AddExchangePostScreen}
             />
             <Stack.Screen name="TabNavigator" component={TabNavigator} />
+            <Stack.Screen name="InfosUser" component={UserInfoComponent} />
+            <Stack.Screen name="PasswordScreen" component={ChangePasswordForm} />
           </Stack.Navigator>
         </NavigationContainer>
       </StripeProvider>

@@ -22,20 +22,20 @@ export const userSlice = createSlice({
   initialState,
   reducers: {
     login: (state, action) => {
-      state.value.authToken = action.payload.authToken;
-      state.value.email = action.payload.email;
-      state.value.username = action.payload.username;
-      state.value.lastname = action.payload.lastname;
-      state.value.firstname = action.payload.firstname;
-      state.value._id = action.payload._id;
+      Object.assign(state.value, action.payload);
     },
     logout: (state) => {
-      state.value.authToken = null;
-      state.value.email = null;
-      state.value.username = null;
-      state.value.lastname = null;
-      state.value.firstname = null;
-      state.value._id = null;
+      Object.keys(state.value).forEach((key) => {
+        state.value[key] = null;
+      });
+    },
+    updateUserInfo: (state, action) => {
+      Object.assign(state.value, action.payload);
+    },
+    updatePassword: (state, action) => {
+      const {newPassword} = action.payload;
+        state.value.password = newPassword;
+        console.log('Mot de passe mis à jour avec succès');
     },
     addFav: (state, action) => {
       state.value.favAnnounces.push(action.payload);
@@ -67,6 +67,9 @@ export const {
   removeFav,
   addSearchQuery,
   removeSearchQuery,
-  addUserLocation,
+  addUserLocation, 
+  updateUserInfo, 
+  updatePassword
 } = userSlice.actions;
+
 export default userSlice.reducer;

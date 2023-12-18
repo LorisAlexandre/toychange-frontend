@@ -93,9 +93,40 @@ export default function SearchScreen({ navigation, route: { params } }) {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    backgroundColor: "grey",
-    alignItems: "center",
-    justifyContent: "center",
+    display: 'flex',
+    width: 390,
+    height: 844,
+    paddinTop: 30,
+    flexDirection: 'column',
+    alignItems: 'center',
+    gap: 20,
+  },
+  title: {
+    display: 'flex',
+    width: 319,
+    height: 68,
+    justifyContent: 'center',
+    alignItems: 'center',
+   
+  },
+  titleText: {
+    display: 'flex',
+    textAlign: 'center',
+    fontSize: 50,
+    fontStyle: 'normal',
+    fontWeight: 700,
+ 
+
+  },
+  inputSearch: {
+    display: 'flex',
+    width: 292,
+    height:48,
+    textAlign: 'center',
+    borderColor: "#FFA732",
+    borderWidth: 1,
+    borderRadius: 8,
+
+
   },
 });

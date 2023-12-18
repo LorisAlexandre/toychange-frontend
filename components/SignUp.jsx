@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { login } from "../reducers/user";
+import { useNavigation } from "@react-navigation/native"; 
 import {
   KeyboardAvoidingView,
   Platform,
@@ -13,6 +14,7 @@ import {
 
 function SignUp() {
   const dispatch = useDispatch();
+  const navigation = useNavigation(); // Initialise useNavigation
 
   const [username, setUsername] = useState("");
   const [firstname, setFirstName] = useState("");
@@ -42,32 +44,29 @@ function SignUp() {
             })
           );
 
-          // Réinitialise le formulaire après le succès
           setUsername("");
           setFirstName("");
           setLastName("");
           setEmail("");
           setPassword("");
 
-          // Redirige l'utilisateur vers la page de connexion
-          // Assurez-vous d'importer useRouter depuis 'next/router'
-          // router.push('/login');
+          // Utilise la navigation pour rediriger vers "InfosUser"
+          navigation.navigate("InfosUser");
         } else {
-          // Gère les erreurs d'inscription ici
-          console.error("Erreur lors de l'inscription :", data.error);
+          console.error("Erreur lors de l'inscription :", data);
         }
       })
       .catch((error) => {
-        // Gère les erreurs réseau ici
         console.error("Erreur réseau lors de l'inscription :", error);
       });
   };
+
 
   return (
     <View style={styles.container}>
       <View style={styles.formContainer}>
         <View>
-          <Text style={styles.title}>Create your Toychange account</Text>
+          <Text style={styles.title}>Créer votre compte ToyChange !</Text>
         </View>
         <TextInput
           type="text"
@@ -100,12 +99,12 @@ function SignUp() {
         <TextInput
           type="password"
           style={styles.input}
-          onChangeText={(value) => setPassword(value)}
+          onChangeText={(value) => setPassword(value.toString())}
           value={password}
           placeholder="Password"
         />
         <TouchableOpacity style={styles.button} onPress={() => handleSubmit()}>
-          <Text style={styles.title2}>Sign up</Text>
+          <Text style={styles.title2}>S'enregistrer</Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -126,10 +125,10 @@ const styles = StyleSheet.create({
     marginTop: 0,
     alignItems: "center",
     justifyContent: "center",
-    paddingTop: 80,
+    paddingTop: 60,
   },
   title: {
-    fontSize: 16,
+    fontSize: 20,
     fontWeight: "bold",
     marginBottom: 20,
   },
@@ -141,8 +140,8 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   input: {
-    width: 300,
-    height: 40,
+    width: 330,
+    height: 48,
     marginTop: 10,
     borderColor: "#FF8B0A",
     borderWidth: 1,
@@ -154,8 +153,8 @@ const styles = StyleSheet.create({
     color: "#ffffff",
     alignItems: "center",
     justifyContent: "center",
-    width: 300,
-    height: 40,
+    width: 330,
+    height: 48,
     marginTop: 20,
     backgroundColor: "#f56e00",
     borderRadius: 8,

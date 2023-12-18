@@ -18,6 +18,7 @@ function SignIn() {
   const [password, setPassword] = useState("");
 
   const handleSignIn = async () => {
+
     try {
       const response = await fetch(
         "https://toychange-backend.vercel.app/users/signin",
@@ -54,7 +55,7 @@ function SignIn() {
 
   return (
     <View style={styles.formContainer}>
-      <Text style={styles.signin}>Connectez avec votre compte !</Text>
+      <Text style={styles.signin}>Connectez-vous à votre compte !</Text>
       <TextInput
         placeholder="Votre Email"
         value={email}
@@ -93,8 +94,8 @@ const styles = StyleSheet.create({
   },
   signin: {
     marginTop: 50,
-    fontSize: 18,
-    color: "#FF8B0A",
+    fontSize: 20,
+    fontWeight: "bold",
     marginBottom: 20,
   },
   formContainer: {
@@ -106,8 +107,8 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   input: {
-    width: "80%",
-    height: 40,
+    width: 330,
+    height: 48,
     marginTop: 10,
     borderColor: "#FF8B0A",
     borderWidth: 1,
@@ -118,8 +119,8 @@ const styles = StyleSheet.create({
   button: {
     alignItems: "center",
     justifyContent: "center",
-    width: "80%",
-    height: 40,
+    width: 330,
+    height: 48,
     marginTop: 20,
     backgroundColor: "#f56e00",
     borderRadius: 8,
