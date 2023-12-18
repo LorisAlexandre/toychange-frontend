@@ -36,18 +36,22 @@ function SignIn() {
 
       const data = await response.json();
       console.log(data);
+      if(data.result) {
+        dispatch(
+          login({
+            authToken: data.authToken,
+            username: data.username,
+            firstname: data.firstname,
+            lastname: data.lastname,
+            _id: data._id,
+            email: data.email,
+          })
+        );
+  
+        Alert.alert("Success !", "Welcome");
+      } else { Alert.alert("Wrong !", "Email ou mot de passe incorrect");}
       // Dispatch l'action login avec les informations de l'utilisateur connecté
-      dispatch(
-        login({
-          authToken: data.authToken,
-          username: data.username,
-          firstname: data.firstname,
-          lastname: data.lastname,
-          _id: data._id,
-          email: data.email,
-        })
-      );
-      Alert.alert("Success !", "Welcome");
+     
     } catch (error) {
       console.error("Erreur lors de la connexion :", error);
     }
