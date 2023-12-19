@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import LoginComponent from "../components/Login";
@@ -9,6 +9,7 @@ import { FontAwesome } from "@expo/vector-icons";
 export default MyAccountScreen = ({ navigation, route: { params } }) => {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user.value);
+  const [numAnnounces, setNumAnnounces] = useState(0);
 
   const logoutUser = () => {
     dispatch(logout());
@@ -34,7 +35,7 @@ export default MyAccountScreen = ({ navigation, route: { params } }) => {
             onPress={() => navigation.navigate("MyAnnouncesScreen")}
             style={styles.button}
           >
-            <Text style={styles.textLink}>Annonces (0)</Text>
+            <Text style={styles.textLink}>Annonces ({numAnnounces})</Text>
             <FontAwesome name="angle-right" size={18} color="#461904" />
           </TouchableOpacity>
           <TouchableOpacity

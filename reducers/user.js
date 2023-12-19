@@ -60,6 +60,9 @@ export const userSlice = createSlice({
       state.value.geolocation.lat = action.payload.lat;
       state.value.geolocation.long = action.payload.long;
     },
+    addAnnounce: (state) => {
+      state.value.numAnnounces += 1;
+    },
   },
 });
 
@@ -73,6 +76,7 @@ export const {
   addUserLocation,
   updateUserInfo,
   updatePassword,
+  addAnnounce,
 } = userSlice.actions;
 
 export default userSlice.reducer;

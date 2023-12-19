@@ -37,81 +37,159 @@ export default function MyAnnouncesScreen({ navigation }) {
   }, []);
 
   return (
-    // <View style={styles.container}>
-    //   <Text>Mes announces</Text>
-    //   {announces.map((announce, i) => (
-    //     <TouchableOpacity
-    //       key={i}
-    //       onPress={() => {
-    //         navigation.navigate("MyAnnounceScreen", {
-    //           announce,
-    //           order: orders.find((e) => e.announce === announce._id),
-    //         });
-    //       }}
-    //     >
-    //       <Text>{announce.title} </Text>
-    //       {orders.some((e) => e.announce === announce._id) && (
-    //         <Text>Acheté</Text>
-    //       )}
-    //     </TouchableOpacity>
-    //   ))}
-    // </View>
-    <SafeAreaView style={styles.container}>
-      <View style={[styles.margin, { alignItems: "center", gap: 20 }]}>
-        <TouchableOpacity onPress={() => navigation.goBack()}>
-          <FontAwesome name="angle-left" color={"#F56E00"} size={25} />
-        </TouchableOpacity>
-        <Text style={[styles.title, { textAlign: "center" }]}>
-          Mes commandes
-        </Text>
-      </View>
+    <View style={styles.container}>
       <ScrollView>
-        <View style={{ gap: 15 }}>
-          {userOrders.length ? (
-            userOrders.map((order, i) => (
+          <TouchableOpacity onPress={() => navigation.goBack()} style={styles.goBack}>
+            <FontAwesome name="angle-left" color={"#F56E00"} size={25} />
+          </TouchableOpacity>
+        <View style={styles.header}>
+          <Text style={styles.title}>Mes annonces</Text>
+        </View>
+
+        <View style={styles.announceContainer}>
+          {announces.length ? (
+            announces.map((announce, index) => (
               <TouchableOpacity
-                style={[
-                  styles.margin,
-                  {
-                    alignItems: "center",
-                    justifyContent: "space-between",
-                    gap: 10,
-                  },
-                ]}
-                key={i}
-                onPress={() => navigation.navigate("MyOrderScreen", { order })}
+                key={index}
+                style={styles.announceItem}
+                onPress={() => navigation.navigate("MyAnnounceScreen", { announce })}
               >
                 <ImageBackground
-                  source={{ uri: order.announce.images[0] }}
-                  style={{ width: 50, height: 50 }}
+                  source={{ uri: announce.images[0] }}
+                  style={styles.announceImage}
                 >
-                  {!order.announce.images[0] && (
+                  {!announce.images[0] && (
                     <FontAwesome name="image" size={50} color={"#F56E00"} />
                   )}
                 </ImageBackground>
-                <View>
-                  <Text style={{ fontSize: 16, color: "#461904" }}>
-                    {order.announce.title}
+                <View style={styles.announceDetails}>
+                  <Text style={styles.announceTitle}>{announce.title}</Text>
+                  <View style={styles.announceSection}>
+                  <Text style={styles.announceType}>
+                    {announce.type === "exchange" ? "Échange" : "Donation"}
                   </Text>
-                  <Text style={[styles.label]}>
-                    {order.announce.type === "exchange" ? "Echange" : "Don"}
+                  <Text style={styles.deliveryMethod}>
+                    {announce.deliveryMethod === "Les 2" ? "Les 2" : "Livraison"}
                   </Text>
+                  <Text style={styles.condition}>
+                  {announce.condition === "Neuf" ? "Neuf" : announce.condition === "Comme neuf" ? "Comme neuf" : "Bon état"}
+                  </Text>
+                  </View>
                 </View>
               </TouchableOpacity>
             ))
           ) : (
-            <Text>No orders</Text>
+            <Text style={styles.noAnnouncesText}>Aucune annonce disponible.</Text>
           )}
         </View>
       </ScrollView>
-    </SafeAreaView>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: "white",
+    padding: 20,
+  },
+  header: {
+    flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
+    marginBottom: 20,
+    marginTop: 0,
+    
+  },
+  title: {
+    fontSize: 24,
+    fontWeight: "bold",
+    color: "#461904",
+    
+  },
+  goBack: {
+   zIndex: 100,
+    top: 30,
+    left: 20,
+  },
+  announceContainer: {
+    gap: 15,
+  },
+  announceItem: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    padding: 15,
+    backgroundColor: "#FFF2D3",
+    borderRadius: 8,
+  },
+  announceImage: {
+    width: 50,
+    height: 50,
+    borderRadius: 8,
+    overflow: "hidden",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  announceDetails: {
+    flex: 1,
+    marginLeft: 15,
+    
+  },
+  announceSection: {
+    display:"flex",
+    flexDirection: "row",
+    justifyContent:"space-between",
+    alignItems: "center",
+    marginLeft: 5,
+    
+  },
+  announceTitle: {
+    fontSize: 16,
+    color: "#461904",
+    marginLeft: 5,
+
+  },
+  announceType: {
+    backgroundColor: "#F56E00",
+    color: "#FFF2D3",
+    textAlign: "center",
+    width: 80,
+    fontSize: 12,
+    paddingHorizontal: 6,
+    paddingVertical: 4,
+    borderRadius: 12,
+    overflow: "hidden",
+    marginTop: 5,
+  },
+  condition: {
+    backgroundColor: "#F56E00",
+    color: "#FFF2D3",
+    textAlign: "center",
+    width: 70,
+    fontSize: 12,
+    paddingHorizontal: 6,
+    paddingVertical: 4,
+    borderRadius: 12,
+    overflow: "hidden",
+    marginTop: 5,
+  },
+  deliveryMethod: {
+    backgroundColor: "#F56E00",
+    color: "#FFF2D3",
+    textAlign: "center",
+    width: 80,
+    fontSize: 12,
+    paddingHorizontal: 6,
+    paddingVertical: 4,
+    borderRadius: 12,
+    overflow: "hidden",
+    marginTop: 5,
+  },
+  noAnnouncesText: {
+    fontSize: 16,
+    color: "#461904",
+    textAlign: "center",
+    marginTop: 20,
   },
 });

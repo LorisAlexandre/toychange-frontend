@@ -11,11 +11,14 @@ import {
   View,
 } from "react-native";
 import * as ImagePicker from "expo-image-picker";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { addAnnounce } from "../reducers/user";
 
 import FontAwesome from "react-native-vector-icons/FontAwesome5";
 
 export default function AddPostScreen({ navigation }) {
+  const dispatch = useDispatch();
+  const [numAnnounces, setNumAnnounces] = useState(0);
   const { authToken, _id } = useSelector((state) => state.user.value);
   const [payloadInput, setPayloadInput] = useState({
     title: "",
@@ -92,6 +95,8 @@ export default function AddPostScreen({ navigation }) {
       .then(({ result, announce }) => {
         console.log(result);
         if (result) {
+          dispatch(addAnnounce());
+
           if (images.length) {
             console.log("fetch images");
             const formData = new FormData();
@@ -116,6 +121,7 @@ export default function AddPostScreen({ navigation }) {
                 }
                 navigation.replace("MyAnnounceScreen", {
                   announce,
+                  numAnnounces,
                 });
               });
           } else {
@@ -123,6 +129,7 @@ export default function AddPostScreen({ navigation }) {
             navigation.replace("MyAnnounceScreen", {
               announce,
             });
+            setNumAnnounces((prevNum) => prevNum + 1);
           }
         }
       });
