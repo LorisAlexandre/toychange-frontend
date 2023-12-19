@@ -25,9 +25,6 @@ export default function AddPostScreen({ navigation }) {
     deliveryMethod: "both",
     weight: "",
     address: {
-      houseNumber: "",
-      street: "",
-      city: "",
       postalCode: "",
     },
   });
@@ -231,43 +228,6 @@ export default function AddPostScreen({ navigation }) {
               onChangeText={(value) => handleChange("weight", value)}
             />
             <Text style={styles.placeholder}>Poids en Kg</Text>
-          </View>
-          <View style={styles.textInputContainer}>
-            <TextInput
-              returnKeyType="next"
-              style={[styles.margin, styles.textInput]}
-              placeholderTextColor={styles.textInput.borderColor}
-              placeholder="N° de maison"
-              keyboardType="numeric"
-              returnKeyLabel="done"
-              value={payloadInput.address.houseNumber.toString()}
-              onChangeText={(value) =>
-                handleChange("address", value, "houseNumber")
-              }
-            />
-            <Text style={styles.placeholder}>N° de maison</Text>
-          </View>
-          <View style={styles.textInputContainer}>
-            <TextInput
-              returnKeyType="next"
-              style={[styles.margin, styles.textInput]}
-              placeholderTextColor={styles.textInput.borderColor}
-              placeholder="avenue des mimosas"
-              value={payloadInput.address.street}
-              onChangeText={(value) => handleChange("address", value, "street")}
-            />
-            <Text style={styles.placeholder}>Nom de rue</Text>
-          </View>
-          <View style={styles.textInputContainer}>
-            <TextInput
-              returnKeyType="next"
-              style={[styles.margin, styles.textInput]}
-              placeholderTextColor={styles.textInput.borderColor}
-              placeholder="Mimizan"
-              value={payloadInput.address.city}
-              onChangeText={(value) => handleChange("address", value, "city")}
-            />
-            <Text style={styles.placeholder}>Ville</Text>
           </View>
           <View style={styles.textInputContainer}>
             <TextInput

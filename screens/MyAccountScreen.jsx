@@ -16,8 +16,6 @@ export default MyAccountScreen = ({ navigation, route: { params } }) => {
     navigation.navigate("Mon Compte");
   };
 
-
-
   useEffect(() => {
     user.authToken && params && navigation.navigate(params.redirect, params);
   }, [params]);
@@ -26,28 +24,46 @@ export default MyAccountScreen = ({ navigation, route: { params } }) => {
     return <LoginComponent />;
   } else {
     // Si l'utilisateur est authentifié, affiche le composant d'informations utilisateur
-    return <View style={styles.container}>
-      {/* <InfosUserComponent navigation={navigation}/> */}
-      
-      <View style={styles.formContainer}>
-      <Text style={styles.title}>Mon compte</Text>
-      <TouchableOpacity onPress={() => navigation.navigate('MyAnnouncesScreen')} style={styles.button}>
-  <Text style={styles.textLink}>Annonces (0)</Text><FontAwesome name="angle-right" size={18} color="#461904" />
-</TouchableOpacity>
-      <TouchableOpacity onPress={() => navigation.navigate('MyOrdersScreen')} style={styles.button}>
-  <Text style={styles.textLink}>commandes (0)</Text><FontAwesome name="angle-right" size={18} color="#461904" />
-</TouchableOpacity>
-      <TouchableOpacity onPress={() => navigation.navigate('Messages')} style={styles.button}>
-  <Text style={styles.textLink}>Ma messagerie</Text><FontAwesome name="angle-right" size={18} color="#461904" />
-</TouchableOpacity>
-      <TouchableOpacity onPress={() => navigation.navigate('InfosUser')} style={styles.button}>
-  <Text style={styles.textLink}>Mes informations</Text><FontAwesome name="angle-right" size={18} color="#461904" />
-</TouchableOpacity>
-<TouchableOpacity onPress={logoutUser} style={styles.logoutButton}>
+    return (
+      <View style={styles.container}>
+        {/* <InfosUserComponent navigation={navigation}/> */}
+
+        <View style={styles.formContainer}>
+          <Text style={styles.title}>Mon compte</Text>
+          <TouchableOpacity
+            onPress={() => navigation.navigate("MyAnnouncesScreen")}
+            style={styles.button}
+          >
+            <Text style={styles.textLink}>Annonces (0)</Text>
+            <FontAwesome name="angle-right" size={18} color="#461904" />
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => navigation.navigate("MyOrdersScreen")}
+            style={styles.button}
+          >
+            <Text style={styles.textLink}>Commandes (0)</Text>
+            <FontAwesome name="angle-right" size={18} color="#461904" />
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => navigation.navigate("Messages")}
+            style={styles.button}
+          >
+            <Text style={styles.textLink}>Ma messagerie</Text>
+            <FontAwesome name="angle-right" size={18} color="#461904" />
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => navigation.navigate("InfosUser")}
+            style={styles.button}
+          >
+            <Text style={styles.textLink}>Mes informations</Text>
+            <FontAwesome name="angle-right" size={18} color="#461904" />
+          </TouchableOpacity>
+          <TouchableOpacity onPress={logoutUser} style={styles.logoutButton}>
             <Text style={styles.logoutButtonText}>Se déconnecter</Text>
           </TouchableOpacity>
-</View>
-    </View>
+        </View>
+      </View>
+    );
   }
 };
 
@@ -55,20 +71,20 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#FFFFFF",
-    alignItems:'center',
+    alignItems: "center",
   },
   title: {
-    color: '#461904',
-    fontSize: 24,
+    color: "#461904",
+    fontSize: 31,
     fontWeight: "bold",
     marginBottom: 30,
   },
   textLink: {
-    color: '#461904',
+    color: "#461904",
     fontSize: 16,
   },
   logoutButtonText: {
-    color: '#FFF2D3',
+    color: "#FFF2D3",
     fontSize: 16,
   },
   formContainer: {
@@ -77,16 +93,16 @@ const styles = StyleSheet.create({
     fontSize: 18,
     color: "#FF8B0A",
     marginTop: 50,
-    display: 'flex',
-    flexDirection: 'column',
+    display: "flex",
+    flexDirection: "column",
     alignItems: "center",
     justifyContent: "space between",
     paddingTop: 10,
   },
   button: {
     color: "#ffffff",
-    display: 'flex',
-    flexDirection: 'row',
+    display: "flex",
+    flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
     width: 330,
@@ -98,25 +114,24 @@ const styles = StyleSheet.create({
     paddingRight: 40,
     fontSize: 24,
     shadowColor: "#FFF2D3",
-shadowOffset: {
-  width: 6,
-  height: 6,
-},
-shadowOpacity:  0.9,
-shadowRadius: 3.05,
-elevation: 5
+    shadowOffset: {
+      width: 0,
+      height: 0,
+    },
+    shadowOpacity: 1,
+    shadowRadius: 5,
+    elevation: 5,
   },
   logoutButton: {
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-    width: '85%',
+    width: "85%",
     height: 65,
     backgroundColor: "#f56e00",
     borderRadius: 8,
     marginTop: 180,
     marginBottom: 0,
-    color: 'FFF2D3',
+    color: "FFF2D3",
   },
-  
-})
+});

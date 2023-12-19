@@ -58,6 +58,15 @@ const styles = StyleSheet.create({
     width: 155,
     borderRadius: 8,
     overflow: "hidden",
+    // backgroundColor: "#FFF",
+    // shadowColor: "#FFF2D3",
+    // shadowOffset: {
+    //   width: 0,
+    //   height: 0,
+    // },
+    // shadowOpacity: 1,
+    // shadowRadius: 5,
+    // elevation: 5,
   },
   heartBtn: {
     padding: 5,

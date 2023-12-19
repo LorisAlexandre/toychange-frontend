@@ -1,4 +1,4 @@
-import { Image, Text, TouchableOpacity, View } from "react-native";
+import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { useSelector } from "react-redux";
 
 export default function Message(mess) {
@@ -12,20 +12,40 @@ export default function Message(mess) {
   };
 
   return (
-    <View style={{ marginBottom: 20 }}>
+    <View
+      style={[
+        mess.messSender === "Me"
+          ? { backgroundColor: "#FFF2D3", borderLeftColor: "#F56E00" }
+          : { borderLeftColor: "#FFF2D3" },
+        styles.message,
+      ]}
+    >
       <Text>{mess.messSender}</Text>
       {mess.replyTo.text ? (
-        <Text>{mess.replyTo.text}</Text>
+        <View style={{ flexDirection: "row", alignItems: "center", gap: 10 }}>
+          {mess.label && <Text style={styles.label}>{mess.label}</Text>}
+          <Text style={{ fontSize: 12 }}>{mess.replyTo.text}</Text>
+        </View>
       ) : (
-        <View>
+        <View style={{ flexDirection: "row", alignItems: "center", gap: 10 }}>
+          {mess.label && <Text style={styles.label}>{mess.label}</Text>}
           {mess.replyTo.images?.length > 0 && (
-            <Image source={{ uri: mess.replyTo.images[0] }} />
+            <Image
+              source={{ uri: mess.replyTo.images[0] }}
+              width={50}
+              height={50}
+            />
           )}
         </View>
       )}
       <Text>{mess.text}</Text>
-      {mess.images?.length > 0 &&
-        mess.images.map((uri, i) => <Image source={{ uri }} key={i} />)}
+      <View style={{ flexDirection: "row", gap: 5 }}>
+        {mess.images?.length > 0 &&
+          mess.images.map((uri, i) => (
+            <Image source={{ uri }} key={i} width={100} height={100} />
+          ))}
+      </View>
+
       {mess.label === "proposal" && (
         <View style={{ display: "flex", flexDirection: "row", columnGap: 10 }}>
           <TouchableOpacity
@@ -42,37 +62,26 @@ export default function Message(mess) {
           </TouchableOpacity>
         </View>
       )}
-
-      <Text>Fin de mess</Text>
-
-      {/* <Text>{mess.sender}:</Text>
-      {mess.text ? (
-        <>
-          <Text>{mess.text}</Text>
-          <View>
-            {mess.label === "proposal" && (
-              <View>
-                <TouchableOpacity
-                  onPress={() => {
-                    handleAccept(mess);
-                  }}
-                >
-                  <Text>Accept</Text>
-                </TouchableOpacity>
-                <TouchableOpacity onPress={() => handleDecline(mess)}>
-                  <Text>Decline</Text>
-                </TouchableOpacity>
-              </View>
-            )}
-          </View>
-        </>
-      ) : (
-        <View>
-          {mess.images.map((img, i) => (
-            <Image key={i} source={{ uri: img }} width={50} height={50} />
-          ))}
-        </View>
-      )} */}
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  message: {
+    marginBottom: 10,
+    borderLeftWidth: 1,
+    paddingLeft: 5,
+    borderTopRightRadius: 8,
+    borderBottomRightRadius: 8,
+  },
+  label: {
+    fontSize: 12,
+    backgroundColor: "#F56E00",
+    color: "#FFF2D3",
+    textAlign: "center",
+    paddingHorizontal: 6,
+    paddingVertical: 3,
+    borderRadius: 10,
+    overflow: "hidden",
+  },
+});
