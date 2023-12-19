@@ -11,11 +11,13 @@ import {
   Alert,
 } from "react-native";
 import { login } from "../reducers/user";
+import { FontAwesome } from "@expo/vector-icons";
 
 function SignIn() {
   const dispatch = useDispatch();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleSignIn = async () => {
 
@@ -63,15 +65,28 @@ function SignIn() {
       <TextInput
         placeholder="Votre Email"
         value={email}
-        onChangeText={(text) => setEmail(text)}
+        onChangeText={(value) => setEmail(value)}
         style={styles.input}
       />
+      <View style={styles.passwordContainer}>
       <TextInput
         placeholder="Mot de passe"
         value={password}
-        onChangeText={(text) => setPassword(text)}
-        style={styles.input}
+        onChangeText={(value) => setPassword(value)}
+        secureTextEntry={!showPassword}
+        style={styles.inputPassword}
       />
+      <TouchableOpacity
+        onPress={() => setShowPassword(!showPassword)}
+        style={styles.eyeIcon}
+      >
+        <FontAwesome
+          name={showPassword ? "eye" : "eye-slash"}
+          size={20}
+          color="#f56e00"
+        />
+      </TouchableOpacity>
+    </View>
       <TouchableOpacity
         onPress={() => handleSignIn()}
         style={styles.button}
@@ -133,6 +148,26 @@ const styles = StyleSheet.create({
     color: "#ffffff",
     fontSize: 16,
   },
+  passwordContainer: {
+    position: "relative",
+    width: 330,
+    height: 48,
+    marginTop: 10,
+    borderColor: "#FF8B0A",
+    borderWidth: 1,
+    borderRadius: 8,
+    fontSize: 18,
+    padding: 10,
+  },
+  eyeIcon: {
+    position: "absolute",
+    right: 10,
+    top: 10, 
+  },
+  inputPassword: {
+    fontSize: 18,
+
+  }
 });
 
 export default SignIn;

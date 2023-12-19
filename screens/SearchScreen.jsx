@@ -63,23 +63,23 @@ export default function SearchScreen({ navigation, route: { params } }) {
           { marginTop: 30, marginBottom: 10, textAlign: "center" },
         ]}
       >
-        Toy Change
+        🧸 Toy Change
       </Text>
-      <View style={[styles.textInputContainer]}>
-        <TextInput
-          onFocus={() => setFocus(true)}
-          onBlur={() => setFocus(false)}
-          style={[styles.textInput, { flex: 1 }]}
-          placeholderTextColor={styles.textInput.borderColor}
-          placeholder="Ours en peluche 🧸"
-          value={query}
-          onChangeText={(val) => setQuery(val)}
-        />
-        <Text style={styles.placeholder}>Que recherchez vous ?</Text>
-        <TouchableOpacity onPress={() => handleSearch(query)}>
-          <FontAwesome name="search" color={"#F56E00"} size={20} />
-        </TouchableOpacity>
-      </View>
+      <View style={styles.textInputContainer}>
+  <TouchableOpacity onPress={() => handleSearch(query)} style={styles.searchIcon}>
+  <FontAwesome name="search" color={"#F56E00"} size={20}  />
+  </TouchableOpacity>
+  <TextInput
+    onFocus={() => setFocus(true)}
+    onBlur={() => setFocus(false)}
+    style={[styles.textInput, { flex: 1 }]}
+    placeholderTextColor={styles.textInput.borderColor}
+    placeholder="Ours en peluche 🧸"
+    value={query}
+    onChangeText={(val) => setQuery(val)}
+  />
+  <Text style={styles.placeholder}>Que recherchez-vous ?</Text>
+</View>
       {query || focus ? (
         <View style={{ marginHorizontal: 20 }}>
           <View>
@@ -181,5 +181,11 @@ const styles = StyleSheet.create({
     paddingVertical: 7,
     paddingHorizontal: 14,
     flexDirection: "row",
+  },
+  searchIcon: {
+    position: 'absolute',
+    right: 30, 
+    top: 10, 
+    zIndex: 100,
   },
 });
