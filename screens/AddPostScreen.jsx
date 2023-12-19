@@ -72,6 +72,7 @@ export default function AddPostScreen({ navigation }) {
   };
 
   const handleCreateAnnounce = () => {
+    payloadInput.weight = payloadInput.weight.toString().replace(/,/g, ".");
     if (!areAllValuesExist(payloadInput)) {
       return;
     }
@@ -149,13 +150,6 @@ export default function AddPostScreen({ navigation }) {
 
   return (
     <SafeAreaView style={styles.container}>
-      {/* <TouchableOpacity
-        onPress={() => navigation.goBack()}
-        style={[{ marginTop: 20 }, styles.margin]}
-      >
-        <FontAwesome name="angle-left" color={"#F56E00"} size={28} />
-      </TouchableOpacity> */}
-
       <ScrollView>
         <Text style={[styles.title, styles.margin, { marginVertical: 40 }]}>
           Créez le rire, partagez l'amour. 🎁

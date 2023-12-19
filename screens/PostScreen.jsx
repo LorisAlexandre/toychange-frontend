@@ -8,9 +8,9 @@ import {
   View,
 } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
+import { addFav, removeFav } from "../reducers/user";
 
 import FontAwesome from "react-native-vector-icons/FontAwesome5";
-import { addFav, removeFav } from "../reducers/user";
 
 export default function PostScreen({ navigation, route: { params } }) {
   const { authToken, _id, favAnnounces } = useSelector(

@@ -103,11 +103,11 @@ export default function CheckoutScreen({ navigation, route: { params } }) {
       navigation.goBack();
     } else {
       createParcel();
-      // navigation.navigate("", "");
     }
   };
 
   const fetchShippingPrice = async (to_postal_code, from_postal_code) => {
+    const weight = announce.weight.toString().replace(/,/g, ".");
     const res = await fetch(
       "https://toychange-backend.vercel.app/sendcloudAPI/shippingPrice",
       {
@@ -118,12 +118,13 @@ export default function CheckoutScreen({ navigation, route: { params } }) {
         body: JSON.stringify({
           to_postal_code,
           from_postal_code,
-          weight: announce.weight,
+          weight,
         }),
       }
     );
     const data = await res.json();
     if (data.result) {
+      console.log(data);
       if (data.data) {
         setShippingFees(data.data[1].countries[0].price);
       }
@@ -144,6 +145,7 @@ export default function CheckoutScreen({ navigation, route: { params } }) {
   };
 
   const createParcel = () => {
+    console.log(exchangeProposal);
     fetch("https://toychange-backend.vercel.app/sendcloudAPI/createParcel", {
       method: "POST",
       headers: {
@@ -165,6 +167,7 @@ export default function CheckoutScreen({ navigation, route: { params } }) {
       .then((data) => {
         if (data) {
           console.log("parcel created");
+          console.log(data);
           const parcel = data.data.parcel;
           fetch(
             `https://toychange-backend.vercel.app/sendcloudAPI/downloadLabel/${parcel.id}`,
@@ -177,6 +180,7 @@ export default function CheckoutScreen({ navigation, route: { params } }) {
           )
             .then((res) => res.json())
             .then((data) => {
+              console.log(data);
               if (data.result) {
                 console.log("label download");
                 fetch(
@@ -189,9 +193,9 @@ export default function CheckoutScreen({ navigation, route: { params } }) {
                     body: JSON.stringify({
                       announce: announce._id,
                       user: user._id,
-                      // seller: exchangeProposal
-                      //   ? exchangeProposal.exchanger
-                      //   : announce.donor,
+                      seller: exchangeProposal
+                        ? exchangeProposal.exchanger
+                        : announce.donor,
                       seller: announce.donor,
                       parcel: {
                         tracking_number: parcel.tracking_number,
@@ -207,9 +211,13 @@ export default function CheckoutScreen({ navigation, route: { params } }) {
                       sendNotificationToSeller(data.order);
                       const order = data.order;
                       Alert.alert("Success", "Your order is confirmed!");
-                      navigation.replace("Mon Compte", {
-                        order,
-                        redirect: "MyOrdersScreen",
+                      navigation.reset({
+                        index: 1,
+                        routes: [
+                          { name: "TabNavigator", screen: "Mon Compte" },
+                          { name: "MyOrdersScreen" },
+                          { name: "MyOrderScreen", params: { order } },
+                        ],
                       });
                     }
                   });
@@ -225,7 +233,7 @@ export default function CheckoutScreen({ navigation, route: { params } }) {
 
   return (
     <SafeAreaView style={styles.container}>
-      <KeyboardAvoidingView>
+      <KeyboardAvoidingView style={{ flex: 1 }}>
         <Text
           style={[
             styles.title,
@@ -263,13 +271,17 @@ export default function CheckoutScreen({ navigation, route: { params } }) {
             <Text style={{ color: "#F56E00" }}>Mon Compte</Text>
           </TouchableOpacity>
         </View>
-        <ScrollView style={{ marginBottom: 40 }}>
+        <ScrollView>
           <Text style={[styles.subTitle, styles.margin]}>Your Cart</Text>
-          <View style={{ gap: 20 }}>
+          <View>
             <View
               style={[
                 styles.margin,
-                { alignItems: "center", justifyContent: "space-between" },
+                {
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                  marginBottom: 20,
+                },
               ]}
             >
               <View
@@ -300,12 +312,12 @@ export default function CheckoutScreen({ navigation, route: { params } }) {
                 maxLength={5}
                 autoFocus
                 clearTextOnFocus
-                onSubmitEditing={() =>
+                onBlur={() => {
                   fetchShippingPrice(
                     to_postal_code,
                     announce.address.postalCode
-                  )
-                }
+                  );
+                }}
                 value={to_postal_code}
                 onChangeText={(value) => setTo_postal_code(value)}
               />
@@ -422,6 +434,7 @@ const styles = StyleSheet.create({
   },
   textInputContainer: {
     position: "relative",
+    marginBottom: 15,
   },
   placeholder: {
     color: "#FFA732",

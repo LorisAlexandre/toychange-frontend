@@ -74,6 +74,7 @@ export default function AddExchangePostScreen({
   };
 
   const handleCreateAnnounce = () => {
+    payloadInput.weight = payloadInput.weight.toString().replace(/,/g, ".");
     if (!areAllValuesExist(payloadInput)) {
       return;
     }
@@ -267,9 +268,6 @@ export default function AddExchangePostScreen({
               </View>
             ))}
           </View>
-          {images.map((img, i) => (
-            <Image key={i} source={{ uri: img }} width={50} height={50} />
-          ))}
           <View style={[styles.margin, styles.containerBtn]}>
             <TouchableOpacity
               style={[
