@@ -1,7 +1,10 @@
 import { useEffect, useState } from "react";
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import { addFav, removeFav } from "../reducers/user";
+import AnnonceCard from "./AnnonceCard.jsx";
+
+import FontAwesome from "react-native-vector-icons/FontAwesome5";
 
 export default function NewAnnounces({ navigation }) {
   const dispatch = useDispatch();
@@ -29,29 +32,32 @@ export default function NewAnnounces({ navigation }) {
 
   return (
     <View style={styles.container}>
-      <Text>Nouvelles annonces</Text>
-      <View>
-        {announces.map((item, i) => (
-          <View key={i}>
-            <Text>{item.title}</Text>
-            <TouchableOpacity onPress={() => handleFav(item)}>
-              <Text
-                style={
-                  favAnnounces.some((e) => e._id === item._id) && {
-                    backgroundColor: "red",
-                  }
-                }
-              >
-                Add to fav
-              </Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() => navigation.navigate("PostScreen", item)}
-            >
-              <Text>Go to this post</Text>
-            </TouchableOpacity>
-          </View>
-        ))}
+      <TouchableOpacity
+        style={{
+          flexDirection: "row",
+          alignItems: "center",
+          justifyContent: "flex-start",
+          gap: 10,
+        }}
+      >
+        <Text style={styles.subTitle}>Nouvelles annonces</Text>
+        <FontAwesome
+          name="angle-right"
+          size={19}
+          color={styles.subTitle.color}
+        />
+      </TouchableOpacity>
+      <View style={{ flexDirection: "row", flexWrap: "wrap", gap: 20 }}>
+        {announces
+          .filter((e, i) => i < 3)
+          .map((item, i) => (
+            <AnnonceCard
+              handleFav={handleFav}
+              navigation={navigation}
+              item={item}
+              key={i}
+            />
+          ))}
       </View>
     </View>
   );
@@ -59,8 +65,35 @@ export default function NewAnnounces({ navigation }) {
 
 const styles = StyleSheet.create({
   container: {
-    // flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
+    backgroundColor: "white",
+    gap: 20,
+  },
+  subTitle: {
+    color: "#CC5302",
+    fontWeight: "bold",
+    fontSize: 19,
+  },
+  announces: {
+    height: 294,
+    width: 155,
+    borderRadius: 8,
+    overflow: "hidden",
+  },
+  heartBtn: {
+    padding: 5,
+    borderRadius: 30,
+    backgroundColor: "rgba(255, 255, 255, 0.70)",
+    position: "absolute",
+    right: 5,
+    top: 5,
+  },
+  label: {
+    backgroundColor: "#F56E00",
+    color: "#FFF2D3",
+    textAlign: "center",
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    borderRadius: 8,
+    overflow: "hidden",
   },
 });

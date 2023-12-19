@@ -4,9 +4,9 @@ import { useDispatch, useSelector } from "react-redux";
 import LoginComponent from "../components/Login";
 import InfosUserComponent from "../components/InfosUser";
 import { logout } from "../reducers/user";
-import { FontAwesome } from '@expo/vector-icons';
+import { FontAwesome } from "@expo/vector-icons";
 
-const MyAccountScreen = ({ navigation, route: { params } }) => {
+export default MyAccountScreen = ({ navigation, route: { params } }) => {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user.value);
 
@@ -31,7 +31,7 @@ const MyAccountScreen = ({ navigation, route: { params } }) => {
       
       <View style={styles.formContainer}>
       <Text style={styles.title}>Mon compte</Text>
-      <TouchableOpacity onPress={() => navigation.navigate('MyAnnounceScreen')} style={styles.button}>
+      <TouchableOpacity onPress={() => navigation.navigate('MyAnnouncesScreen')} style={styles.button}>
   <Text style={styles.textLink}>Annonces (0)</Text><FontAwesome name="angle-right" size={18} color="#461904" />
 </TouchableOpacity>
       <TouchableOpacity onPress={() => navigation.navigate('MyOrdersScreen')} style={styles.button}>
@@ -50,7 +50,6 @@ const MyAccountScreen = ({ navigation, route: { params } }) => {
     </View>
   }
 };
-
 
 const styles = StyleSheet.create({
   container: {
@@ -121,4 +120,3 @@ elevation: 5
   },
   
 })
-export default MyAccountScreen;

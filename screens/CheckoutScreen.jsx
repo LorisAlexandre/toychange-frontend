@@ -184,7 +184,7 @@ export default function CheckoutScreen({ navigation, route: { params } }) {
                       sendNotificationToSeller(data.order);
                       const order = data.order;
                       Alert.alert("Success", "Your order is confirmed!");
-                      navigation.navigate("Mon Compte", {
+                      navigation.replace("Mon Compte", {
                         order,
                         redirect: "MyOrdersScreen",
                       });

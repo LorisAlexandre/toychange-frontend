@@ -33,9 +33,9 @@ export const userSlice = createSlice({
       Object.assign(state.value, action.payload);
     },
     updatePassword: (state, action) => {
-      const {newPassword} = action.payload;
-        state.value.password = newPassword;
-        console.log('Mot de passe mis à jour avec succès');
+      const { newPassword } = action.payload;
+      state.value.password = newPassword;
+      console.log("Mot de passe mis à jour avec succès");
     },
     addFav: (state, action) => {
       state.value.favAnnounces.push(action.payload);
@@ -67,9 +67,9 @@ export const {
   removeFav,
   addSearchQuery,
   removeSearchQuery,
-  addUserLocation, 
-  updateUserInfo, 
-  updatePassword
+  addUserLocation,
+  updateUserInfo,
+  updatePassword,
 } = userSlice.actions;
 
 export default userSlice.reducer;
