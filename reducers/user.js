@@ -25,8 +25,11 @@ export const userSlice = createSlice({
       Object.assign(state.value, action.payload);
     },
     logout: (state) => {
+      // Réinitialiser authToken, email, username, etc. à null
       Object.keys(state.value).forEach((key) => {
-        state.value[key] = null;
+        if (key !== "favAnnounces" && key !== "mySearches" && key !== "geolocation") {
+          state.value[key] = null;
+        }
       });
     },
     updateUserInfo: (state, action) => {
