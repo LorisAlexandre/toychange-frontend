@@ -24,8 +24,8 @@ import MyAccount from "./screens/MyAccountScreen.jsx";
 import PostScreen from "./screens/PostScreen.jsx";
 import CheckoutScreen from "./screens/CheckoutScreen.jsx";
 import MyAnnouncesScreen from "./screens/MyAnnouncesScreen.jsx";
-import UserInfoComponent from './components/InfosUser.jsx'; 
-import ChangePasswordForm from './components/ChangePasswordForm.jsx'; 
+import UserInfoComponent from "./components/InfosUser.jsx";
+import ChangePasswordForm from "./components/ChangePasswordForm.jsx";
 
 import MyAnnounceScreen from "./screens/MyAnnounceScreen.jsx";
 import MyOrdersScreen from "./screens/MyOrdersScreen.jsx";
@@ -78,7 +78,7 @@ const TabNavigator = () => {
           return <FontAwesome name={iconName} color={color} size={size} />;
         },
         tabBarActiveTintColor: "#F56E00",
-        tabBarInactiveTintColor: "lightgray",
+        tabBarInactiveTintColor: "#FFA732",
         headerShown: false,
         unmountOnBlur: true,
       })}
@@ -129,7 +129,10 @@ export default function App() {
             />
             <Stack.Screen name="TabNavigator" component={TabNavigator} />
             <Stack.Screen name="InfosUser" component={UserInfoComponent} />
-            <Stack.Screen name="PasswordScreen" component={ChangePasswordForm} />
+            <Stack.Screen
+              name="PasswordScreen"
+              component={ChangePasswordForm}
+            />
           </Stack.Navigator>
         </NavigationContainer>
       </StripeProvider>

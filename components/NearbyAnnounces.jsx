@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { StyleSheet, Text, TouchableOpacity, View, Image } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import { addFav, removeFav } from "../reducers/user";
+
+import FontAwesome from "react-native-vector-icons/FontAwesome5";
 
 export default function NearbyAnnounces({ navigation }) {
   const dispatch = useDispatch();
@@ -20,7 +22,7 @@ export default function NearbyAnnounces({ navigation }) {
           setAnnounces(announcesSorted);
         }
       });
-  }, [geolocation.lat, geolocation.long]);
+  }, []);
 
   const handleFav = (obj) => {
     const { _id } = obj;
@@ -31,10 +33,12 @@ export default function NearbyAnnounces({ navigation }) {
     }
   };
 
+  console.log(announces);
+
   return (
     <View style={styles.container}>
-      <Text>Annonces proches</Text>
-      <View>
+      <Text>Les annonces proches</Text>
+      {/* <View>
         {announces.map((item, i) => (
           <View key={i}>
             <Text>{item[1].title}</Text>
@@ -57,15 +61,100 @@ export default function NearbyAnnounces({ navigation }) {
             </TouchableOpacity>
           </View>
         ))}
-      </View>
+      </View> */}
+      <TouchableOpacity
+        style={{
+          flexDirection: "row",
+          alignItems: "center",
+          justifyContent: "flex-start",
+          gap: 10,
+        }}
+      >
+        <Text style={styles.subTitle}>Les annonces proches</Text>
+        <FontAwesome
+          name="angle-right"
+          size={19}
+          color={styles.subTitle.color}
+        />
+      </TouchableOpacity>
+      <Text style={{ flexDirection: "row", flexWrap: "wrap", gap: 20 }}>
+        {announces.length &&
+          announces.map((item, i) => (
+            <TouchableOpacity
+              key={i}
+              style={styles.announces}
+              onPress={() => navigation.navigate("PostScreen", item)}
+            >
+              <Image
+                source={{ uri: item.images[0] }}
+                width={155}
+                height={176}
+              />
+              <TouchableOpacity
+                style={styles.heartBtn}
+                onPress={() => handleFav(item)}
+              >
+                <FontAwesome
+                  name="heart"
+                  size={15}
+                  color={
+                    favAnnounces.some((e) => e._id === item._id)
+                      ? "red"
+                      : "gray"
+                  }
+                />
+              </TouchableOpacity>
+              <View style={{ padding: 15, gap: 5 }}>
+                <Text
+                  style={{ color: "#F56E00", fontWeight: 600, fontSize: 16 }}
+                >
+                  {item.title}
+                </Text>
+                <Text style={{ color: "#FF8B0A" }}>
+                  {item.address.postalCode}
+                </Text>
+                <Text style={styles.label}>
+                  {item.type === "exchange" ? "Echange" : "Don"}
+                </Text>
+              </View>
+            </TouchableOpacity>
+          ))}
+      </Text>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    // flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
+    backgroundColor: "white",
+    gap: 20,
+  },
+  subTitle: {
+    color: "#CC5302",
+    fontWeight: "bold",
+    fontSize: 19,
+  },
+  announces: {
+    height: 294,
+    width: 155,
+    borderRadius: 8,
+    overflow: "hidden",
+  },
+  heartBtn: {
+    padding: 5,
+    borderRadius: 30,
+    backgroundColor: "rgba(255, 255, 255, 0.70)",
+    position: "absolute",
+    right: 5,
+    top: 5,
+  },
+  label: {
+    backgroundColor: "#F56E00",
+    color: "#FFF2D3",
+    textAlign: "center",
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    borderRadius: 8,
+    overflow: "hidden",
   },
 });

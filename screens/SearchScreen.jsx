@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
+  SafeAreaView,
+  ScrollView,
   StyleSheet,
   Text,
   TextInput,
@@ -9,14 +11,19 @@ import {
 } from "react-native";
 import * as Location from "expo-location";
 
-import { addSearchQuery, addUserLocation } from "../reducers/user";
+import FontAwesome from "react-native-vector-icons/FontAwesome5";
+
+import {
+  addSearchQuery,
+  addUserLocation,
+  removeSearchQuery,
+} from "../reducers/user";
 import NearbyAnnounces from "../components/NearbyAnnounces";
 import NewAnnounces from "../components/NewAnnounces";
 
 export default function SearchScreen({ navigation, route: { params } }) {
   const dispatch = useDispatch();
-  const user = useSelector((state) => state.user.value);
-  const mySearches = useSelector((state) => state.user.value.mySearches);
+  const { mySearches } = useSelector((state) => state.user.value);
   const [query, setQuery] = useState("");
   const [focus, setFocus] = useState(false);
 
@@ -48,85 +55,131 @@ export default function SearchScreen({ navigation, route: { params } }) {
   };
 
   return (
-    <View style={styles.container}>
-      <TextInput
-        onFocus={() => setFocus(true)}
-        onBlur={() => setFocus(false)}
-        style={{ borderWidth: 1, width: "100%" }}
-        value={query}
-        onChangeText={(val) => setQuery(val)}
-      />
-      <TouchableOpacity onPress={() => handleSearch(query)}>
-        <Text>search</Text>
-      </TouchableOpacity>
+    <SafeAreaView style={styles.container}>
+      <Text
+        style={[
+          styles.title,
+          styles.margin,
+          { marginTop: 30, marginBottom: 10, textAlign: "center" },
+        ]}
+      >
+        Toy Change
+      </Text>
+      <View style={[styles.textInputContainer]}>
+        <TextInput
+          onFocus={() => setFocus(true)}
+          onBlur={() => setFocus(false)}
+          style={[styles.textInput, { flex: 1 }]}
+          placeholderTextColor={styles.textInput.borderColor}
+          placeholder="Ours en peluche 🧸"
+          value={query}
+          onChangeText={(val) => setQuery(val)}
+        />
+        <Text style={styles.placeholder}>Que recherchez vous ?</Text>
+        <TouchableOpacity onPress={() => handleSearch(query)}>
+          <FontAwesome name="search" color={"#F56E00"} size={20} />
+        </TouchableOpacity>
+      </View>
       {query || focus ? (
-        <View>
+        <View style={{ marginHorizontal: 20 }}>
           <View>
-            <Text>Suggestion: </Text>
-            <TouchableOpacity onPress={() => handleSearch(query)}>
-              <Text>{query}</Text>
+            <Text style={styles.subTitle}>Suggestions</Text>
+            <TouchableOpacity
+              style={[
+                styles.searches,
+                { marginBottom: 10 },
+                { justifyContent: "center" },
+              ]}
+              onPress={() => handleSearch(query)}
+            >
+              <Text style={{ color: "#F56E00" }}>{query}</Text>
             </TouchableOpacity>
           </View>
           <View>
-            <Text>Last searches: </Text>
-            {mySearches
-              .filter((e) => new RegExp(query, "i").test(e))
-              .map((e, i) => (
-                <TouchableOpacity
-                  key={i}
-                  onPress={() => handleSearch(e, false)}
-                >
-                  <Text>{e}</Text>
-                </TouchableOpacity>
-              ))}
+            <Text style={styles.subTitle}>Mes dernières recherches </Text>
+            <View style={{ gap: 10 }}>
+              {mySearches
+                .filter((e) => new RegExp(query, "i").test(e))
+                .map((e, i) => (
+                  <TouchableOpacity
+                    style={styles.searches}
+                    key={i}
+                    onPress={() => handleSearch(e, false)}
+                  >
+                    <FontAwesome name="clock" size={15} color={"#F56E00"} />
+                    <Text style={{ color: "#F56E00" }}>{e}</Text>
+                    <TouchableOpacity
+                      onPress={() => dispatch(removeSearchQuery(e))}
+                    >
+                      <FontAwesome name="trash" size={15} color={"#F56E00"} />
+                    </TouchableOpacity>
+                  </TouchableOpacity>
+                ))}
+            </View>
           </View>
         </View>
       ) : (
-        <View>
+        <ScrollView style={{ marginHorizontal: 20 }}>
           <NewAnnounces navigation={navigation} />
           {/* <NearbyAnnounces navigation={navigation} /> */}
-        </View>
+        </ScrollView>
       )}
-    </View>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    display: 'flex',
-    width: 390,
-    height: 844,
-    paddinTop: 30,
-    flexDirection: 'column',
-    alignItems: 'center',
+    flex: 1,
+    backgroundColor: "white",
     gap: 20,
   },
+  margin: {
+    flexDirection: "row",
+    marginHorizontal: 20,
+  },
   title: {
-    display: 'flex',
-    width: 319,
-    height: 68,
-    justifyContent: 'center',
-    alignItems: 'center',
-   
-  },
-  titleText: {
-    display: 'flex',
-    textAlign: 'center',
     fontSize: 50,
-    fontStyle: 'normal',
-    fontWeight: 700,
- 
-
+    fontWeight: "bold",
+    color: "#461904",
   },
-  inputSearch: {
-    display: 'flex',
-    width: 292,
-    height:48,
-    textAlign: 'center',
-    borderColor: "#FFA732",
+  textInput: {
     borderWidth: 1,
+    borderColor: "#FFA732",
+    paddingHorizontal: 24,
+    paddingVertical: 12,
     borderRadius: 8,
-
-
+    color: "#CC5302",
+  },
+  textInputContainer: {
+    position: "relative",
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 10,
+    marginHorizontal: 20,
+  },
+  placeholder: {
+    color: "#FFA732",
+    backgroundColor: "white",
+    position: "absolute",
+    top: -10,
+    left: 15,
+    padding: 2,
+  },
+  subTitle: {
+    color: "#CC5302",
+    fontWeight: "bold",
+    marginBottom: 10,
+  },
+  searches: {
+    borderRadius: 4,
+    alignItems: "center",
+    justifyContent: "space-between",
+    shadowColor: "#FFF2D3",
+    shadowOffset: 0,
+    shadowRadius: 15,
+    paddingVertical: 7,
+    paddingHorizontal: 14,
+    flexDirection: "row",
   },
 });

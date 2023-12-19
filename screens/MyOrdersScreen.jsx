@@ -2,14 +2,11 @@ import { useEffect, useState } from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { useSelector } from "react-redux";
 
-export default function MyOrdersScreen({ navigation, route: { params } }) {
+export default function MyOrdersScreen({ navigation }) {
   const user = useSelector((state) => state.user.value);
   const [userOrders, setUserOrders] = useState([]);
 
   useEffect(() => {
-    if (params?.redirect) {
-      navigation.navigate("MyOrderScreen", params.order);
-    }
     fetch(`https://toychange-backend.vercel.app/order/orders/${user._id}`)
       .then((res) => res.json())
       .then((data) => {
@@ -17,7 +14,6 @@ export default function MyOrdersScreen({ navigation, route: { params } }) {
           if (!data.orders.length) {
             return;
           }
-          console.log(data.orders);
           setUserOrders(data.orders);
         }
       });

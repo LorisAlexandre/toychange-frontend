@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { useSelector } from "react-redux";
 
-export default function MyAnnouncesScreen({ navigation, route: { params } }) {
+export default function MyAnnouncesScreen({ navigation }) {
   const { authToken, _id } = useSelector((state) => state.user.value);
   const [announces, setAnnounces] = useState([]);
   const [orders, setOrders] = useState([]);

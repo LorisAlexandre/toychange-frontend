@@ -6,13 +6,9 @@ import InfosUserComponent from "../components/InfosUser";
 import { logout } from "../reducers/user";
 import { FontAwesome } from "@expo/vector-icons";
 
-const MyAccountScreen = ({ navigation, route: { params } }) => {
+export default MyAccountScreen = ({ navigation, route: { params } }) => {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user.value);
-
-  useEffect(() => {
-    user.authToken && params && navigation.navigate(params.redirect, params);
-  }, [params]);
 
   if (!user.authToken) {
     return <LoginComponent />;
@@ -20,25 +16,26 @@ const MyAccountScreen = ({ navigation, route: { params } }) => {
     // Si l'utilisateur est authentifié, affiche le composant d'informations utilisateur
     return (
       <View style={styles.container}>
-        {/* <InfosUserComponent navigation={navigation}/> */}
-
         <Text>Je suis dans MyAccountScreen</Text>
         <View style={styles.formContainer}>
           <TouchableOpacity
-            onPress={() => navigation.navigate("MyAnnounceScreen")}
+            onPress={() => navigation.navigate("MyAnnouncesScreen")}
           >
             <Text>Annonces (0)</Text>
           </TouchableOpacity>
           <TouchableOpacity
             onPress={() => navigation.navigate("MyOrdersScreen")}
           >
-            <Text>commandes (0)</Text>
+            <Text>Commandes (0)</Text>
           </TouchableOpacity>
           <TouchableOpacity onPress={() => navigation.navigate("Messages")}>
             <Text>Ma messagerie</Text>
           </TouchableOpacity>
           <TouchableOpacity onPress={() => navigation.navigate("InfosUser")}>
             <Text>Mes infos</Text>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => dispatch(logout())}>
+            <Text>Se déconnecter</Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -79,4 +76,3 @@ const styles = StyleSheet.create({
     borderRadius: 8,
   },
 });
-export default MyAccountScreen;
