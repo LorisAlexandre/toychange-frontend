@@ -51,7 +51,7 @@ export default function MyAnnouncesScreen({ navigation }) {
             announces.map((announce, index) => (
               <TouchableOpacity
                 key={index}
-                style={styles.announceItem}
+                style={styles.announceItem}                 
                 onPress={() => navigation.navigate("MyAnnounceScreen", { announce })}
               >
                 <ImageBackground
@@ -71,9 +71,7 @@ export default function MyAnnouncesScreen({ navigation }) {
                   <Text style={styles.deliveryMethod}>
                     {announce.deliveryMethod === "Les 2" ? "Les 2" : "Livraison"}
                   </Text>
-                  <Text style={styles.condition}>
-                  {announce.condition === "Neuf" ? "Neuf" : announce.condition === "Comme neuf" ? "Comme neuf" : "Bon état"}
-                  </Text>
+                  
                   </View>
                 </View>
               </TouchableOpacity>
@@ -117,15 +115,26 @@ const styles = StyleSheet.create({
   },
   announceItem: {
     flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-    padding: 15,
-    backgroundColor: "#FFF2D3",
-    borderRadius: 8,
+  alignItems: "center",
+  justifyContent: "space-between",
+  padding: 5,
+  borderRadius: 8,
+  marginLeft: 2,
+  marginRight: 2,
+  backgroundColor: "#FFFFFF", // Ajoutez une couleur de fond
+  shadowColor: 'grey',
+  shadowOffset: {
+    width: 0,
+    height: 0,
+  },
+  shadowOpacity: 0.3,
+  shadowRadius: 6,
+  elevation: 5,
+    
   },
   announceImage: {
-    width: 50,
-    height: 50,
+    width: 70,
+    height: 70,
     borderRadius: 8,
     overflow: "hidden",
     justifyContent: "center",

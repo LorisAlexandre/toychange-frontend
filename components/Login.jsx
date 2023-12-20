@@ -13,38 +13,47 @@ import {
 
 const LoginComponent = ({ navigation }) => {
   const [showSignIn, setShowSignIn] = useState(true);
-  const [showSignUp, setShowSignUp] = useState(false);
-  const [signInButtonStyles, setSignInButtonStyles] = useState({
-    backgroundColor: '#FFF2D3',
-    textColor: '#f56e00',
-  });
-  const [signUpButtonStyles, setSignUpButtonStyles] = useState({
-    backgroundColor: '#FFF2D3',
-    textColor: '#f56e00',
-  });
-  const handleSignInPress = () => {
-    setShowSignIn(true);
-    setSignInButtonStyles({
-      backgroundColor:  '#f56e00',
+  const [buttonStyles, setButtonStyles] = useState({
+    signIn: {
+      backgroundColor: '#f56e00',
       textColor: '#FFF2D3',
-    });
-    setSignUpButtonStyles({
+    },
+    signUp: {
       backgroundColor: '#FFF2D3',
       textColor: '#f56e00',
-    });
+    },
+  });
+
+  const handleSignInPress = () => {
+    setShowSignIn(true);
+    setButtonStyles((prevStyles) => ({
+      ...prevStyles,
+      signIn: {
+        backgroundColor: '#f56e00',
+        textColor: '#FFF2D3',
+      },
+      signUp: {
+        backgroundColor: '#FFF2D3',
+        textColor: '#f56e00',
+      },
+    }));
   };
 
   const handleSignUpPress = () => {
     setShowSignIn(false);
-    setSignInButtonStyles({
-      backgroundColor: '#FFF2D3',
-      textColor: '#f56e00',
-    });
-    setSignUpButtonStyles({
-      backgroundColor: '#f56e00',
-      textColor: '#FFF2D3',
-    });
+    setButtonStyles((prevStyles) => ({
+      ...prevStyles,
+      signIn: {
+        backgroundColor: '#FFF2D3',
+        textColor: '#f56e00',
+      },
+      signUp: {
+        backgroundColor: '#f56e00',
+        textColor: '#FFF2D3',
+      },
+    }));
   };
+
   return (
     <KeyboardAvoidingView
       style={styles.container}
@@ -56,11 +65,25 @@ const LoginComponent = ({ navigation }) => {
           <Text style={styles.title}>Ensemble, créons des sourires en partageant. 🎁</Text>
         </View>
         <View style={styles.box}>
-          <TouchableOpacity onPress={handleSignInPress} style={[styles.signin, { backgroundColor: signInButtonStyles.backgroundColor }]} activeOpacity={0.8}>
-            <Text style={[styles.textButton, { color: signInButtonStyles.textColor }]}>Sign In</Text>
+          <TouchableOpacity
+            onPress={handleSignInPress}
+            style={[
+              styles.signin,
+              { backgroundColor: buttonStyles.signIn.backgroundColor },
+            ]}
+            activeOpacity={0.8}
+          >
+            <Text style={[styles.textButton, { color: buttonStyles.signIn.textColor }]}>Sign In</Text>
           </TouchableOpacity>
-          <TouchableOpacity onPress={handleSignUpPress} style={[styles.signup, { backgroundColor: signUpButtonStyles.backgroundColor }]} activeOpacity={0.8}>
-            <Text style={[styles.textButton, { color: signUpButtonStyles.textColor }]}>Sign Up</Text>
+          <TouchableOpacity
+            onPress={handleSignUpPress}
+            style={[
+              styles.signup,
+              { backgroundColor: buttonStyles.signUp.backgroundColor },
+            ]}
+            activeOpacity={0.8}
+          >
+            <Text style={[styles.textButton, { color: buttonStyles.signUp.textColor }]}>Sign Up</Text>
           </TouchableOpacity>
         </View>
         {showSignIn ? (
@@ -79,8 +102,6 @@ const styles = StyleSheet.create({
   container: {
     display: "flex",
     backgroundColor: "#ffffff",
-    // alignItems: 'center',
-    // justifyContent: 'center',
   },
   container2: {
     width: "100%",
@@ -89,33 +110,26 @@ const styles = StyleSheet.create({
     alignItems: "center",
     backgroundColor: "#ffffff",
     marginBottom: 0,
-    // alignItems: 'center',
-    // justifyContent: 'center',
   },
   box: {
-    width: 330,
-    height: 58,
-    display:'flex',
-    flexDirection:'row',
-    alignItems: 'center',
+    paddingVertical: 15,
+    paddingHorizontal: 10,
     
-    // backgroundColor: '#FFF2D3',
-    justifyContent:'space-around',
-    borderRadius: 8,
-
-    backgroundColor: "#FFF2D3",
-    justifyContent: "space-around",
+    width: '90%',
+    height: '10%',
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-around',
     borderRadius: 16,
+    backgroundColor: "#FFF2D3",
   },
-
   title: {
     fontSize: 24,
     marginBottom: 20,
     paddingLeft: 30,
     paddingRight: 30,
     fontWeight: 'bold',
-    
-    
   },
   textButton: {
     fontSize: 12,
@@ -128,8 +142,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
     width: '50%',
     height: '100%',
-    borderBottomRightRadius: 0,
-    borderTopRightRadius: 0,
+   
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: '#FFF2D3',
@@ -140,8 +153,7 @@ const styles = StyleSheet.create({
     width: '50%',
     height: '100%',
     alignItems: 'center',
-    borderBottomLeftRadius: 0,
-    borderTopLeftRadius: 0,
+   
     justifyContent: 'center',
     backgroundColor: '#FFF2D3',
   },

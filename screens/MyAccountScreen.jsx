@@ -114,14 +114,14 @@ const styles = StyleSheet.create({
     paddingLeft: 25,
     paddingRight: 40,
     fontSize: 24,
-    shadowColor: "#FFF2D3",
-    shadowOffset: {
-      width: 0,
-      height: 0,
-    },
-    shadowOpacity: 1,
-    shadowRadius: 5,
-    elevation: 5,
+    shadowColor: 'grey',
+  shadowOffset: {
+    width: 0,
+    height: 0,
+  },
+  shadowOpacity: 0.3,
+  shadowRadius: 6,
+  elevation: 5,
   },
   logoutButton: {
     display: "flex",
