@@ -20,6 +20,8 @@ export default function MyOrderScreen({ navigation, route: { params } }) {
 
   const { order } = params;
 
+  console.log(orderSeller);
+
   useEffect(() => {
     // verif si un order a comme exchange proposal alors return
     // pareil pour annonce il faut inverser les deux
@@ -74,8 +76,6 @@ export default function MyOrderScreen({ navigation, route: { params } }) {
     deliveryMethod = "Au choix";
   }
 
-  console.log(order);
-
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView>
@@ -129,7 +129,7 @@ export default function MyOrderScreen({ navigation, route: { params } }) {
           <Text style={styles.label}>{condition}</Text>
           <Text style={styles.label}>{deliveryMethod}</Text>
         </View>
-        <View style={{ marginHorizontal: 20 }}>
+        <View style={{ marginHorizontal: 20, marginBottom: 20 }}>
           <Text style={{ fontSize: 19, color: "#CC5302", marginBottom: 10 }}>
             Description
           </Text>
@@ -137,32 +137,43 @@ export default function MyOrderScreen({ navigation, route: { params } }) {
             {order.announce.description}
           </Text>
         </View>
-        <Text>N° de suivi: {order.parcel.tracking_number}</Text>
+        <Text style={[styles.margin, styles.subtitle, { marginBottom: 10 }]}>
+          Informations sur le colis:
+        </Text>
+        <Text style={[styles.margin, { textAlign: "left", marginBottom: 10 }]}>
+          N° de suivi: {order.parcel.tracking_number}
+        </Text>
         {_id !== order.announce.donor && (
           <>
-            <Text>Obj à envoyer: {order.announce.exchangeProposal.title}</Text>
-            <Text>Obj à recevoir: {order.announce.title}</Text>
-            {orderSeller && (
+            <Text
+              style={[styles.margin, { textAlign: "left", marginBottom: 10 }]}
+            >
+              Colis à recevoir: {order.announce.title}
+            </Text>
+            {orderSeller ? (
               <TouchableOpacity
                 onPress={() => downloadLabel(orderSeller.parcel.label_url)}
               >
-                <Text>Download Label</Text>
+                <Text
+                  style={[
+                    styles.margin,
+                    { textAlign: "left", marginBottom: 10 },
+                  ]}
+                >
+                  Download Label
+                </Text>
               </TouchableOpacity>
+            ) : (
+              <Text style={[styles.margin, { textAlign: "left" }]}>
+                En attente du paiement de{" "}
+                {order.announce.exchangeProposal.title} pour impression de
+                l'étiquette...
+              </Text>
             )}
           </>
         )}
       </ScrollView>
     </SafeAreaView>
-
-    //     </>
-    //   )}
-    //   {_id === params.announce.donor && (
-    //     <>
-    //       <Text>Obj à envoyer: {params.announce.title} cf vos annonces</Text>
-    //       <Text>Obj à recevoir: {params.announce.exchangeProposal.title}</Text>
-    //     </>
-    //   )}
-    // </View>
   );
 }
 
@@ -209,5 +220,10 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     color: "#FFF",
+  },
+  subtitle: {
+    fontSize: 19,
+    color: "#461904",
+    textAlign: "center",
   },
 });
