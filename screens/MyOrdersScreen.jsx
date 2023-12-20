@@ -74,7 +74,15 @@ export default function MyOrdersScreen({ navigation }) {
               </TouchableOpacity>
             ))
           ) : (
-            <Text>No orders</Text>
+            <Text
+              style={[
+                styles.margin,
+                styles.title,
+                { textAlign: "center", fontSize: 19 },
+              ]}
+            >
+              Aucune commande pour le moment !
+            </Text>
           )}
         </View>
       </ScrollView>

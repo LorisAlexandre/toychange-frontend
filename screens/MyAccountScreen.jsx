@@ -127,8 +127,8 @@ const styles = StyleSheet.create({
     height: 65,
     backgroundColor: "#f56e00",
     borderRadius: 8,
-    marginTop: 180,
-    marginBottom: 0,
+    position: "absolute",
+    bottom: 75,
     color: "FFF2D3",
   },
 });

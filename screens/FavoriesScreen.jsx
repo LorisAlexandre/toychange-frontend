@@ -71,32 +71,52 @@ export default function FavoriesScreen({ navigation }) {
       <ScrollView>
         {showAnnounces ? (
           <View style={[styles.margin, { flexWrap: "wrap", gap: 20 }]}>
-            {favAnnounces.map((item, i) => (
-              <AnnonceCard
-                handleFav={handleFav}
-                item={item}
-                key={i}
-                navigation={navigation}
-              />
-            ))}
+            {favAnnounces.length ? (
+              favAnnounces.map((item, i) => (
+                <AnnonceCard
+                  handleFav={handleFav}
+                  item={item}
+                  key={i}
+                  navigation={navigation}
+                />
+              ))
+            ) : (
+              <Text
+                style={[styles.subTitle, { fontSize: 19, textAlign: "center" }]}
+              >
+                Aucune annonce ajoutée au favori pour le moment !
+              </Text>
+            )}
           </View>
         ) : (
           <View>
-            {mySearches.map((search, i) => (
-              <TouchableOpacity
-                style={styles.searches}
-                key={i}
-                onPress={() => handleSearch(search, false)}
-              >
-                <FontAwesome name="clock" size={15} color={"#F56E00"} />
-                <Text style={{ color: "#F56E00" }}>{search}</Text>
+            {mySearches.length ? (
+              mySearches.map((search, i) => (
                 <TouchableOpacity
-                  onPress={() => dispatch(removeSearchQuery(search))}
+                  style={styles.searches}
+                  key={i}
+                  onPress={() => handleSearch(search, false)}
                 >
-                  <FontAwesome name="trash" size={15} color={"#F56E00"} />
+                  <FontAwesome name="clock" size={15} color={"#F56E00"} />
+                  <Text style={{ color: "#F56E00" }}>{search}</Text>
+                  <TouchableOpacity
+                    onPress={() => dispatch(removeSearchQuery(search))}
+                  >
+                    <FontAwesome name="trash" size={15} color={"#F56E00"} />
+                  </TouchableOpacity>
                 </TouchableOpacity>
-              </TouchableOpacity>
-            ))}
+              ))
+            ) : (
+              <Text
+                style={[
+                  styles.margin,
+                  styles.subTitle,
+                  { fontSize: 19, textAlign: "center" },
+                ]}
+              >
+                Aucune recherche réalisé pour le moment !
+              </Text>
+            )}
           </View>
         )}
       </ScrollView>

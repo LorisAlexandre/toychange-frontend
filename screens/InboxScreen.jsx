@@ -47,99 +47,113 @@ export default function InboxScreen({ navigation }) {
       </Text>
       <ScrollView>
         <View style={{ gap: 20 }}>
-          {channels.map((channel, i) => (
-            <TouchableOpacity
-              key={i}
-              onPress={() =>
-                navigation.navigate("MyChannelScreen", {
-                  channel: channel._id,
-                })
-              }
-            >
-              {channel.annonce && (
-                <View style={[styles.margin, { alignItems: "start", gap: 10 }]}>
-                  <ImageBackground
-                    source={{ uri: channel.annonce.images[0] }}
-                    style={{ width: 50, height: 50 }}
+          {channels.length ? (
+            channels.map((channel, i) => (
+              <TouchableOpacity
+                key={i}
+                onPress={() =>
+                  navigation.navigate("MyChannelScreen", {
+                    channel: channel._id,
+                  })
+                }
+              >
+                {channel.annonce && (
+                  <View
+                    style={[styles.margin, { alignItems: "start", gap: 10 }]}
                   >
-                    {!channel.annonce.images[0] && (
-                      <FontAwesome name="image" size={50} color={"#F56E00"} />
-                    )}
-                  </ImageBackground>
-                  <View>
-                    <Text style={{ fontSize: 16, color: "#461904" }}>
-                      {channel.annonce.title}
-                    </Text>
-                    <View style={[{ flexDirection: "row" }]}>
-                      <Text
-                        style={[
-                          styles.label,
-                          channel.messages.some((e) => e.traded) && {
-                            backgroundColor: "#09a70b",
-                          },
-                        ]}
-                      >
-                        {channel.annonce.type === "exchange"
-                          ? "Echange"
-                          : "Don"}
-                        {channel.messages.some((e) => e.traded) && (
-                          <>
-                            {" "}
-                            <FontAwesome name="check" />
-                          </>
-                        )}
+                    <ImageBackground
+                      source={{ uri: channel.annonce.images[0] }}
+                      style={{ width: 50, height: 50 }}
+                    >
+                      {!channel.annonce.images[0] && (
+                        <FontAwesome name="image" size={50} color={"#F56E00"} />
+                      )}
+                    </ImageBackground>
+                    <View>
+                      <Text style={{ fontSize: 16, color: "#461904" }}>
+                        {channel.annonce.title}
                       </Text>
+                      <View style={[{ flexDirection: "row" }]}>
+                        <Text
+                          style={[
+                            styles.label,
+                            channel.messages.some((e) => e.traded) && {
+                              backgroundColor: "#09a70b",
+                            },
+                          ]}
+                        >
+                          {channel.annonce.type === "exchange"
+                            ? "Echange"
+                            : "Don"}
+                          {channel.messages.some((e) => e.traded) && (
+                            <>
+                              {" "}
+                              <FontAwesome name="check" />
+                            </>
+                          )}
+                        </Text>
+                      </View>
+                    </View>
+                    <View style={{ flex: 1, alignItems: "flex-end" }}>
+                      {channel.messages.length > 0 && (
+                        <>
+                          <Text
+                            style={{
+                              fontSize: 12,
+                              color: "gray",
+                              textAlign: "right",
+                            }}
+                          >
+                            {channel.messages[channel.messages.length - 1].text}
+                          </Text>
+                          <Text
+                            style={{
+                              fontSize: 12,
+                              color: "gray",
+                              textAlign: "right",
+                            }}
+                          >
+                            {
+                              dateFormater(
+                                channel.messages[channel.messages.length - 1]
+                                  .createdAt
+                              ).heure
+                            }{" "}
+                            {
+                              dateFormater(
+                                channel.messages[channel.messages.length - 1]
+                                  .createdAt
+                              ).date
+                            }
+                          </Text>
+                          <Text
+                            style={{
+                              fontSize: 12,
+                              color: "gray",
+                              textAlign: "right",
+                            }}
+                          >
+                            {channel.messages[channel.messages.length - 1]
+                              .sender === _id && "moi"}
+                          </Text>
+                        </>
+                      )}
                     </View>
                   </View>
-                  <View style={{ flex: 1, alignItems: "flex-end" }}>
-                    {channel.messages.length > 0 && (
-                      <>
-                        <Text
-                          style={{
-                            fontSize: 12,
-                            color: "gray",
-                            textAlign: "right",
-                          }}
-                        >
-                          {channel.messages[channel.messages.length - 1].text}
-                        </Text>
-                        <Text
-                          style={{
-                            fontSize: 12,
-                            color: "gray",
-                            textAlign: "right",
-                          }}
-                        >
-                          {
-                            dateFormater(
-                              channel.messages[channel.messages.length - 1]
-                                .createdAt
-                            ).heure
-                          }{" "}
-                          {
-                            dateFormater(
-                              channel.messages[channel.messages.length - 1]
-                                .createdAt
-                            ).date
-                          }
-                        </Text>
-                        <Text
-                          style={{
-                            fontSize: 12,
-                            color: "gray",
-                            textAlign: "right",
-                          }}
-                        >
-                          {channel.messages[channel.messages.length - 1]
-                            .sender === _id && "moi"}
-                        </Text>
-                      </>
-                    )}
-                  </View>
-                </View>
-              )}
-            </TouchableOpacity>
-          ))}
+                )}
+              </TouchableOpacity>
+            ))
+          ) : (
+            <Text
+              style={[
+                styles.margin,
+                styles.title,
+                { fontSize: 19, textAlign: "center" },
+              ]}
+            >
+              Aucun message pour le moment !
+            </Text>
+          )}
         </View>
       </ScrollView>
     </SafeAreaView>
