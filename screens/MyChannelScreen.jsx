@@ -100,6 +100,7 @@ export default function MyChannelScreen({ navigation, route: { params } }) {
     }
 
     if (messageText) {
+      console.log("message pas vide");
       const payloadText = {
         label,
         traded,
@@ -139,6 +140,7 @@ export default function MyChannelScreen({ navigation, route: { params } }) {
           type: "image/jpeg",
         })
       );
+      console.log("imagesToSend", imagesToSend);
       fetch(
         `https://toychange-backend.vercel.app/pusherAPI/${params.channel}/image?sender=${user._id}&label=${label}`,
         {
