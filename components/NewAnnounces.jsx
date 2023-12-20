@@ -16,7 +16,18 @@ export default function NewAnnounces({ navigation }) {
       .then((res) => res.json())
       .then(({ result, announces }) => {
         if (result) {
-          setAnnounces(announces);
+          fetch("https://toychange-backend.vercel.app/order/allOrders")
+            .then((res) => res.json())
+            .then(({ result, orders }) => {
+              if (result) {
+                const announcesFiltre = announces.filter(
+                  (annonce) =>
+                    !orders.some((order) => order.reference === annonce._id) &&
+                    !annonce.hasOwnProperty("exchangeProposal")
+                );
+                setAnnounces(announcesFiltre);
+              }
+            });
         }
       });
   }, []);
@@ -49,7 +60,7 @@ export default function NewAnnounces({ navigation }) {
       </TouchableOpacity>
       <View style={{ flexDirection: "row", flexWrap: "wrap", gap: 20 }}>
         {announces
-          .filter((e, i) => i < 3)
+          // .filter((e, i) => i < 3)
           .map((item, i) => (
             <AnnonceCard
               handleFav={handleFav}

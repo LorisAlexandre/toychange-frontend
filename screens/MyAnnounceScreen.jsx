@@ -8,6 +8,8 @@ import {
   TouchableOpacity,
   View,
   Image,
+  Alert,
+  ImageBackground,
 } from "react-native";
 import * as FileSystem from "expo-file-system";
 import { shareAsync } from "expo-sharing";
@@ -105,6 +107,15 @@ export default function MyAnnounceScreen({ navigation, route: { params } }) {
     return (
       <SafeAreaView style={styles.container}>
         <ScrollView>
+          <TouchableOpacity
+            onPress={() => {
+              Alert.alert("Modifications annulées");
+              setModification(false);
+            }}
+            style={[{ marginTop: 20 }, styles.margin]}
+          >
+            <FontAwesome name="angle-left" color={"#F56E00"} size={28} />
+          </TouchableOpacity>
           <Text style={[styles.title, styles.margin, { marginVertical: 40 }]}>
             Modifiez votre annonce, partagez l'amour. 🎁
           </Text>
@@ -416,45 +427,154 @@ export default function MyAnnounceScreen({ navigation, route: { params } }) {
     );
   }
 
+  let condition;
+
+  if (announce.condition === "new") {
+    condition = "Neuf";
+  } else if (announce.condition === "likeNew") {
+    condition = "Comme neuf";
+  } else if (announce.condition === "good") {
+    condition = "Bon état";
+  }
+
+  let deliveryMethod;
+
+  if (announce.deliveryMethod === "inPerson") {
+    deliveryMethod = "En personne";
+  } else if (announce.deliveryMethod === "postalDelivery") {
+    deliveryMethod = "Livraison";
+  } else if (announce.deliveryMethod === "both") {
+    deliveryMethod = "Au choix";
+  }
+
   return (
     <SafeAreaView style={styles.container}>
-      <TouchableOpacity
-        onPress={() =>
-          navigation.replace("TabNavigator", { screen: "Mon Compte" })
-        }
-        style={[{ marginTop: 20 }, styles.margin]}
+      <View
+        style={[
+          {
+            marginTop: 30,
+            flexDirection: "row",
+            alignItems: "center",
+            justifyContent: "space-between",
+            position: "absolute",
+            width: "90%",
+            zIndex: 100,
+          },
+          styles.margin,
+        ]}
       >
-        <FontAwesome name="angle-left" color={"#F56E00"} size={28} />
-      </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.backgroundBtn}
+          onPress={() => navigation.goBack()}
+        >
+          <FontAwesome name="angle-left" color={"#F56E00"} size={28} />
+        </TouchableOpacity>
+        {order && (
+          <Text style={[styles.label, { backgroundColor: "#09a70b" }]}>
+            Vendu
+          </Text>
+        )}
+      </View>
+      <ScrollView>
+        <ImageBackground
+          source={{ uri: announce.images[0] }}
+          style={[
+            styles.herobanner,
+            { alignItems: "center", justifyContent: "center" },
+          ]}
+        >
+          {!announce.images[0] && (
+            <FontAwesome name="image" size={100} color={"#F56E00"} />
+          )}
+        </ImageBackground>
 
-      <Text>{announce.title}</Text>
-      {order && (
-        <View>
-          <Text>Obj à échanger: {announce.exchangeProposal.title}</Text>
-          <TouchableOpacity
-            onPress={() =>
-              navigation.navigate("CheckoutScreen", {
-                announce: announce,
-                exchangeProposal: announce.exchangeProposal,
-              })
-            }
-          >
-            <Text>Payer</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => downloadLabel(order.parcel.label_url)}
-          >
-            <Text>Download Label</Text>
-          </TouchableOpacity>
+        <Text style={[styles.margin, styles.title, { marginBottom: 10 }]}>
+          {announce.title}
+        </Text>
+        <View style={[styles.margin, { gap: 10, marginBottom: 20 }]}>
+          <Text style={styles.label}>
+            {announce.type === "exchange" ? "Echange" : "Don"}
+          </Text>
+          <Text style={styles.label}>{condition}</Text>
+          <Text style={styles.label}>{deliveryMethod}</Text>
         </View>
-      )}
+        <View style={{ marginHorizontal: 20, marginBottom: 40 }}>
+          <Text style={{ fontSize: 19, color: "#CC5302", marginBottom: 10 }}>
+            Description
+          </Text>
+          <Text style={{ fontWeight: 300, color: "#F56E00" }}>
+            {announce.description}
+          </Text>
+        </View>
+        {order && (
+          <View style={[{ marginHorizontal: 20, gap: 10 }]}>
+            <Text style={{ fontSize: 19 }}>
+              Colis à recevoir: {announce.exchangeProposal.title}
+            </Text>
+            <View style={{ flexDirection: "row", gap: 10 }}>
+              <TouchableOpacity
+                style={{
+                  flex: 1,
+                  backgroundColor: "#F56E00",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  paddingVertical: 18,
+                  borderRadius: 8,
+                }}
+                onPress={() =>
+                  navigation.navigate("CheckoutScreen", {
+                    announce: announce,
+                    exchangeProposal: announce.exchangeProposal,
+                  })
+                }
+              >
+                <Text style={{ color: "white" }}>Payer</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={{
+                  flex: 1,
+                  backgroundColor: "#F56E00",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  paddingVertical: 18,
+                  borderRadius: 8,
+                }}
+                onPress={() => downloadLabel(order.parcel.label_url)}
+              >
+                <Text style={{ color: "white" }}>Télécharger l'étiquette</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        )}
+      </ScrollView>
       {!order && (
-        <View>
-          <TouchableOpacity>
-            <Text>Supprimer</Text>
+        <View style={[styles.margin, { gap: 10 }]}>
+          <TouchableOpacity
+            style={{
+              flex: 1,
+              backgroundColor: "#F56E00",
+              alignItems: "center",
+              justifyContent: "center",
+              paddingVertical: 18,
+              borderRadius: 8,
+            }}
+          >
+            <Text style={{ color: "white" }}>Supprimer</Text>
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => setModification(true)}>
-            <Text>Modifier</Text>
+          <TouchableOpacity
+            style={{
+              flex: 1,
+              backgroundColor: "#F56E00",
+              alignItems: "center",
+              justifyContent: "center",
+              paddingVertical: 18,
+              borderRadius: 8,
+            }}
+            onPress={() => {
+              setModification(true);
+            }}
+          >
+            <Text style={{ color: "white" }}>Modifier</Text>
           </TouchableOpacity>
         </View>
       )}
@@ -467,6 +587,15 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "white",
     gap: 20,
+  },
+  label: {
+    backgroundColor: "#F56E00",
+    color: "#FFF2D3",
+    textAlign: "center",
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    borderRadius: 16,
+    overflow: "hidden",
   },
   margin: {
     flexDirection: "row",
@@ -545,5 +674,15 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     top: 5,
     left: 5,
+  },
+  backgroundBtn: {
+    backgroundColor: "rgba(255, 255, 255, 0.70)",
+    padding: 5,
+    borderRadius: 30,
+  },
+  herobanner: {
+    height: 300,
+    resizeMode: "cover",
+    marginBottom: 10,
   },
 });
