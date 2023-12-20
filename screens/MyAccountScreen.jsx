@@ -17,10 +17,6 @@ export default MyAccountScreen = ({ navigation, route: { params } }) => {
     navigation.navigate("Mon Compte");
   };
 
-  useEffect(() => {
-    user.authToken && params && navigation.navigate(params.redirect, params);
-  }, [params]);
-
   if (!user.authToken) {
     return <LoginComponent />;
   } else {

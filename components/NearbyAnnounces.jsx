@@ -30,7 +30,9 @@ export default function NearbyAnnounces({ navigation }) {
                       (order) => order.reference === annonce[1]._id
                     ) && !annonce[1].hasOwnProperty("exchangeProposal")
                 );
-                setAnnounces(announcesFiltre);
+                setAnnounces(
+                  announcesFiltre.reverse().sort((a, b) => a[0] - b[0])
+                );
               }
             });
         }

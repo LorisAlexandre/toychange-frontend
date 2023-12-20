@@ -14,7 +14,6 @@ import {
   View,
 } from "react-native";
 import { useStripe } from "@stripe/stripe-react-native";
-import * as Notifications from "expo-notifications";
 import { useSelector } from "react-redux";
 
 import FontAwesome from "react-native-vector-icons/FontAwesome5";
@@ -131,19 +130,6 @@ export default function CheckoutScreen({ navigation, route: { params } }) {
     }
   };
 
-  const sendNotificationToSeller = async (article) => {
-    if (!article.donor.notifToken) {
-      return;
-    }
-    await Notifications.scheduleNotificationAsync({
-      content: {
-        title: `${article.title} a créé un sourir !`,
-        body: `Merci à vous pour ce partage !`,
-      },
-      to: article.donor,
-    });
-  };
-
   const createParcel = () => {
     console.log(exchangeProposal);
     fetch("https://toychange-backend.vercel.app/sendcloudAPI/createParcel", {
@@ -208,7 +194,6 @@ export default function CheckoutScreen({ navigation, route: { params } }) {
                   .then((res) => res.json())
                   .then((data) => {
                     if (data.result) {
-                      sendNotificationToSeller(data.order);
                       const order = data.order;
                       Alert.alert("Success", "Your order is confirmed!");
                       navigation.reset({
