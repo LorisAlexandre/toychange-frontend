@@ -119,17 +119,14 @@ export default function AddPostScreen({ navigation }) {
                 if (!result) {
                   Alert.alert("Images fail to upload");
                 }
-                navigation.replace("MyAnnounceScreen", {
-                  announce,
-                  numAnnounces,
+                navigation.reset({
+                  index: 1,
+                  routes: [
+                    { name: "TabNavigator", screen: "Mon Compte" },
+                    { name: "MyAnnouncesScreen" },
+                    { name: "MyAnnounceScreen", params: { announce } },
+                  ],
                 });
-                // navigation.reset({
-                //   index: 1,
-                //   routes: [
-                //     { name: "TabNavigator", screen: "Mon Compte" },
-                //     { name: "MyAnnounceScreen", params: { announce } },
-                //   ],
-                // });
               });
           } else {
             console.log("redirect");
@@ -137,10 +134,11 @@ export default function AddPostScreen({ navigation }) {
               index: 1,
               routes: [
                 { name: "TabNavigator", screen: "Mon Compte" },
+                { name: "MyAnnouncesScreen" },
                 { name: "MyAnnounceScreen", params: { announce } },
               ],
             });
-            setNumAnnounces((prevNum) => prevNum + 1);
+            // setNumAnnounces((prevNum) => prevNum + 1);
           }
         }
       });
