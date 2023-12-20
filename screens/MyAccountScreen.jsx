@@ -23,8 +23,13 @@ export default MyAccountScreen = ({ navigation, route: { params } }) => {
       (async () => {
         const { status } = await Notifications.requestPermissionsAsync();
         if (status) {
-          const token = (await Notifications.getExpoPushTokenAsync()).data;
+          const token = (
+            await Notifications.getDevicePushTokenAsync({
+              projectId: "a26c4d02-c760-48fc-8d29-86157d770146",
+            })
+          ).data;
           console.log(token);
+
           // fetch(
           //   `https://toychange-backend.vercel.app/users/notifToken/${user._id}`,
           //   {
@@ -133,14 +138,14 @@ const styles = StyleSheet.create({
     paddingLeft: 25,
     paddingRight: 40,
     fontSize: 24,
-    shadowColor: 'grey',
-  shadowOffset: {
-    width: 0,
-    height: 0,
-  },
-  shadowOpacity: 0.3,
-  shadowRadius: 6,
-  elevation: 5,
+    shadowColor: "grey",
+    shadowOffset: {
+      width: 0,
+      height: 0,
+    },
+    shadowOpacity: 0.3,
+    shadowRadius: 6,
+    elevation: 5,
   },
   logoutButton: {
     display: "flex",
