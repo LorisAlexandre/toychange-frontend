@@ -16,9 +16,9 @@ import {
   removeFav,
   removeSearchQuery,
 } from "../reducers/user";
+import AnnonceCard from "../components/AnnonceCard";
 
 import FontAwesome from "react-native-vector-icons/FontAwesome5";
-import AnnonceCard from "../components/AnnonceCard";
 
 export default function ResultSearchScreen({ navigation, route: { params } }) {
   const { mySearches, favAnnounces } = useSelector((state) => state.user.value);
@@ -86,62 +86,133 @@ export default function ResultSearchScreen({ navigation, route: { params } }) {
           <FontAwesome name="search" color={"#F56E00"} size={20} />
         </TouchableOpacity>
       </View>
-      {query !== params.query || focus ? (
-        <View style={{ marginHorizontal: 20 }}>
-          <View>
-            <Text style={styles.subTitle}>Suggestions</Text>
-            <TouchableOpacity
-              style={[
-                styles.searches,
-                { marginBottom: 10 },
-                { justifyContent: "center" },
-              ]}
-              onPress={() => handleSearch(query)}
-            >
-              <Text style={{ color: "#F56E00" }}>{query}</Text>
-            </TouchableOpacity>
-          </View>
-          <View>
-            <Text style={styles.subTitle}>Mes dernières recherches </Text>
-            <View style={{ gap: 10 }}>
-              {mySearches
-                .filter((e) => new RegExp(query, "i").test(e))
-                .map((e, i) => (
-                  <TouchableOpacity
-                    style={styles.searches}
-                    key={i}
-                    onPress={() => handleSearch(e, false)}
-                  >
-                    <FontAwesome name="clock" size={15} color={"#F56E00"} />
-                    <Text style={{ color: "#F56E00" }}>{e}</Text>
-                    <TouchableOpacity
-                      onPress={() => dispatch(removeSearchQuery(e))}
-                    >
-                      <FontAwesome name="trash" size={15} color={"#F56E00"} />
-                    </TouchableOpacity>
-                  </TouchableOpacity>
-                ))}
+      {params.query ? (
+        <View>
+          {query !== params.query || focus ? (
+            <View style={{ marginHorizontal: 20 }}>
+              <View>
+                <Text style={styles.subTitle}>Suggestions</Text>
+                <TouchableOpacity
+                  style={[
+                    styles.searches,
+                    { marginBottom: 10 },
+                    { justifyContent: "center" },
+                  ]}
+                  onPress={() => handleSearch(query)}
+                >
+                  <Text style={{ color: "#F56E00" }}>{query}</Text>
+                </TouchableOpacity>
+              </View>
+              <View>
+                <Text style={styles.subTitle}>Mes dernières recherches </Text>
+                <View style={{ gap: 10 }}>
+                  {mySearches
+                    .filter((e) => new RegExp(query, "i").test(e))
+                    .map((e, i) => (
+                      <TouchableOpacity
+                        style={styles.searches}
+                        key={i}
+                        onPress={() => handleSearch(e, false)}
+                      >
+                        <FontAwesome name="clock" size={15} color={"#F56E00"} />
+                        <Text style={{ color: "#F56E00" }}>{e}</Text>
+                        <TouchableOpacity
+                          onPress={() => dispatch(removeSearchQuery(e))}
+                        >
+                          <FontAwesome
+                            name="trash"
+                            size={15}
+                            color={"#F56E00"}
+                          />
+                        </TouchableOpacity>
+                      </TouchableOpacity>
+                    ))}
+                </View>
+              </View>
             </View>
-          </View>
+          ) : (
+            <ScrollView style={{ marginHorizontal: 20 }}>
+              <Text
+                style={{
+                  color: "#CC5302",
+                  fontWeight: "bold",
+                  marginBottom: 10,
+                }}
+              >
+                {announces.length} announces
+              </Text>
+              <View style={{ flexDirection: "row", flexWrap: "wrap", gap: 20 }}>
+                {announces.map((item, i) => (
+                  <AnnonceCard
+                    handleFav={handleFav}
+                    navigation={navigation}
+                    item={item}
+                    key={i}
+                  />
+                ))}
+              </View>
+            </ScrollView>
+          )}
         </View>
       ) : (
-        <ScrollView style={{ marginHorizontal: 20 }}>
-          <Text
-            style={{ color: "#CC5302", fontWeight: "bold", marginBottom: 10 }}
-          >
-            {announces.length} announces
-          </Text>
-          <View style={{ flexDirection: "row", flexWrap: "wrap", gap: 20 }}>
-            {announces.map((item, i) => (
-              <AnnonceCard
-                handleFav={handleFav}
-                navigation={navigation}
-                item={item}
-                key={i}
-              />
-            ))}
-          </View>
-        </ScrollView>
+        <View style={{ flex: 1 }}>
+          {params.nestedArr ? (
+            <View style={{ flex: 1 }}>
+              <Text
+                style={[
+                  styles.margin,
+                  {
+                    color: "#CC5302",
+                    fontWeight: "bold",
+                    marginBottom: 10,
+                  },
+                ]}
+              >
+                {params.announces.length} annonces
+              </Text>
+              <ScrollView>
+                <View style={[styles.margin, { flexWrap: "wrap", gap: 20 }]}>
+                  {params.announces.map((item, i) => (
+                    <AnnonceCard
+                      handleFav={handleFav}
+                      item={item[1]}
+                      key={i}
+                      km={item[0]}
+                      navigation={navigation}
+                    />
+                  ))}
+                </View>
+              </ScrollView>
+            </View>
+          ) : (
+            <View style={{ flex: 1 }}>
+              <Text
+                style={[
+                  styles.margin,
+                  {
+                    color: "#CC5302",
+                    fontWeight: "bold",
+                    marginBottom: 10,
+                  },
+                ]}
+              >
+                {params.announces.length} annonces
+              </Text>
+              <ScrollView>
+                <View style={[styles.margin, { flexWrap: "wrap", gap: 20 }]}>
+                  {params.announces.map((item, i) => (
+                    <AnnonceCard
+                      handleFav={handleFav}
+                      item={item}
+                      key={i}
+                      navigation={navigation}
+                    />
+                  ))}
+                </View>
+              </ScrollView>
+            </View>
+          )}
+        </View>
       )}
     </SafeAreaView>
   );

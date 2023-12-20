@@ -44,6 +44,7 @@ export default function NewAnnounces({ navigation }) {
   return (
     <View style={styles.container}>
       <TouchableOpacity
+        onPress={() => navigation.navigate("ResultSearchScreen", { announces })}
         style={{
           flexDirection: "row",
           alignItems: "center",
@@ -60,7 +61,7 @@ export default function NewAnnounces({ navigation }) {
       </TouchableOpacity>
       <View style={{ flexDirection: "row", flexWrap: "wrap", gap: 20 }}>
         {announces
-          // .filter((e, i) => i < 3)
+          .filter((e, i) => i < 2)
           .map((item, i) => (
             <AnnonceCard
               handleFav={handleFav}

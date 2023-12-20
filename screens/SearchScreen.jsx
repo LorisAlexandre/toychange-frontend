@@ -124,7 +124,7 @@ export default function SearchScreen({ navigation, route: { params } }) {
       ) : (
         <ScrollView style={{ marginHorizontal: 20 }}>
           <NewAnnounces navigation={navigation} />
-          {/* <NearbyAnnounces navigation={navigation} /> */}
+          <NearbyAnnounces navigation={navigation} />
         </ScrollView>
       )}
     </SafeAreaView>
