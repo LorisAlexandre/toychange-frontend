@@ -8,6 +8,7 @@ import {
   TextInput,
   TouchableOpacity,
   View,
+  KeyboardAvoidingView,
 } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 import { useSelector } from "react-redux";
@@ -155,7 +156,10 @@ export default function AddExchangePostScreen({
   };
 
   return (
-    <View style={styles.container}>
+    <KeyboardAvoidingView
+      behavior={Platform.OS = "padding"}
+      style={styles.container}>
+    
       <View
         style={[
           styles.margin,
@@ -338,7 +342,8 @@ export default function AddExchangePostScreen({
           </TouchableOpacity>
         </View>
       </ScrollView>
-    </View>
+    
+    </KeyboardAvoidingView>
   );
 }
 

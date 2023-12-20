@@ -145,6 +145,7 @@ const styles = StyleSheet.create({
     top: 50,
     left: 30,
     backgroundColor: 'transparent',
+    zIndex: 100,
   },
   title: {
     marginBottom: 40,

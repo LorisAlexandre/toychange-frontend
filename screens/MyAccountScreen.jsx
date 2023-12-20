@@ -5,7 +5,6 @@ import LoginComponent from "../components/Login";
 import InfosUserComponent from "../components/InfosUser";
 import { logout } from "../reducers/user";
 import { FontAwesome } from "@expo/vector-icons";
-import * as Notifications from "expo-notifications";
 
 export default MyAccountScreen = ({ navigation, route: { params } }) => {
   const dispatch = useDispatch();
@@ -19,26 +18,8 @@ export default MyAccountScreen = ({ navigation, route: { params } }) => {
   };
 
   useEffect(() => {
-    user.authToken &&
-      (async () => {
-        const { status } = await Notifications.requestPermissionsAsync();
-        if (status) {
-          const token = (await Notifications.getExpoPushTokenAsync()).data;
-          console.log(token);
-          // fetch(
-          //   `https://toychange-backend.vercel.app/users/notifToken/${user._id}`,
-          //   {
-          //     method: "PUT",
-          //     headers: {
-          //       authorization: user.authToken,
-          //       "Content-Type": "application/json",
-          //     },
-          //     body: JSON.stringify({ token }),
-          //   }
-          // );
-        }
-      })();
-  }, [user.authToken]);
+    user.authToken && params && navigation.navigate(params.redirect, params);
+  }, [params]);
 
   if (!user.authToken) {
     return <LoginComponent />;
@@ -133,14 +114,14 @@ const styles = StyleSheet.create({
     paddingLeft: 25,
     paddingRight: 40,
     fontSize: 24,
-    shadowColor: 'grey',
-  shadowOffset: {
-    width: 0,
-    height: 0,
-  },
-  shadowOpacity: 0.3,
-  shadowRadius: 6,
-  elevation: 5,
+    shadowColor: "#FFF2D3",
+    shadowOffset: {
+      width: 0,
+      height: 0,
+    },
+    shadowOpacity: 1,
+    shadowRadius: 5,
+    elevation: 5,
   },
   logoutButton: {
     display: "flex",
@@ -150,9 +131,8 @@ const styles = StyleSheet.create({
     height: 65,
     backgroundColor: "#f56e00",
     borderRadius: 8,
+    marginTop: 180,
+    marginBottom: 0,
     color: "FFF2D3",
-    zIndex: 10000,
-    position: "absolute",
-    bottom: 75,
   },
 });

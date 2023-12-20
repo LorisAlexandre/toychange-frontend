@@ -10,6 +10,8 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+
 import * as ImagePicker from "expo-image-picker";
 import Pusher from "pusher-js/react-native";
 import Message from "../components/Message";
@@ -200,7 +202,9 @@ export default function MyChannelScreen({ navigation, route: { params } }) {
   }
 
   return (
-    <View style={styles.container}>
+    <KeyboardAwareScrollView style={styles.container}>
+
+    <View style={styles.box}>
       <View
         style={[
           styles.margin,
@@ -211,7 +215,7 @@ export default function MyChannelScreen({ navigation, route: { params } }) {
           onPress={() => navigation.goBack()}
           style={[
             {
-              marginTop: 20,
+              marginTop: 40,
               alignItems: "center",
               gap: 10,
               flexDirection: "row",
@@ -305,7 +309,7 @@ export default function MyChannelScreen({ navigation, route: { params } }) {
           <Image key={i} source={{ uri: img }} width={50} height={50} />
         ))}
       </View>
-      <KeyboardAvoidingView style={{ width: "100%" }}>
+      <View style={{ width: "100%" }}>
         <View style={[{ gap: 20, marginBottom: 10 }, styles.margin]}>
           <TouchableOpacity onPress={pickImage}>
             <FontAwesome name="file-image" color={"#FFA732"} size={25} />
@@ -346,8 +350,11 @@ export default function MyChannelScreen({ navigation, route: { params } }) {
             <FontAwesome name="paper-plane" color={"#FFA732"} size={20} />
           </TouchableOpacity>
         </View>
-      </KeyboardAvoidingView>
+        </View>
+     
     </View>
+    </KeyboardAwareScrollView>
+
   );
 }
 
@@ -356,6 +363,12 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "white",
     gap: 20,
+  },
+  box: {
+    display: "flex",
+    justifyContent: "flex-end",
+    backgroundColor: "white",
+   height :"100%",
   },
   margin: {
     flexDirection: "row",
@@ -370,12 +383,14 @@ const styles = StyleSheet.create({
     color: "#CC5302",
     flex: 1,
   },
-  textInputContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 5,
-    marginHorizontal: 20,
-    marginBottom: 20,
+    textInputContainer: {
+      flexDirection: "row",
+      alignItems: "center",
+      justifyContent: "space-between",
+      gap: 5,
+      marginHorizontal: 20,
+      marginBottom: 20,
+      paddingBottom: 20,
   },
   placeholder: {
     color: "#FFA732",

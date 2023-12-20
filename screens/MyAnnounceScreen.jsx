@@ -151,7 +151,7 @@ export default function MyAnnounceScreen({ navigation, route: { params } }) {
                       : styles.inactive,
                   ]}
                 >
-                  Donation
+                  Don
                 </Text>
               </TouchableOpacity>
               <TouchableOpacity

@@ -89,20 +89,24 @@ export default function MyAnnouncesScreen({ navigation }) {
                   </View>
                   <View style={styles.announceSection}>
                     <Text style={styles.announceType}>
-                      {announce.type === "exchange" ? "Échange" : "Donation"}
+                      {announce.type === "exchange" ? "Échange" : "Don"}
                     </Text>
                     <Text style={styles.deliveryMethod}>
-                      {announce.deliveryMethod === "Les 2"
-                        ? "Les 2"
-                        : "Livraison"}
+                    {(() => {
+      let deliveryMethod;
+
+      if (announce.deliveryMethod === "inPerson") {
+        deliveryMethod = "En personne";
+      } else if (announce.deliveryMethod === "postalDelivery") {
+        deliveryMethod = "Livraison";
+      } else if (announce.deliveryMethod === "both") {
+        deliveryMethod = "Au choix";
+      }
+
+      return deliveryMethod;
+    })()}
                     </Text>
-                    <Text style={styles.condition}>
-                      {announce.condition === "Neuf"
-                        ? "Neuf"
-                        : announce.condition === "Comme neuf"
-                        ? "Comme neuf"
-                        : "Bon état"}
-                    </Text>
+                    
                   </View>
                 </View>
               </TouchableOpacity>
@@ -156,12 +160,12 @@ const styles = StyleSheet.create({
   announceItem: {
     flexDirection: "row",
   alignItems: "center",
-  justifyContent: "space-between",
+  justifyContent: "space-around",
   padding: 5,
   borderRadius: 8,
   marginLeft: 2,
   marginRight: 2,
-  backgroundColor: "#FFFFFF", // Ajoutez une couleur de fond
+  backgroundColor: "#FFFFFF", 
   shadowColor: 'grey',
   shadowOffset: {
     width: 0,
@@ -185,9 +189,10 @@ const styles = StyleSheet.create({
     marginLeft: 15,
   },
   announceSection: {
+    
     display: "flex",
     flexDirection: "row",
-    justifyContent: "space-between",
+    justifyContent: "space-around",
     alignItems: "center",
     marginLeft: 5,
   },
@@ -200,7 +205,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#F56E00",
     color: "#FFF2D3",
     textAlign: "center",
-    width: 80,
+    width: "40%",
     fontSize: 12,
     paddingHorizontal: 6,
     paddingVertical: 4,
@@ -208,23 +213,12 @@ const styles = StyleSheet.create({
     overflow: "hidden",
     marginTop: 5,
   },
-  condition: {
-    backgroundColor: "#F56E00",
-    color: "#FFF2D3",
-    textAlign: "center",
-    width: 70,
-    fontSize: 12,
-    paddingHorizontal: 6,
-    paddingVertical: 4,
-    borderRadius: 12,
-    overflow: "hidden",
-    marginTop: 5,
-  },
+  
   deliveryMethod: {
     backgroundColor: "#F56E00",
     color: "#FFF2D3",
     textAlign: "center",
-    width: 80,
+    width: "45%",
     fontSize: 12,
     paddingHorizontal: 6,
     paddingVertical: 4,
