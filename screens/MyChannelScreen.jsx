@@ -124,10 +124,8 @@ export default function MyChannelScreen({ navigation, route: { params } }) {
         }
       )
         .then((res) => res.json())
-        .then(
-          (data) =>
-            console.log(data.channel.messages[data.channel.messages.length - 1])
-          // if traded true envoie notif !!
+        .then((data) =>
+          console.log(data.channel.messages[data.channel.messages.length - 1])
         );
     }
 

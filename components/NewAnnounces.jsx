@@ -20,11 +20,14 @@ export default function NewAnnounces({ navigation }) {
             .then((res) => res.json())
             .then(({ result, orders }) => {
               if (result) {
-                const announcesFiltre = announces.filter(
-                  (annonce) =>
-                    !orders.some((order) => order.reference === annonce._id) &&
-                    !annonce.hasOwnProperty("exchangeProposal")
-                );
+                const announcesFiltre = announces
+                  .filter(
+                    (annonce) =>
+                      !orders.some(
+                        (order) => order.reference === annonce._id
+                      ) && !annonce.hasOwnProperty("exchangeProposal")
+                  )
+                  .reverse();
                 setAnnounces(announcesFiltre);
               }
             });

@@ -5,7 +5,6 @@ import LoginComponent from "../components/Login";
 import InfosUserComponent from "../components/InfosUser";
 import { logout } from "../reducers/user";
 import { FontAwesome } from "@expo/vector-icons";
-import * as Notifications from "expo-notifications";
 
 export default MyAccountScreen = ({ navigation, route: { params } }) => {
   const dispatch = useDispatch();
@@ -17,33 +16,6 @@ export default MyAccountScreen = ({ navigation, route: { params } }) => {
     // Redirige l'utilisateur vers l'écran de connexion
     navigation.navigate("Mon Compte");
   };
-
-  useEffect(() => {
-    user.authToken &&
-      (async () => {
-        const { status } = await Notifications.requestPermissionsAsync();
-        if (status) {
-          const token = (
-            await Notifications.getDevicePushTokenAsync({
-              projectId: "a26c4d02-c760-48fc-8d29-86157d770146",
-            })
-          ).data;
-          console.log(token);
-
-          // fetch(
-          //   `https://toychange-backend.vercel.app/users/notifToken/${user._id}`,
-          //   {
-          //     method: "PUT",
-          //     headers: {
-          //       authorization: user.authToken,
-          //       "Content-Type": "application/json",
-          //     },
-          //     body: JSON.stringify({ token }),
-          //   }
-          // );
-        }
-      })();
-  }, [user.authToken]);
 
   if (!user.authToken) {
     return <LoginComponent />;
