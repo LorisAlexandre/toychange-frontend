@@ -20,7 +20,19 @@ export default function NearbyAnnounces({ navigation }) {
       .then((res) => res.json())
       .then(({ result, announcesSorted }) => {
         if (result) {
-          setAnnounces([...announcesSorted]);
+          fetch("https://toychange-backend.vercel.app/order/allOrders")
+            .then((res) => res.json())
+            .then(({ result, orders }) => {
+              if (result) {
+                const announcesFiltre = announcesSorted.filter(
+                  (annonce) =>
+                    !orders.some(
+                      (order) => order.reference === annonce[1]._id
+                    ) && !annonce[1].hasOwnProperty("exchangeProposal")
+                );
+                setAnnounces(announcesFiltre);
+              }
+            });
         }
       });
   }, []);
@@ -57,7 +69,7 @@ export default function NearbyAnnounces({ navigation }) {
           color={styles.subTitle.color}
         />
       </TouchableOpacity>
-      <Text style={{ flexDirection: "row", flexWrap: "wrap", gap: 20 }}>
+      <View style={{ flexDirection: "row", flexWrap: "wrap", gap: 20 }}>
         {announces
           .filter((e, i) => i < 2)
           .map((item, i) => (
@@ -69,7 +81,7 @@ export default function NearbyAnnounces({ navigation }) {
               key={i}
             />
           ))}
-      </Text>
+      </View>
     </View>
   );
 }

@@ -271,7 +271,9 @@ export default function MyChannelScreen({ navigation, route: { params } }) {
               : `${recipient?.username} a`}{" "}
             accepté l'échange
           </Text>
-          <Text>Créer le produit à échanger</Text>
+          {messages.find((e) => e.traded).sender !== user._id && (
+            <Text>Créer le produit à échanger</Text>
+          )}
         </TouchableOpacity>
       )}
 

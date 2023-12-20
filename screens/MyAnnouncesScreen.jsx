@@ -155,22 +155,21 @@ const styles = StyleSheet.create({
   },
   announceItem: {
     flexDirection: "row",
-  alignItems: "center",
-  justifyContent: "space-between",
-  padding: 5,
-  borderRadius: 8,
-  marginLeft: 2,
-  marginRight: 2,
-  backgroundColor: "#FFFFFF", // Ajoutez une couleur de fond
-  shadowColor: 'grey',
-  shadowOffset: {
-    width: 0,
-    height: 0,
-  },
-  shadowOpacity: 0.3,
-  shadowRadius: 6,
-  elevation: 5,
-    
+    alignItems: "center",
+    justifyContent: "space-between",
+    padding: 5,
+    borderRadius: 8,
+    marginLeft: 2,
+    marginRight: 2,
+    backgroundColor: "#FFFFFF", // Ajoutez une couleur de fond
+    shadowColor: "grey",
+    shadowOffset: {
+      width: 0,
+      height: 0,
+    },
+    shadowOpacity: 0.3,
+    shadowRadius: 6,
+    elevation: 5,
   },
   announceImage: {
     width: 70,
