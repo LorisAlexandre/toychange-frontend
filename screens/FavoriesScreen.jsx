@@ -68,9 +68,9 @@ export default function FavoriesScreen({ navigation }) {
           </Text>
         </TouchableOpacity>
       </View>
-      <ScrollView style={{ marginHorizontal: 20 }}>
+      <ScrollView>
         {showAnnounces ? (
-          <View style={([styles.margin], { flexWrap: "wrap", gap: 20 })}>
+          <View style={[styles.margin, { flexWrap: "wrap", gap: 20 }]}>
             {favAnnounces.map((item, i) => (
               <AnnonceCard
                 handleFav={handleFav}

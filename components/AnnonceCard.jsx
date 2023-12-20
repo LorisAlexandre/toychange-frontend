@@ -4,7 +4,7 @@ import FontAwesome from "react-native-vector-icons/FontAwesome5";
 import { useDispatch, useSelector } from "react-redux";
 import { addFav, removeFav } from "../reducers/user";
 
-export default function AnnonceCard({ item, navigation }) {
+export default function AnnonceCard({ item, navigation, km }) {
   const dispatch = useDispatch();
   const { favAnnounces } = useSelector((state) => state.user.value);
 
@@ -32,8 +32,11 @@ export default function AnnonceCard({ item, navigation }) {
       </TouchableOpacity>
       <View style={{ padding: 15, gap: 5 }}>
         <Text style={{ color: "#F56E00", fontWeight: 600, fontSize: 16 }}>
-          {item.title}
+          {item.title.length > 11
+            ? `${item.title.substring(0, 11)}...`
+            : item.title}
         </Text>
+        {km && <Text style={{ color: "#F56E00" }}>{km} km</Text>}
         <Text style={{ color: "#FF8B0A" }}>{item.address.postalCode}</Text>
         <Text style={styles.label}>
           {item.type === "exchange" ? "Echange" : "Don"}

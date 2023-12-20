@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { addFav, removeFav } from "../reducers/user";
 
 import FontAwesome from "react-native-vector-icons/FontAwesome5";
+import AnnonceCard from "./AnnonceCard";
 
 export default function NearbyAnnounces({ navigation }) {
   const dispatch = useDispatch();
@@ -19,7 +20,7 @@ export default function NearbyAnnounces({ navigation }) {
       .then((res) => res.json())
       .then(({ result, announcesSorted }) => {
         if (result) {
-          setAnnounces(announcesSorted);
+          setAnnounces([...announcesSorted]);
         }
       });
   }, []);
@@ -33,36 +34,15 @@ export default function NearbyAnnounces({ navigation }) {
     }
   };
 
-  console.log(announces);
-
   return (
     <View style={styles.container}>
-      <Text>Les annonces proches</Text>
-      {/* <View>
-        {announces.map((item, i) => (
-          <View key={i}>
-            <Text>{item[1].title}</Text>
-            <Text>{item[0]}</Text>
-            <TouchableOpacity onPress={() => handleFav(item[1])}>
-              <Text
-                style={
-                  favAnnounces.some((e) => e._id === item[1]._id) && {
-                    backgroundColor: "red",
-                  }
-                }
-              >
-                Add to fav
-              </Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() => navigation.navigate("PostScreen", item[1])}
-            >
-              <Text>Go to this post</Text>
-            </TouchableOpacity>
-          </View>
-        ))}
-      </View> */}
       <TouchableOpacity
+        onPress={() =>
+          navigation.navigate("ResultSearchScreen", {
+            announces,
+            nestedArr: true,
+          })
+        }
         style={{
           flexDirection: "row",
           alignItems: "center",
@@ -78,46 +58,16 @@ export default function NearbyAnnounces({ navigation }) {
         />
       </TouchableOpacity>
       <Text style={{ flexDirection: "row", flexWrap: "wrap", gap: 20 }}>
-        {announces.length &&
-          announces.map((item, i) => (
-            <TouchableOpacity
+        {announces
+          .filter((e, i) => i < 2)
+          .map((item, i) => (
+            <AnnonceCard
+              handleFav={handleFav}
+              navigation={navigation}
+              item={item[1]}
+              km={item[0]}
               key={i}
-              style={styles.announces}
-              onPress={() => navigation.navigate("PostScreen", item)}
-            >
-              <Image
-                source={{ uri: item.images[0] }}
-                width={155}
-                height={176}
-              />
-              <TouchableOpacity
-                style={styles.heartBtn}
-                onPress={() => handleFav(item)}
-              >
-                <FontAwesome
-                  name="heart"
-                  size={15}
-                  color={
-                    favAnnounces.some((e) => e._id === item._id)
-                      ? "red"
-                      : "gray"
-                  }
-                />
-              </TouchableOpacity>
-              <View style={{ padding: 15, gap: 5 }}>
-                <Text
-                  style={{ color: "#F56E00", fontWeight: 600, fontSize: 16 }}
-                >
-                  {item.title}
-                </Text>
-                <Text style={{ color: "#FF8B0A" }}>
-                  {item.address.postalCode}
-                </Text>
-                <Text style={styles.label}>
-                  {item.type === "exchange" ? "Echange" : "Don"}
-                </Text>
-              </View>
-            </TouchableOpacity>
+            />
           ))}
       </Text>
     </View>
