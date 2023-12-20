@@ -202,7 +202,11 @@ export default function MyChannelScreen({ navigation, route: { params } }) {
   }
 
   return (
-    <KeyboardAwareScrollView style={styles.container}>
+    <KeyboardAwareScrollView
+  style={styles.container}
+  behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+  keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : -150}
+>
 
     <View style={styles.box}>
       <View
@@ -215,10 +219,8 @@ export default function MyChannelScreen({ navigation, route: { params } }) {
           onPress={() => navigation.goBack()}
           style={[
             {
-              marginTop: 40,
-              alignItems: "center",
-              gap: 10,
-              flexDirection: "row",
+              marginTop: 50,
+             marginBottom:20,
             },
           ]}
         >
@@ -229,26 +231,27 @@ export default function MyChannelScreen({ navigation, route: { params } }) {
         onPress={() => navigation.navigate("PostScreen", announce)}
         style={[
           styles.margin,
-          { alignItems: "center", justifyContent: "space-between" },
+          { alignItems: "center", justifyContent: "space-between",marginBottom: 20, },
         ]}
       >
-        <ImageBackground
-          source={{ uri: announce?.images[0] }}
-          style={{ width: 75, height: 75 }}
-        >
-          {!announce?.images[0] && (
-            <FontAwesome name="image" color={"#F56E00"} size={100} />
-          )}
-        </ImageBackground>
-        <View style={{ gap: 5, alignItems: "flex-end" }}>
+        <View style={{ position: 'relative' }}>
+  <Image
+    source={{ uri: announce?.images[0] }}
+    style={styles.image}
+  />
+  {!announce?.images[0] && (
+    <FontAwesome name="image" color={"#F56E00"} size={75} />
+  )}
+</View>
+        <View style={{ gap: 5, alignItems: "center", justifyContent:"center", }}>
           <Text style={{ color: "#461904", fontSize: 19, fontWeight: 700 }}>
             {announce?.title}
           </Text>
-          <View style={{ flexDirection: "row", gap: 5 }}>
+          <View style={{ flexDirection: "row", gap: 35 }}>
             <Text style={styles.label}>
               {announce?.type === "exchange" ? "Echange" : "Don"}
             </Text>
-            <Text style={styles.label}>{condition}</Text>
+            
             <Text style={styles.label}>{deliveryMethod}</Text>
           </View>
         </View>
@@ -257,9 +260,10 @@ export default function MyChannelScreen({ navigation, route: { params } }) {
         <TouchableOpacity
           style={{
             marginHorizontal: 20,
+            marginBottom: 20,
             borderWidth: 1,
             borderColor: "#F56E00",
-            paddingVertical: 5,
+            paddingVertical: 15,
             alignItems: "center",
             borderRadius: 8,
           }}
@@ -312,9 +316,10 @@ export default function MyChannelScreen({ navigation, route: { params } }) {
         ))}
       </View>
       <View style={{ width: "100%" }}>
-        <View style={[{ gap: 20, marginBottom: 10 }, styles.margin]}>
+        <View style={[{ gap: 20, marginBottom: 10, marginTop: 10, display: "flex", flexDirection: "row"}, styles.margin]}>
           <TouchableOpacity onPress={pickImage}>
             <FontAwesome name="file-image" color={"#FFA732"} size={25} />
+            <Text style={ {color:"#FFA732"}}>Inserez une image</Text>
           </TouchableOpacity>
           {announce?.type === "exchange" && announce?.donor !== user._id && (
             <TouchableOpacity
@@ -363,18 +368,24 @@ export default function MyChannelScreen({ navigation, route: { params } }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+  
+   
     backgroundColor: "white",
     gap: 20,
   },
   box: {
     display: "flex",
-    justifyContent: "flex-end",
+    justifyContent: "space-between",
     backgroundColor: "white",
    height :"100%",
+   paddingTop:10,
   },
   margin: {
     flexDirection: "row",
     marginHorizontal: 20,
+    alignContent: "center",
+    justifyContent: "space-between",
+    
   },
   textInput: {
     borderWidth: 1,
@@ -386,12 +397,14 @@ const styles = StyleSheet.create({
     flex: 1,
   },
     textInputContainer: {
+      
       flexDirection: "row",
       alignItems: "center",
-      justifyContent: "space-between",
+      
       gap: 5,
       marginHorizontal: 20,
       marginBottom: 20,
+      marginTop: 130,
       paddingBottom: 20,
   },
   placeholder: {
@@ -415,4 +428,9 @@ const styles = StyleSheet.create({
   messagesContainer: {
     marginHorizontal: 20,
   },
+  image: {
+    height: 75,
+    width: 75,
+    borderRadius: 8,
+  }
 });

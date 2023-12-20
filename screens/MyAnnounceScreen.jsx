@@ -1,3 +1,5 @@
+import React from "react";
+
 import { useEffect, useState } from "react";
 import {
   SafeAreaView,
@@ -102,7 +104,7 @@ export default function MyAnnounceScreen({ navigation, route: { params } }) {
   const save = (uri) => {
     shareAsync(uri);
   };
-
+  
   if (modification) {
     return (
       <SafeAreaView style={styles.container}>
@@ -558,6 +560,7 @@ export default function MyAnnounceScreen({ navigation, route: { params } }) {
               paddingVertical: 18,
               borderRadius: 8,
             }}
+           
           >
             <Text style={{ color: "white" }}>Supprimer</Text>
           </TouchableOpacity>
