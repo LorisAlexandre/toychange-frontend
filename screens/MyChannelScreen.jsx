@@ -102,6 +102,7 @@ export default function MyChannelScreen({ navigation, route: { params } }) {
     }
 
     if (messageText) {
+      console.log("message pas vide");
       const payloadText = {
         label,
         traded,
@@ -141,6 +142,7 @@ export default function MyChannelScreen({ navigation, route: { params } }) {
           type: "image/jpeg",
         })
       );
+      console.log("imagesToSend", imagesToSend);
       fetch(
         `https://toychange-backend.vercel.app/pusherAPI/${params.channel}/image?sender=${user._id}&label=${label}`,
         {
@@ -275,7 +277,9 @@ export default function MyChannelScreen({ navigation, route: { params } }) {
               : `${recipient?.username} a`}{" "}
             accepté l'échange
           </Text>
-          <Text>Créer le produit à échanger</Text>
+          {messages.find((e) => e.traded).sender !== user._id && (
+            <Text>Créer le produit à échanger</Text>
+          )}
         </TouchableOpacity>
       )}
 

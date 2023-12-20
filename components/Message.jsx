@@ -38,7 +38,7 @@ export default function Message(mess) {
           )}
         </View>
       )}
-      <Text>{mess.text}</Text>
+      <Text>{mess?.text}</Text>
       <View style={{ flexDirection: "row", gap: 5 }}>
         {mess.images?.length > 0 &&
           mess.images.map((uri, i) => (

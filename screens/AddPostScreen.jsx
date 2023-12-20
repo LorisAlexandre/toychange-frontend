@@ -95,8 +95,7 @@ export default function AddPostScreen({ navigation }) {
       .then(({ result, announce }) => {
         console.log(result);
         if (result) {
-          dispatch(addAnnounce());
-
+          // dispatch(addAnnounce());
           if (images.length) {
             console.log("fetch images");
             const formData = new FormData();
@@ -116,20 +115,30 @@ export default function AddPostScreen({ navigation }) {
             )
               .then((res) => res.json())
               .then(({ result, announce }) => {
+                console.log(result);
                 if (!result) {
                   Alert.alert("Images fail to upload");
                 }
-                navigation.replace("MyAnnounceScreen", {
-                  announce,
-                  numAnnounces,
+                navigation.reset({
+                  index: 1,
+                  routes: [
+                    { name: "TabNavigator", screen: "Mon Compte" },
+                    { name: "MyAnnouncesScreen" },
+                    { name: "MyAnnounceScreen", params: { announce } },
+                  ],
                 });
               });
           } else {
             console.log("redirect");
-            navigation.replace("MyAnnounceScreen", {
-              announce,
+            navigation.reset({
+              index: 1,
+              routes: [
+                { name: "TabNavigator", screen: "Mon Compte" },
+                { name: "MyAnnouncesScreen" },
+                { name: "MyAnnounceScreen", params: { announce } },
+              ],
             });
-            setNumAnnounces((prevNum) => prevNum + 1);
+            // setNumAnnounces((prevNum) => prevNum + 1);
           }
         }
       });

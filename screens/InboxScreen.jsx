@@ -70,9 +70,26 @@ export default function InboxScreen({ navigation }) {
                     <Text style={{ fontSize: 16, color: "#461904" }}>
                       {channel.annonce.title}
                     </Text>
-                    <Text style={[styles.label]}>
-                      {channel.annonce.type === "exchange" ? "Echange" : "Don"}
-                    </Text>
+                    <View style={[{ flexDirection: "row" }]}>
+                      <Text
+                        style={[
+                          styles.label,
+                          channel.messages.some((e) => e.traded) && {
+                            backgroundColor: "#09a70b",
+                          },
+                        ]}
+                      >
+                        {channel.annonce.type === "exchange"
+                          ? "Echange"
+                          : "Don"}
+                        {channel.messages.some((e) => e.traded) && (
+                          <>
+                            {" "}
+                            <FontAwesome name="check" />
+                          </>
+                        )}
+                      </Text>
+                    </View>
                   </View>
                   <View style={{ flex: 1, alignItems: "flex-end" }}>
                     {channel.messages.length > 0 && (

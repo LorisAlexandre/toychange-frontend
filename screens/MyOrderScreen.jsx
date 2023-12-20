@@ -137,7 +137,13 @@ export default function MyOrderScreen({ navigation, route: { params } }) {
             {order.announce.description}
           </Text>
         </View>
-        <Text style={[styles.margin, styles.subtitle, { marginBottom: 10 }]}>
+        <Text
+          style={[
+            styles.margin,
+            styles.subtitle,
+            { marginBottom: 10, textDecorationLine: "underline" },
+          ]}
+        >
           Informations sur le colis:
         </Text>
         <Text style={[styles.margin, { textAlign: "left", marginBottom: 10 }]}>
@@ -152,15 +158,11 @@ export default function MyOrderScreen({ navigation, route: { params } }) {
             </Text>
             {orderSeller ? (
               <TouchableOpacity
+                style={[styles.button, styles.margin]}
                 onPress={() => downloadLabel(orderSeller.parcel.label_url)}
               >
-                <Text
-                  style={[
-                    styles.margin,
-                    { textAlign: "left", marginBottom: 10 },
-                  ]}
-                >
-                  Download Label
+                <Text style={[styles.margin, styles.buttonText]}>
+                  Télécharger l'étiquette
                 </Text>
               </TouchableOpacity>
             ) : (
