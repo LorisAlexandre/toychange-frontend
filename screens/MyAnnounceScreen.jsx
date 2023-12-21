@@ -10,6 +10,7 @@ import {
   Image,
   Alert,
   ImageBackground,
+  KeyboardAvoidingView,
 } from "react-native";
 import * as FileSystem from "expo-file-system";
 import { shareAsync } from "expo-sharing";
@@ -106,323 +107,328 @@ export default function MyAnnounceScreen({ navigation, route: { params } }) {
   if (modification) {
     return (
       <SafeAreaView style={styles.container}>
-        <ScrollView>
-          <TouchableOpacity
-            onPress={() => {
-              Alert.alert("Modifications annulées");
-              setModification(false);
-            }}
-            style={[{ marginTop: 20 }, styles.margin]}
-          >
-            <FontAwesome name="angle-left" color={"#F56E00"} size={28} />
-          </TouchableOpacity>
-          <Text style={[styles.title, styles.margin, { marginVertical: 40 }]}>
-            Modifiez votre annonce, partagez l'amour. 🎁
-          </Text>
+        <KeyboardAvoidingView
+          behavior={Platform.OS === "ios" ? "padding" : "height"}
+        >
+          <ScrollView>
+            <TouchableOpacity
+              onPress={() => {
+                Alert.alert("Modifications annulées");
+                setModification(false);
+              }}
+              style={[{ marginTop: 20 }, styles.margin]}
+            >
+              <FontAwesome name="angle-left" color={"#F56E00"} size={28} />
+            </TouchableOpacity>
+            <Text style={[styles.title, styles.margin, { marginVertical: 40 }]}>
+              Modifiez votre annonce, partagez l'amour. 🎁
+            </Text>
 
-          <View style={{ gap: 20 }}>
-            <View style={styles.textInputContainer}>
-              <TextInput
-                returnKeyType="next"
-                style={[styles.margin, styles.textInput]}
-                placeholderTextColor={styles.textInput.borderColor}
-                placeholder="Ours en peluche 🧸"
-                value={payloadInput.title}
-                onChangeText={(value) => handleChange("title", value)}
-              />
-              <Text style={styles.placeholder}>
-                Quel est le titre de votre annonce ?
-              </Text>
-            </View>
-            <View style={[styles.margin, styles.containerBtn]}>
-              <TouchableOpacity
-                style={[
-                  payloadInput.type === "donation"
-                    ? styles.active
-                    : styles.inactive,
-                  styles.button,
-                ]}
-                onPress={() => handleChange("type", "donation")}
-              >
-                <Text
+            <View style={{ gap: 20 }}>
+              <View style={styles.textInputContainer}>
+                <TextInput
+                  returnKeyType="done"
+                  style={[styles.margin, styles.textInput]}
+                  placeholderTextColor={styles.textInput.borderColor}
+                  placeholder="Ours en peluche 🧸"
+                  value={payloadInput.title}
+                  onChangeText={(value) => handleChange("title", value)}
+                />
+                <Text style={styles.placeholder}>
+                  Quel est le titre de votre annonce ?
+                </Text>
+              </View>
+              <View style={[styles.margin, styles.containerBtn]}>
+                <TouchableOpacity
                   style={[
                     payloadInput.type === "donation"
                       ? styles.active
                       : styles.inactive,
+                    styles.button,
                   ]}
+                  onPress={() => handleChange("type", "donation")}
                 >
-                  Don
-                </Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={[
-                  payloadInput.type === "exchange"
-                    ? styles.active
-                    : styles.inactive,
-                  styles.button,
-                ]}
-                onPress={() => handleChange("type", "exchange")}
-              >
-                <Text
-                  style={
+                  <Text
+                    style={[
+                      payloadInput.type === "donation"
+                        ? styles.active
+                        : styles.inactive,
+                    ]}
+                  >
+                    Don
+                  </Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={[
                     payloadInput.type === "exchange"
                       ? styles.active
-                      : styles.inactive
-                  }
+                      : styles.inactive,
+                    styles.button,
+                  ]}
+                  onPress={() => handleChange("type", "exchange")}
                 >
-                  Exchange
-                </Text>
-              </TouchableOpacity>
-            </View>
-            <View style={styles.textInputContainer}>
-              <TextInput
-                returnKeyType="next"
-                style={[styles.margin, styles.textInput]}
-                placeholderTextColor={styles.textInput.borderColor}
-                placeholder="Poids"
-                keyboardType="numeric"
-                returnKeyLabel="done"
-                maxLength={3}
-                value={payloadInput.weight.toString()}
-                onChangeText={(value) => handleChange("weight", value)}
-              />
-              <Text style={styles.placeholder}>Poids en Kg</Text>
-            </View>
-            <View style={styles.textInputContainer}>
-              <TextInput
-                returnKeyType="next"
-                style={[styles.margin, styles.textInput]}
-                placeholderTextColor={styles.textInput.borderColor}
-                placeholder="N° de maison"
-                keyboardType="numeric"
-                returnKeyLabel="done"
-                value={payloadInput.address.houseNumber.toString()}
-                onChangeText={(value) =>
-                  handleChange("address", value, "houseNumber")
-                }
-              />
-              <Text style={styles.placeholder}>N° de maison</Text>
-            </View>
-            <View style={styles.textInputContainer}>
-              <TextInput
-                returnKeyType="next"
-                style={[styles.margin, styles.textInput]}
-                placeholderTextColor={styles.textInput.borderColor}
-                placeholder="avenue des mimosas"
-                value={payloadInput.address.street}
-                onChangeText={(value) =>
-                  handleChange("address", value, "street")
-                }
-              />
-              <Text style={styles.placeholder}>Nom de rue</Text>
-            </View>
-            <View style={styles.textInputContainer}>
-              <TextInput
-                returnKeyType="next"
-                style={[styles.margin, styles.textInput]}
-                placeholderTextColor={styles.textInput.borderColor}
-                placeholder="Mimizan"
-                value={payloadInput.address.city}
-                onChangeText={(value) => handleChange("address", value, "city")}
-              />
-              <Text style={styles.placeholder}>Ville</Text>
-            </View>
-            <View style={styles.textInputContainer}>
-              <TextInput
-                returnKeyType="next"
-                style={[styles.margin, styles.textInput]}
-                placeholderTextColor={styles.textInput.borderColor}
-                placeholder="40200"
-                keyboardType="numeric"
-                returnKeyLabel="done"
-                maxLength={5}
-                value={payloadInput.address.postalCode.toString()}
-                onChangeText={(value) =>
-                  handleChange("address", value, "postalCode")
-                }
-              />
-              <Text style={styles.placeholder}>Code postal</Text>
-            </View>
-            <View style={styles.textInputContainer}>
-              <TextInput
-                style={[styles.margin, styles.textInput]}
-                placeholderTextColor={styles.textInput.borderColor}
-                placeholder="Doudou neuf reçu en cadeau..."
-                value={payloadInput.description}
-                onChangeText={(value) => handleChange("description", value)}
-                returnKeyType="done"
-              />
-              <Text style={styles.placeholder}>Description</Text>
-            </View>
-            <View
-              style={[
-                styles.margin,
-                {
-                  flexWrap: "wrap",
-                  gap: 5,
-                  alignItems: "center",
-                  justifyContent: "center",
-                },
-              ]}
-            >
-              <TouchableOpacity
-                style={[styles.addImageBtn]}
-                onPress={pickImage}
-                disabled={images.length === 5}
-              >
-                <FontAwesome name="plus" color={"#F56E00"} size={12} />
-                <FontAwesome name="image" color={"#F56E00"} size={28} />
-              </TouchableOpacity>
-              {images.map((img, i) => (
-                <View key={i}>
-                  <Image
-                    style={{ borderRadius: 8 }}
-                    source={{ uri: img }}
-                    width={100}
-                    height={100}
-                  />
-                  <TouchableOpacity
-                    style={styles.trashBtn}
-                    onPress={() =>
-                      setImages((images) => images.filter((e) => e !== img))
+                  <Text
+                    style={
+                      payloadInput.type === "exchange"
+                        ? styles.active
+                        : styles.inactive
                     }
                   >
-                    <FontAwesome name="trash" size={10} />
-                  </TouchableOpacity>
-                </View>
-              ))}
-            </View>
-            <View style={[styles.margin, styles.containerBtn]}>
-              <TouchableOpacity
+                    Exchange
+                  </Text>
+                </TouchableOpacity>
+              </View>
+              <View style={styles.textInputContainer}>
+                <TextInput
+                  returnKeyType="done"
+                  style={[styles.margin, styles.textInput]}
+                  placeholderTextColor={styles.textInput.borderColor}
+                  placeholder="Poids"
+                  keyboardType="numeric"
+                  maxLength={3}
+                  value={payloadInput.weight?.toString()}
+                  onChangeText={(value) => handleChange("weight", value)}
+                />
+                <Text style={styles.placeholder}>Poids en Kg</Text>
+              </View>
+              <View style={styles.textInputContainer}>
+                <TextInput
+                  returnKeyType="done"
+                  style={[styles.margin, styles.textInput]}
+                  placeholderTextColor={styles.textInput.borderColor}
+                  placeholder="N° de maison"
+                  keyboardType="numeric"
+                  value={payloadInput.address.houseNumber?.toString()}
+                  onChangeText={(value) =>
+                    handleChange("address", value, "houseNumber")
+                  }
+                />
+                <Text style={styles.placeholder}>N° de maison</Text>
+              </View>
+              <View style={styles.textInputContainer}>
+                <TextInput
+                  returnKeyType="done"
+                  style={[styles.margin, styles.textInput]}
+                  placeholderTextColor={styles.textInput.borderColor}
+                  placeholder="avenue des mimosas"
+                  value={payloadInput.address.street}
+                  onChangeText={(value) =>
+                    handleChange("address", value, "street")
+                  }
+                />
+                <Text style={styles.placeholder}>Nom de rue</Text>
+              </View>
+              <View style={styles.textInputContainer}>
+                <TextInput
+                  returnKeyType="done"
+                  style={[styles.margin, styles.textInput]}
+                  placeholderTextColor={styles.textInput.borderColor}
+                  placeholder="Mimizan"
+                  value={payloadInput.address.city}
+                  onChangeText={(value) =>
+                    handleChange("address", value, "city")
+                  }
+                />
+                <Text style={styles.placeholder}>Ville</Text>
+              </View>
+              <View style={styles.textInputContainer}>
+                <TextInput
+                  returnKeyType="done"
+                  style={[styles.margin, styles.textInput]}
+                  placeholderTextColor={styles.textInput.borderColor}
+                  placeholder="40200"
+                  keyboardType="numeric"
+                  maxLength={5}
+                  value={payloadInput.address.postalCode?.toString()}
+                  onChangeText={(value) =>
+                    handleChange("address", value, "postalCode")
+                  }
+                />
+                <Text style={styles.placeholder}>Code postal</Text>
+              </View>
+              <View style={styles.textInputContainer}>
+                <TextInput
+                  style={[styles.margin, styles.textInput]}
+                  placeholderTextColor={styles.textInput.borderColor}
+                  placeholder="Doudou neuf reçu en cadeau..."
+                  value={payloadInput.description}
+                  onChangeText={(value) => handleChange("description", value)}
+                  returnKeyType="done"
+                />
+                <Text style={styles.placeholder}>Description</Text>
+              </View>
+              <View
                 style={[
-                  payloadInput.condition === "new"
-                    ? styles.active
-                    : styles.inactive,
-                  styles.button,
+                  styles.margin,
+                  {
+                    flexWrap: "wrap",
+                    gap: 5,
+                    alignItems: "center",
+                    justifyContent: "center",
+                  },
                 ]}
-                onPress={() => handleChange("condition", "new")}
               >
-                <Text
-                  style={
+                <TouchableOpacity
+                  style={[styles.addImageBtn]}
+                  onPress={pickImage}
+                  disabled={images.length === 5}
+                >
+                  <FontAwesome name="plus" color={"#F56E00"} size={12} />
+                  <FontAwesome name="image" color={"#F56E00"} size={28} />
+                </TouchableOpacity>
+                {images.map((img, i) => (
+                  <View key={i}>
+                    <Image
+                      style={{ borderRadius: 8 }}
+                      source={{ uri: img }}
+                      width={100}
+                      height={100}
+                    />
+                    <TouchableOpacity
+                      style={styles.trashBtn}
+                      onPress={() =>
+                        setImages((images) => images.filter((e) => e !== img))
+                      }
+                    >
+                      <FontAwesome name="trash" size={10} />
+                    </TouchableOpacity>
+                  </View>
+                ))}
+              </View>
+              <View style={[styles.margin, styles.containerBtn]}>
+                <TouchableOpacity
+                  style={[
                     payloadInput.condition === "new"
                       ? styles.active
-                      : styles.inactive
-                  }
+                      : styles.inactive,
+                    styles.button,
+                  ]}
+                  onPress={() => handleChange("condition", "new")}
                 >
-                  Neuf
-                </Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={[
-                  payloadInput.condition === "likeNew"
-                    ? styles.active
-                    : styles.inactive,
-                  styles.button,
-                ]}
-                onPress={() => handleChange("condition", "likeNew")}
-              >
-                <Text
-                  style={
+                  <Text
+                    style={
+                      payloadInput.condition === "new"
+                        ? styles.active
+                        : styles.inactive
+                    }
+                  >
+                    Neuf
+                  </Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={[
                     payloadInput.condition === "likeNew"
                       ? styles.active
-                      : styles.inactive
-                  }
+                      : styles.inactive,
+                    styles.button,
+                  ]}
+                  onPress={() => handleChange("condition", "likeNew")}
                 >
-                  Comme neuf
-                </Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={[
-                  payloadInput.condition === "good"
-                    ? styles.active
-                    : styles.inactive,
-                  styles.button,
-                ]}
-                onPress={() => handleChange("condition", "good")}
-              >
-                <Text
-                  style={
+                  <Text
+                    style={
+                      payloadInput.condition === "likeNew"
+                        ? styles.active
+                        : styles.inactive
+                    }
+                  >
+                    Comme neuf
+                  </Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={[
                     payloadInput.condition === "good"
                       ? styles.active
-                      : styles.inactive
-                  }
+                      : styles.inactive,
+                    styles.button,
+                  ]}
+                  onPress={() => handleChange("condition", "good")}
                 >
-                  Bon état
-                </Text>
-              </TouchableOpacity>
-            </View>
-            <View style={[styles.margin, styles.containerBtn]}>
-              <TouchableOpacity
-                style={[
-                  payloadInput.deliveryMethod === "inPerson"
-                    ? styles.active
-                    : styles.inactive,
-                  styles.button,
-                ]}
-                onPress={() => handleChange("deliveryMethod", "inPerson")}
-              >
-                <Text
-                  style={
+                  <Text
+                    style={
+                      payloadInput.condition === "good"
+                        ? styles.active
+                        : styles.inactive
+                    }
+                  >
+                    Bon état
+                  </Text>
+                </TouchableOpacity>
+              </View>
+              <View style={[styles.margin, styles.containerBtn]}>
+                <TouchableOpacity
+                  style={[
                     payloadInput.deliveryMethod === "inPerson"
                       ? styles.active
-                      : styles.inactive
-                  }
+                      : styles.inactive,
+                    styles.button,
+                  ]}
+                  onPress={() => handleChange("deliveryMethod", "inPerson")}
                 >
-                  En personne
-                </Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={[
-                  payloadInput.deliveryMethod === "postalDelivery"
-                    ? styles.active
-                    : styles.inactive,
-                  styles.button,
-                ]}
-                onPress={() => handleChange("deliveryMethod", "postalDelivery")}
-              >
-                <Text
-                  style={
+                  <Text
+                    style={
+                      payloadInput.deliveryMethod === "inPerson"
+                        ? styles.active
+                        : styles.inactive
+                    }
+                  >
+                    En personne
+                  </Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={[
                     payloadInput.deliveryMethod === "postalDelivery"
                       ? styles.active
-                      : styles.inactive
+                      : styles.inactive,
+                    styles.button,
+                  ]}
+                  onPress={() =>
+                    handleChange("deliveryMethod", "postalDelivery")
                   }
                 >
-                  Livraison
-                </Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={[
-                  payloadInput.deliveryMethod === "both"
-                    ? styles.active
-                    : styles.inactive,
-                  styles.button,
-                ]}
-                onPress={() => handleChange("deliveryMethod", "both")}
-              >
-                <Text
-                  style={
+                  <Text
+                    style={
+                      payloadInput.deliveryMethod === "postalDelivery"
+                        ? styles.active
+                        : styles.inactive
+                    }
+                  >
+                    Livraison
+                  </Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={[
                     payloadInput.deliveryMethod === "both"
                       ? styles.active
-                      : styles.inactive
-                  }
+                      : styles.inactive,
+                    styles.button,
+                  ]}
+                  onPress={() => handleChange("deliveryMethod", "both")}
                 >
-                  Les 2
+                  <Text
+                    style={
+                      payloadInput.deliveryMethod === "both"
+                        ? styles.active
+                        : styles.inactive
+                    }
+                  >
+                    Les 2
+                  </Text>
+                </TouchableOpacity>
+              </View>
+              <TouchableOpacity
+                style={styles.actionBtn}
+                onPress={() => {
+                  handleAnnounceModification();
+                  setModification(false);
+                }}
+              >
+                <Text style={{ color: "white", fontSize: 18 }}>
+                  Modifier l'annonce
                 </Text>
               </TouchableOpacity>
             </View>
-            <TouchableOpacity
-              style={styles.actionBtn}
-              onPress={() => {
-                handleAnnounceModification();
-                setModification(false);
-              }}
-            >
-              <Text style={{ color: "white", fontSize: 18 }}>
-                Modifier l'annonce
-              </Text>
-            </TouchableOpacity>
-          </View>
-        </ScrollView>
+          </ScrollView>
+        </KeyboardAvoidingView>
       </SafeAreaView>
     );
   }
