@@ -7,6 +7,7 @@ import {
   TextInput,
   ScrollView,
   KeyboardAvoidingView,
+  Alert,
 } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
 import { logout, updateUserInfo } from "../reducers/user";
@@ -91,6 +92,7 @@ const UserInfoComponent = ({ navigation }) => {
 
       if (response.ok) {
         // La mise à jour sur le backend s'est bien déroulée
+        Alert.alert("Votre modification a bien été pris en compte")
       } else {
         // Gère les erreurs si la mise à jour a échoué
         console.error("Erreur lors de la mise à jour sur le backend:", data);

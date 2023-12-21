@@ -62,6 +62,13 @@ export default function ResultSearchScreen({ navigation, route: { params } }) {
 
   return (
     <SafeAreaView style={styles.container}>
+        <View style={styles.header}>
+      <TouchableOpacity
+          onPress={() => navigation.goBack()}
+          style={styles.goBack}
+        >
+          <FontAwesome name="angle-left" color={"#F56E00"} size={25} />
+        </TouchableOpacity>
       <Text
         style={[
           styles.title,
@@ -71,6 +78,7 @@ export default function ResultSearchScreen({ navigation, route: { params } }) {
       >
         Toy Change
       </Text>
+      </View>
       <View style={[styles.textInputContainer]}>
         <TextInput
           onFocus={() => setFocus(true)}
@@ -224,6 +232,13 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     gap: 20,
   },
+  header: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-around",
+    marginBottom: 10,
+    marginTop: 0,
+  },
   margin: {
     flexDirection: "row",
     marginHorizontal: 20,
@@ -294,5 +309,9 @@ const styles = StyleSheet.create({
     paddingVertical: 6,
     borderRadius: 8,
     overflow: "hidden",
+  },
+  goBack: {
+    zIndex: 100,
+    marginLeft: 10,
   },
 });
