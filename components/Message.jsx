@@ -21,10 +21,10 @@ export default function Message(mess) {
       ]}
     >
       <Text>{mess.messSender}</Text>
-      {mess.replyTo.text ? (
+      {mess.replyTo?.text ? (
         <View style={{ flexDirection: "row", alignItems: "center", gap: 10 }}>
           {mess.label && <Text style={styles.label}>{mess.label}</Text>}
-          <Text style={{ fontSize: 12 }}>{mess.replyTo.text}</Text>
+          <Text style={{ fontSize: 12 }}>{mess.replyTo?.text}</Text>
         </View>
       ) : (
         <View style={{ flexDirection: "row", alignItems: "center", gap: 10 }}>

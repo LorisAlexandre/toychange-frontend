@@ -9,6 +9,7 @@ import {
   TouchableOpacity,
   View,
   KeyboardAvoidingView,
+  SafeAreaView,
 } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 import { useSelector } from "react-redux";
@@ -156,194 +157,193 @@ export default function AddExchangePostScreen({
   };
 
   return (
-    <KeyboardAvoidingView
-      behavior={Platform.OS = "padding"}
-      style={styles.container}>
-    
-      <View
-        style={[
-          styles.margin,
-          {
-            alignItems: "center",
-            marginTop: 20,
-            justifyContent: "space-between",
-          },
-        ]}
+    <SafeAreaView style={styles.container}>
+      <KeyboardAvoidingView
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
       >
-        <TouchableOpacity onPress={() => navigation.goBack()}>
-          <FontAwesome name="angle-left" color={"#F56E00"} size={28} />
-        </TouchableOpacity>
-        <Text style={[styles.title, { textAlign: "center" }]}>
-          Echanger, pour partager la joie 🌟
-        </Text>
-      </View>
-
-      <ScrollView>
-        <View style={{ gap: 20, marginTop: 20 }}>
-          <View style={styles.textInputContainer}>
-            <TextInput
-              returnKeyType="next"
-              style={[styles.margin, styles.textInput]}
-              placeholderTextColor={styles.textInput.borderColor}
-              placeholder="Ours en peluche 🧸"
-              value={payloadInput.title}
-              onChangeText={(value) => handleChange("title", value)}
-            />
-            <Text style={styles.placeholder}>
-              Quel est le titre de votre annonce ?
-            </Text>
-          </View>
-          <View style={styles.textInputContainer}>
-            <TextInput
-              returnKeyType="next"
-              style={[styles.margin, styles.textInput]}
-              placeholderTextColor={styles.textInput.borderColor}
-              placeholder="Poids"
-              keyboardType="numeric"
-              returnKeyLabel="done"
-              maxLength={3}
-              value={payloadInput.weight.toString()}
-              onChangeText={(value) => handleChange("weight", value)}
-            />
-            <Text style={styles.placeholder}>Poids en Kg</Text>
-          </View>
-          <View style={styles.textInputContainer}>
-            <TextInput
-              returnKeyType="next"
-              style={[styles.margin, styles.textInput]}
-              placeholderTextColor={styles.textInput.borderColor}
-              placeholder="40200"
-              keyboardType="numeric"
-              returnKeyLabel="done"
-              maxLength={5}
-              value={payloadInput.address.postalCode.toString()}
-              onChangeText={(value) =>
-                handleChange("address", value, "postalCode")
-              }
-            />
-            <Text style={styles.placeholder}>Code postal</Text>
-          </View>
-          <View style={styles.textInputContainer}>
-            <TextInput
-              style={[styles.margin, styles.textInput]}
-              placeholderTextColor={styles.textInput.borderColor}
-              placeholder="Doudou neuf reçu en cadeau..."
-              value={payloadInput.description}
-              onChangeText={(value) => handleChange("description", value)}
-              returnKeyType="done"
-            />
-            <Text style={styles.placeholder}>Description</Text>
-          </View>
-          <View
-            style={[
-              styles.margin,
-              {
-                flexWrap: "wrap",
-                gap: 5,
-                alignItems: "center",
-                justifyContent: "center",
-              },
-            ]}
-          >
-            <TouchableOpacity
-              style={[styles.addImageBtn]}
-              onPress={pickImage}
-              disabled={images.length === 5}
-            >
-              <FontAwesome name="plus" color={"#F56E00"} size={12} />
-              <FontAwesome name="image" color={"#F56E00"} size={28} />
-            </TouchableOpacity>
-            {images.map((img, i) => (
-              <View key={i}>
-                <Image
-                  style={{ borderRadius: 8 }}
-                  source={{ uri: img }}
-                  width={100}
-                  height={100}
-                />
-                <TouchableOpacity
-                  style={styles.trashBtn}
-                  onPress={() =>
-                    setImages((images) => images.filter((e) => e !== img))
-                  }
-                >
-                  <FontAwesome name="trash" size={10} />
-                </TouchableOpacity>
-              </View>
-            ))}
-          </View>
-          <View style={[styles.margin, styles.containerBtn]}>
-            <TouchableOpacity
+        <View
+          style={[
+            styles.margin,
+            {
+              alignItems: "center",
+              marginTop: 20,
+              justifyContent: "space-between",
+            },
+          ]}
+        >
+          <TouchableOpacity onPress={() => navigation.goBack()}>
+            <FontAwesome name="angle-left" color={"#F56E00"} size={28} />
+          </TouchableOpacity>
+          <Text style={[styles.title, { textAlign: "center" }]}>
+            Echanger, pour partager la joie 🌟
+          </Text>
+        </View>
+        <ScrollView>
+          <View style={{ gap: 20, marginTop: 20 }}>
+            <View style={styles.textInputContainer}>
+              <TextInput
+                returnKeyType="next"
+                style={[styles.margin, styles.textInput]}
+                placeholderTextColor={styles.textInput.borderColor}
+                placeholder="Ours en peluche 🧸"
+                value={payloadInput.title}
+                onChangeText={(value) => handleChange("title", value)}
+              />
+              <Text style={styles.placeholder}>
+                Quel est le titre de votre annonce ?
+              </Text>
+            </View>
+            <View style={styles.textInputContainer}>
+              <TextInput
+                returnKeyType="next"
+                style={[styles.margin, styles.textInput]}
+                placeholderTextColor={styles.textInput.borderColor}
+                placeholder="Poids"
+                keyboardType="numeric"
+                returnKeyLabel="done"
+                maxLength={3}
+                value={payloadInput.weight.toString()}
+                onChangeText={(value) => handleChange("weight", value)}
+              />
+              <Text style={styles.placeholder}>Poids en Kg</Text>
+            </View>
+            <View style={styles.textInputContainer}>
+              <TextInput
+                returnKeyType="next"
+                style={[styles.margin, styles.textInput]}
+                placeholderTextColor={styles.textInput.borderColor}
+                placeholder="40200"
+                keyboardType="numeric"
+                returnKeyLabel="done"
+                maxLength={5}
+                value={payloadInput.address.postalCode.toString()}
+                onChangeText={(value) =>
+                  handleChange("address", value, "postalCode")
+                }
+              />
+              <Text style={styles.placeholder}>Code postal</Text>
+            </View>
+            <View style={styles.textInputContainer}>
+              <TextInput
+                style={[styles.margin, styles.textInput]}
+                placeholderTextColor={styles.textInput.borderColor}
+                placeholder="Doudou neuf reçu en cadeau..."
+                value={payloadInput.description}
+                onChangeText={(value) => handleChange("description", value)}
+                returnKeyType="done"
+              />
+              <Text style={styles.placeholder}>Description</Text>
+            </View>
+            <View
               style={[
-                payloadInput.condition === "new"
-                  ? styles.active
-                  : styles.inactive,
-                styles.button,
+                styles.margin,
+                {
+                  flexWrap: "wrap",
+                  gap: 5,
+                  alignItems: "center",
+                  justifyContent: "center",
+                },
               ]}
-              onPress={() => handleChange("condition", "new")}
             >
-              <Text
-                style={
+              <TouchableOpacity
+                style={[styles.addImageBtn]}
+                onPress={pickImage}
+                disabled={images.length === 5}
+              >
+                <FontAwesome name="plus" color={"#F56E00"} size={12} />
+                <FontAwesome name="image" color={"#F56E00"} size={28} />
+              </TouchableOpacity>
+              {images.map((img, i) => (
+                <View key={i}>
+                  <Image
+                    style={{ borderRadius: 8 }}
+                    source={{ uri: img }}
+                    width={100}
+                    height={100}
+                  />
+                  <TouchableOpacity
+                    style={styles.trashBtn}
+                    onPress={() =>
+                      setImages((images) => images.filter((e) => e !== img))
+                    }
+                  >
+                    <FontAwesome name="trash" size={10} />
+                  </TouchableOpacity>
+                </View>
+              ))}
+            </View>
+            <View style={[styles.margin, styles.containerBtn]}>
+              <TouchableOpacity
+                style={[
                   payloadInput.condition === "new"
                     ? styles.active
-                    : styles.inactive
-                }
+                    : styles.inactive,
+                  styles.button,
+                ]}
+                onPress={() => handleChange("condition", "new")}
               >
-                Neuf
-              </Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={[
-                payloadInput.condition === "likeNew"
-                  ? styles.active
-                  : styles.inactive,
-                styles.button,
-              ]}
-              onPress={() => handleChange("condition", "likeNew")}
-            >
-              <Text
-                style={
+                <Text
+                  style={
+                    payloadInput.condition === "new"
+                      ? styles.active
+                      : styles.inactive
+                  }
+                >
+                  Neuf
+                </Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={[
                   payloadInput.condition === "likeNew"
                     ? styles.active
-                    : styles.inactive
-                }
+                    : styles.inactive,
+                  styles.button,
+                ]}
+                onPress={() => handleChange("condition", "likeNew")}
               >
-                Comme neuf
-              </Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={[
-                payloadInput.condition === "good"
-                  ? styles.active
-                  : styles.inactive,
-                styles.button,
-              ]}
-              onPress={() => handleChange("condition", "good")}
-            >
-              <Text
-                style={
+                <Text
+                  style={
+                    payloadInput.condition === "likeNew"
+                      ? styles.active
+                      : styles.inactive
+                  }
+                >
+                  Comme neuf
+                </Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={[
                   payloadInput.condition === "good"
                     ? styles.active
-                    : styles.inactive
-                }
+                    : styles.inactive,
+                  styles.button,
+                ]}
+                onPress={() => handleChange("condition", "good")}
               >
-                Bon état
+                <Text
+                  style={
+                    payloadInput.condition === "good"
+                      ? styles.active
+                      : styles.inactive
+                  }
+                >
+                  Bon état
+                </Text>
+              </TouchableOpacity>
+            </View>
+
+            <TouchableOpacity
+              style={styles.actionBtn}
+              onPress={handleCreateAnnounce}
+            >
+              <Text style={{ color: "white", fontSize: 18 }}>
+                Créer l'annonce
               </Text>
             </TouchableOpacity>
           </View>
-
-          <TouchableOpacity
-            style={styles.actionBtn}
-            onPress={handleCreateAnnounce}
-          >
-            <Text style={{ color: "white", fontSize: 18 }}>
-              Créer l'annonce
-            </Text>
-          </TouchableOpacity>
-        </View>
-      </ScrollView>
-    
-    </KeyboardAvoidingView>
+        </ScrollView>
+      </KeyboardAvoidingView>
+    </SafeAreaView>
   );
 }
 

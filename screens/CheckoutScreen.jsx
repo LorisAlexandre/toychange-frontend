@@ -218,7 +218,9 @@ export default function CheckoutScreen({ navigation, route: { params } }) {
 
   return (
     <SafeAreaView style={styles.container}>
-      <KeyboardAvoidingView style={{ flex: 1 }}>
+      <KeyboardAvoidingView
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+      >
         <Text
           style={[
             styles.title,
@@ -258,7 +260,7 @@ export default function CheckoutScreen({ navigation, route: { params } }) {
         </View>
         <ScrollView>
           <Text style={[styles.subTitle, styles.margin]}>Your Cart</Text>
-          <View>
+          <View style={styles.inner}>
             <View
               style={[
                 styles.margin,
@@ -394,6 +396,11 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "white",
     gap: 20,
+  },
+  inner: {
+    flex: 1, //
+    justifyContent: "space-around", //
+    paddingBottom: 20,
   },
   margin: {
     flexDirection: "row",
