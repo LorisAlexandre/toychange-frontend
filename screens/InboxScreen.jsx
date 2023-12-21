@@ -64,7 +64,6 @@ export default function InboxScreen({ navigation }) {
                       {
                         alignContent: "center",
                         justifyContent: "space-between",
-                        backgroundColor: "red",
                       },
                     ]}
                   >
