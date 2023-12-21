@@ -95,7 +95,7 @@ export default function ResultSearchScreen({ navigation, route: { params } }) {
         </TouchableOpacity>
       </View>
       {params.query ? (
-        <View>
+        <View style={{ flex: 1 }}>
           {query !== params.query || focus ? (
             <View style={{ marginHorizontal: 20 }}>
               <View>
@@ -139,7 +139,12 @@ export default function ResultSearchScreen({ navigation, route: { params } }) {
               </View>
             </View>
           ) : (
-            <ScrollView style={{ marginHorizontal: 20 }}>
+            <ScrollView
+              contentContainerStyle={{
+                marginHorizontal: 20,
+                paddingBottom: 20,
+              }}
+            >
               <Text
                 style={{
                   color: "#CC5302",

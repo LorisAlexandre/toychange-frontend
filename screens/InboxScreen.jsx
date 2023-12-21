@@ -59,7 +59,13 @@ export default function InboxScreen({ navigation }) {
               >
                 {channel.annonce && (
                   <View
-                    style={[styles.margin, { alignItems: "start", gap: 10 }]}
+                    style={[
+                      styles.margin,
+                      {
+                        alignContent: "center",
+                        justifyContent: "space-between",
+                      },
+                    ]}
                   >
                     <ImageBackground
                       source={{ uri: channel.annonce.images[0] }}

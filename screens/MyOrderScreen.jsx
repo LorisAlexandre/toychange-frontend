@@ -13,6 +13,7 @@ import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 
 import FontAwesome from "react-native-vector-icons/FontAwesome5";
+import Carousel from "../components/Carousel";
 
 export default function MyOrderScreen({ navigation, route: { params } }) {
   const { _id } = useSelector((state) => state.user.value);
@@ -105,17 +106,7 @@ export default function MyOrderScreen({ navigation, route: { params } }) {
             }}
           ></View>
         </View>
-        <ImageBackground
-          source={{ uri: order.announce.images[0] }}
-          style={[
-            styles.herobanner,
-            { alignItems: "center", justifyContent: "center" },
-          ]}
-        >
-          {!order.announce.images[0] && (
-            <FontAwesome name="image" size={100} color={"#F56E00"} />
-          )}
-        </ImageBackground>
+        <Carousel images={[...order.announce.images]} />
 
         <Text style={[styles.margin, styles.title, { marginBottom: 10 }]}>
           {order.announce.title}

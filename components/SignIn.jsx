@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 import {
   View,
@@ -18,6 +18,8 @@ export default function SignIn() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const emailInput = useRef(null);
+  const passwordInput = useRef(null);
 
   const handleSignIn = async () => {
     try {
@@ -64,6 +66,9 @@ export default function SignIn() {
       <View style={{ width: "100%", gap: 20, marginTop: 50, }}>
         <View style={styles.inputContainer}>
           <TextInput
+            onSubmitEditing={() => passwordInput.current.focus()}
+            ref={emailInput}
+            returnKeyLabel="next"
             placeholder="Votre Email"
             value={email}
             onChangeText={(value) => setEmail(value)}
@@ -72,6 +77,7 @@ export default function SignIn() {
         </View>
         <View style={styles.inputContainer}>
           <TextInput
+            ref={passwordInput}
             placeholder="Mot de passe"
             value={password}
             onChangeText={(value) => setPassword(value)}

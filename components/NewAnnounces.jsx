@@ -23,9 +23,8 @@ export default function NewAnnounces({ navigation }) {
                 const announcesFiltre = announces
                   .filter(
                     (annonce) =>
-                      !orders.some(
-                        (order) => order.reference === annonce._id
-                      ) && !annonce.hasOwnProperty("exchangeProposal")
+                      !orders.some((order) => order.announce === annonce._id) &&
+                      !annonce.hasOwnProperty("exchangeProposal")
                   )
                   .reverse();
                 setAnnounces(announcesFiltre);

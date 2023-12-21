@@ -111,7 +111,7 @@ export default function MyChannelScreen({ navigation, route: { params } }) {
         replyTo: label === "replyTo" && {
           label: replyToMess.label,
           sender: replyToMess.sender,
-          images: [...replyToMess.images],
+          images: [...replyToMess?.images],
           text: replyToMess.text,
         },
       };

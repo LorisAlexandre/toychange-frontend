@@ -31,7 +31,7 @@ export default function Message(mess) {
           {mess.label && <Text style={styles.label}>{mess.label}</Text>}
           {mess.replyTo.images?.length > 0 && (
             <Image
-              source={{ uri: mess.replyTo.images[0] }}
+              source={{ uri: mess.replyTo?.images[0] }}
               width={50}
               height={50}
             />

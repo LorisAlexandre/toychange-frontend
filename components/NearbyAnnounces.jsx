@@ -27,7 +27,7 @@ export default function NearbyAnnounces({ navigation }) {
                 const announcesFiltre = announcesSorted.filter(
                   (annonce) =>
                     !orders.some(
-                      (order) => order.reference === annonce[1]._id
+                      (order) => order.announce === annonce[1]._id
                     ) && !annonce[1].hasOwnProperty("exchangeProposal")
                 );
                 setAnnounces(

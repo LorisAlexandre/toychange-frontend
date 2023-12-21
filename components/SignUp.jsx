@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 import { login } from "../reducers/user";
 import { useNavigation } from "@react-navigation/native";
@@ -23,6 +23,12 @@ export default function SignUp() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+
+  const emailInput = useRef(null);
+  const firstnameInput = useRef(null);
+  const lastnameInput = useRef(null);
+  const usernameInput = useRef(null);
+  const passwordInput = useRef(null);
 
   const handleSubmit = () => {
     fetch("https://toychange-backend.vercel.app/users/signup", {
@@ -75,6 +81,9 @@ export default function SignUp() {
       <Text style={styles.title}>Créer votre compte ToyChange !</Text>
       <View style={styles.inputContainer}>
         <TextInput
+          returnKeyType="next"
+          onSubmitEditing={() => firstnameInput.current.focus()}
+          ref={usernameInput}
           type="text"
           style={styles.input}
           onChangeText={(value) => setUsername(value)}
@@ -84,6 +93,9 @@ export default function SignUp() {
       </View>
       <View style={styles.inputContainer}>
         <TextInput
+          returnKeyType="next"
+          onSubmitEditing={() => lastnameInput.current.focus()}
+          ref={firstnameInput}
           type="text"
           style={styles.input}
           onChangeText={(value) => setFirstName(value)}
@@ -93,6 +105,9 @@ export default function SignUp() {
       </View>
       <View style={styles.inputContainer}>
         <TextInput
+          returnKeyType="next"
+          onSubmitEditing={() => emailInput.current.focus()}
+          ref={lastnameInput}
           type="text"
           style={styles.input}
           onChangeText={(value) => setLastName(value)}
@@ -102,6 +117,9 @@ export default function SignUp() {
       </View>
       <View style={styles.inputContainer}>
         <TextInput
+          returnKeyType="next"
+          onSubmitEditing={() => passwordInput.current.focus()}
+          ref={emailInput}
           type="email"
           style={styles.input}
           onChangeText={(value) => setEmail(value)}
@@ -110,8 +128,11 @@ export default function SignUp() {
         />
       </View>
       <View style={styles.inputContainer}>
-        <TextInput
-          secureTextEntry={!showPassword}
+        <TextInput 
+          secureTextEntry= {!showPassword}
+          returnKeyType="next"
+          ref={passwordInput}
+          type="password"
           style={styles.input}
           onChangeText={(value) => setPassword(value.toString())}
           value={password}
