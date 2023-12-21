@@ -22,33 +22,40 @@ export default function MyOrderScreen({ navigation, route: { params } }) {
   const { order } = params;
 
   useEffect(() => {
-    // verif si un order a comme exchange proposal alors return
-    // pareil pour annonce il faut inverser les deux
-    fetch(
-      `https://toychange-backend.vercel.app/order/ordersByAnnounce/${order.announce._id}`
-    )
-      .then((res) => res.json())
-      .then(({ result, announces }) => {
-        if (result) {
-          setOrderSeller(
-            announces.find(
-              (a) =>
-                a.user === a.seller &&
-                a.announce.exchangeProposal.exchanger === _id
-            )
-          );
-        }
-      });
-  }, []);
+    // vérifier si order.announce existe avant d'accéder à _id
+    if (order && order.announce) {
+      fetch(`https://toychange-backend.vercel.app/order/ordersByAnnounce/${order.announce._id}`)
+        .then((res) => res.json())
+        .then(({ result, announces }) => {
+          if (result) {
+            setOrderSeller(
+              announces.find(
+                (a) =>
+                  a.user === a.seller &&
+                  a.announce.exchangeProposal &&
+                  a.announce.exchangeProposal.exchanger === _id
+              )
+            );
+          }
+        });
+    }
+  }, [order, _id]);
 
   const downloadLabel = async (url) => {
-    const filename = `${orderSeller.announce.exchangeProposal.title}-label.pdf`;
-    FileSystem.downloadAsync(
-      url,
-      `${FileSystem.documentDirectory}${filename}`
-    ).then((result) => {
-      save(result.uri);
-    });
+    if (
+      orderSeller &&
+      orderSeller.announce &&
+      orderSeller.announce.exchangeProposal
+    ) {
+      const title = orderSeller.announce.exchangeProposal.title;
+      const filename = `${title}-label.pdf`;
+      FileSystem.downloadAsync(
+        url,
+        `${FileSystem.documentDirectory}${filename}`
+      ).then((result) => {
+        save(result.uri);
+      });
+    }
   };
 
   const save = (uri) => {
@@ -57,16 +64,21 @@ export default function MyOrderScreen({ navigation, route: { params } }) {
 
   let condition;
 
-  if (order.announce.condition === "new") {
-    condition = "Neuf";
-  } else if (order.announce.condition === "likeNew") {
-    condition = "Comme neuf";
-  } else if (order.announce.condition === "good") {
-    condition = "Bon état";
+  if (order.announce && order.announce.condition) {
+    if (order.announce.condition === "new") {
+      condition = "Neuf";
+    } else if (order.announce.condition === "likeNew") {
+      condition = "Comme neuf";
+    } else if (order.announce.condition === "good") {
+      condition = "Bon état";
+    }
+  } else {
+    condition = "Condition non disponible";
   }
 
   let deliveryMethod;
 
+if (order.announce && order.announce.deliveryMethod) {
   if (order.announce.deliveryMethod === "inPerson") {
     deliveryMethod = "En personne";
   } else if (order.announce.deliveryMethod === "postalDelivery") {
@@ -74,6 +86,9 @@ export default function MyOrderScreen({ navigation, route: { params } }) {
   } else if (order.announce.deliveryMethod === "both") {
     deliveryMethod = "Au choix";
   }
+} else {
+  deliveryMethod = "Méthode de livraison non disponible";
+}
 
   return (
     <SafeAreaView style={styles.container}>
@@ -106,14 +121,14 @@ export default function MyOrderScreen({ navigation, route: { params } }) {
             }}
           ></View>
         </View>
-        <Carousel images={[...order.announce.images]} />
+        <Carousel images={order.announce?.images || []} />
 
         <Text style={[styles.margin, styles.title, { marginBottom: 10 }]}>
-          {order.announce.title}
+          {order.announce?.title || "Titre non disponible"}
         </Text>
         <View style={[styles.margin, { gap: 10, marginBottom: 20 }]}>
           <Text style={styles.label}>
-            {order.announce.type === "exchange" ? "Echange" : "Don"}
+          {order.announce && order.announce.type === "exchange" ? "Echange" : "Don"}
           </Text>
           <Text style={styles.label}>{condition}</Text>
           <Text style={styles.label}>{deliveryMethod}</Text>
@@ -123,7 +138,7 @@ export default function MyOrderScreen({ navigation, route: { params } }) {
             Description
           </Text>
           <Text style={{ fontWeight: 300, color: "#F56E00" }}>
-            {order.announce.description}
+            {order.announce?.description}
           </Text>
         </View>
         <Text
@@ -138,12 +153,12 @@ export default function MyOrderScreen({ navigation, route: { params } }) {
         <Text style={[styles.margin, { textAlign: "left", marginBottom: 10 }]}>
           N° de suivi: {order.parcel.tracking_number}
         </Text>
-        {_id !== order.announce.donor && (
+        {_id !== order.announce?.donor && (
           <>
             <Text
               style={[styles.margin, { textAlign: "left", marginBottom: 10 }]}
             >
-              Colis à recevoir: {order.announce.title}
+              Colis à recevoir: {order.announce && order.announce.title ? order.announce.title : "Titre non disponible"}
             </Text>
             {orderSeller ? (
               <TouchableOpacity
@@ -157,8 +172,9 @@ export default function MyOrderScreen({ navigation, route: { params } }) {
             ) : (
               <Text style={[styles.margin, { textAlign: "left" }]}>
                 En attente du paiement de{" "}
-                {order.announce.exchangeProposal.title} pour impression de
-                l'étiquette...
+  {order.announce && order.announce.exchangeProposal
+    ? order.announce.exchangeProposal.title
+    : "titre non disponible"} pour impression de l'étiquette...
               </Text>
             )}
           </>

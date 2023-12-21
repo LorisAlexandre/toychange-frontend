@@ -61,19 +61,19 @@ export default function MyOrdersScreen({ navigation }) {
                 onPress={() => navigation.navigate("MyOrderScreen", { order })}
               >
                 <ImageBackground
-                  source={{ uri: order.announce.images[0] }}
+                  source={{ uri: order.announce?.images?.[0]  }}
                   style={{ width: 50, height: 50 }}
                 >
-                  {!order.announce.images[0] && (
+                  {!order.announce?.images?.[0] && (
                     <FontAwesome name="image" size={50} color={"#F56E00"} />
                   )}
                 </ImageBackground>
                 <View>
                   <Text style={{ fontSize: 16, color: "#461904" }}>
-                    {order.announce.title}
+                  {order.announce && order.announce.title ? order.announce.title : "Titre non disponible"}
                   </Text>
                   <Text style={[styles.label]}>
-                    {order.announce.type === "exchange" ? "Echange" : "Don"}
+                  {order.announce && order.announce.type === "exchange" ? "Echange" : "Don"}
                   </Text>
                 </View>
               </TouchableOpacity>

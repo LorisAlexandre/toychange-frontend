@@ -231,13 +231,13 @@ export default function MyChannelScreen({ navigation, route: { params } }) {
             ]}
           >
             <ImageBackground
-              source={{ uri: announce?.images[0] }}
-              style={{ width: 75, height: 75 }}
-            >
-              {!announce?.images[0] && (
-                <FontAwesome name="image" color={"#F56E00"} size={75} />
-              )}
-            </ImageBackground>
+  source={{ uri: announce?.images && announce.images[0] }}
+  style={{ width: 75, height: 75 }}
+>
+  {!announce?.images[0] && (
+    <FontAwesome name="image" color={"#F56E00"} size={75} />
+  )}
+</ImageBackground>
             <View style={{ gap: 5, alignItems: "flex-end" }}>
               <Text style={{ color: "#461904", fontSize: 19, fontWeight: 700 }}>
                 {announce?.title}

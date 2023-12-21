@@ -76,7 +76,7 @@ export default function ResultSearchScreen({ navigation, route: { params } }) {
           { marginTop: 30, marginBottom: 10, textAlign: "center" },
         ]}
       >
-        Toy Change
+      🧸Toy Change
       </Text>
       </View>
       <View style={[styles.textInputContainer]}>
