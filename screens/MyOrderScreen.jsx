@@ -20,8 +20,6 @@ export default function MyOrderScreen({ navigation, route: { params } }) {
 
   const { order } = params;
 
-  console.log(orderSeller);
-
   useEffect(() => {
     // verif si un order a comme exchange proposal alors return
     // pareil pour annonce il faut inverser les deux

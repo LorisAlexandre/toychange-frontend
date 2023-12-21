@@ -14,6 +14,7 @@ import {
 } from "react-native";
 import * as FileSystem from "expo-file-system";
 import { shareAsync } from "expo-sharing";
+import * as ImagePicker from "expo-image-picker";
 
 import FontAwesome from "react-native-vector-icons/FontAwesome5";
 
@@ -50,24 +51,71 @@ export default function MyAnnounceScreen({ navigation, route: { params } }) {
     }
   };
 
-  const areAllValuesExist = (obj) => {
-    for (const key in obj) {
-      if (obj.hasOwnProperty(key)) {
-        const value = obj[key];
-
-        if (
-          !value ||
-          (typeof value === "object" && !areAllValuesExist(value))
-        ) {
-          return false;
-        }
+  const handleDeleteAnnounce = () => {
+    fetch(
+      `https://toychange-backend.vercel.app/announce/delete/${announce._id}`,
+      {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
       }
-    }
-    return true;
+    )
+      .then((res) => res.json())
+      .then(({ result }) => {
+        result &&
+          navigation.reset({
+            index: 1,
+            routes: [
+              { name: "TabNavigator", params: { screen: "Mon Compte" } },
+              { name: "MyAnnouncesScreen" },
+            ],
+          });
+      });
   };
 
   const handleAnnounceModification = () => {
-    console.log("announce change");
+    fetch(
+      `https://toychange-backend.vercel.app/announce/update/${announce._id}`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(payloadInput),
+      }
+    )
+      .then((res) => res.json())
+      .then(({ result, announce }) => {
+        if (result) {
+          if (images.length) {
+            const formData = new FormData();
+            images.map((uri) =>
+              formData.append("photosFromFront", {
+                uri,
+                name: "image.jpg",
+                type: "image/jpeg",
+              })
+            );
+            fetch(
+              `https://toychange-backend.vercel.app/announce/uploadImages/${announce._id}`,
+              {
+                method: "PUT",
+                body: formData,
+              }
+            )
+              .then((res) => res.json())
+              .then(({ result, announce }) => {
+                if (!result) {
+                  Alert.alert("Images fail to upload");
+                }
+                setModification(false);
+              });
+          } else {
+            setModification(false);
+          }
+        }
+      });
   };
 
   const pickImage = async () => {
@@ -419,7 +467,6 @@ export default function MyAnnounceScreen({ navigation, route: { params } }) {
                 style={styles.actionBtn}
                 onPress={() => {
                   handleAnnounceModification();
-                  setModification(false);
                 }}
               >
                 <Text style={{ color: "white", fontSize: 18 }}>
@@ -435,21 +482,21 @@ export default function MyAnnounceScreen({ navigation, route: { params } }) {
 
   let condition;
 
-  if (announce.condition === "new") {
+  if (payloadInput.condition === "new") {
     condition = "Neuf";
-  } else if (announce.condition === "likeNew") {
+  } else if (payloadInput.condition === "likeNew") {
     condition = "Comme neuf";
-  } else if (announce.condition === "good") {
+  } else if (payloadInput.condition === "good") {
     condition = "Bon état";
   }
 
   let deliveryMethod;
 
-  if (announce.deliveryMethod === "inPerson") {
+  if (payloadInput.deliveryMethod === "inPerson") {
     deliveryMethod = "En personne";
-  } else if (announce.deliveryMethod === "postalDelivery") {
+  } else if (payloadInput.deliveryMethod === "postalDelivery") {
     deliveryMethod = "Livraison";
-  } else if (announce.deliveryMethod === "both") {
+  } else if (payloadInput.deliveryMethod === "both") {
     deliveryMethod = "Au choix";
   }
 
@@ -495,11 +542,11 @@ export default function MyAnnounceScreen({ navigation, route: { params } }) {
         </ImageBackground>
 
         <Text style={[styles.margin, styles.title, { marginBottom: 10 }]}>
-          {announce.title}
+          {payloadInput.title}
         </Text>
         <View style={[styles.margin, { gap: 10, marginBottom: 20 }]}>
           <Text style={styles.label}>
-            {announce.type === "exchange" ? "Echange" : "Don"}
+            {payloadInput.type === "exchange" ? "Echange" : "Don"}
           </Text>
           <Text style={styles.label}>{condition}</Text>
           <Text style={styles.label}>{deliveryMethod}</Text>
@@ -509,7 +556,7 @@ export default function MyAnnounceScreen({ navigation, route: { params } }) {
             Description
           </Text>
           <Text style={{ fontWeight: 300, color: "#F56E00" }}>
-            {announce.description}
+            {payloadInput.description}
           </Text>
         </View>
         {order && (
@@ -556,6 +603,7 @@ export default function MyAnnounceScreen({ navigation, route: { params } }) {
       {!order && (
         <View style={[styles.margin, { gap: 10 }]}>
           <TouchableOpacity
+            onPress={handleDeleteAnnounce}
             style={{
               flex: 1,
               backgroundColor: "#F56E00",

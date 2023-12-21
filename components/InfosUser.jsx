@@ -91,7 +91,6 @@ const UserInfoComponent = ({ navigation }) => {
 
       if (response.ok) {
         // La mise à jour sur le backend s'est bien déroulée
-        console.log("Mise à jour réussie sur le backend:", data);
       } else {
         // Gère les erreurs si la mise à jour a échoué
         console.error("Erreur lors de la mise à jour sur le backend:", data);
@@ -102,8 +101,12 @@ const UserInfoComponent = ({ navigation }) => {
   };
 
   return (
-    <KeyboardAvoidingView style={styles.container} behavior='padding' keyboardVerticalOffset={Platform.OS === 'ios' ? 100 : 0}>
-   <TouchableOpacity onPress={handleGoBack} style={styles.iconBack}>
+    <KeyboardAvoidingView
+      style={styles.container}
+      behavior="padding"
+      keyboardVerticalOffset={Platform.OS === "ios" ? 100 : 0}
+    >
+      <TouchableOpacity onPress={handleGoBack} style={styles.iconBack}>
         <FontAwesome name="angle-left" size={56} color="#f56e00" />
       </TouchableOpacity>
       <View style={styles.boxTitle}>
@@ -405,10 +408,10 @@ const styles = StyleSheet.create({
     marginLeft: 45,
   },
   iconBack: {
-    position: 'absolute',
+    position: "absolute",
     top: 50,
     left: 30,
-    backgroundColor: 'transparent',
+    backgroundColor: "transparent",
   },
   token: {
     display: "none",

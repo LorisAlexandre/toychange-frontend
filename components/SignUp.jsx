@@ -32,7 +32,6 @@ export default function SignUp() {
     })
       .then((response) => response.json())
       .then((data) => {
-        console.log(data);
         if (data.result) {
           // Dispatch l'action addUser avec les informations de l'utilisateur
           dispatch(

@@ -44,7 +44,6 @@ export default function CheckoutScreen({ navigation, route: { params } }) {
           !value ||
           (typeof value === "object" && !areAllValuesExist(value))
         ) {
-          console.log(obj, key);
           return false;
         }
       }
@@ -123,7 +122,6 @@ export default function CheckoutScreen({ navigation, route: { params } }) {
     );
     const data = await res.json();
     if (data.result) {
-      console.log(data);
       if (data.data) {
         setShippingFees(data.data[1].countries[0].price);
       }
@@ -131,7 +129,6 @@ export default function CheckoutScreen({ navigation, route: { params } }) {
   };
 
   const createParcel = () => {
-    console.log(exchangeProposal);
     fetch("https://toychange-backend.vercel.app/sendcloudAPI/createParcel", {
       method: "POST",
       headers: {
@@ -152,8 +149,6 @@ export default function CheckoutScreen({ navigation, route: { params } }) {
       .then((res) => res.json())
       .then((data) => {
         if (data) {
-          console.log("parcel created");
-          console.log(data);
           const parcel = data.data.parcel;
           fetch(
             `https://toychange-backend.vercel.app/sendcloudAPI/downloadLabel/${parcel.id}`,
@@ -166,9 +161,7 @@ export default function CheckoutScreen({ navigation, route: { params } }) {
           )
             .then((res) => res.json())
             .then((data) => {
-              console.log(data);
               if (data.result) {
-                console.log("label download");
                 fetch(
                   "https://toychange-backend.vercel.app/order/createOrder",
                   {

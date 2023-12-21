@@ -13,7 +13,6 @@ import {
 } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 import { useDispatch, useSelector } from "react-redux";
-import { addAnnounce } from "../reducers/user";
 
 import FontAwesome from "react-native-vector-icons/FontAwesome5";
 
@@ -84,7 +83,6 @@ export default function AddPostScreen({ navigation }) {
       ...payloadInput,
       donor: _id,
     };
-    console.log("all values good");
     fetch("https://toychange-backend.vercel.app/announce/addAnnounce", {
       method: "POST",
       headers: {
@@ -94,11 +92,9 @@ export default function AddPostScreen({ navigation }) {
     })
       .then((res) => res.json())
       .then(({ result, announce }) => {
-        console.log(result);
         if (result) {
           // dispatch(addAnnounce());
           if (images.length) {
-            console.log("fetch images");
             const formData = new FormData();
             images.map((uri) =>
               formData.append("photosFromFront", {
@@ -116,7 +112,6 @@ export default function AddPostScreen({ navigation }) {
             )
               .then((res) => res.json())
               .then(({ result, announce }) => {
-                console.log(result);
                 if (!result) {
                   Alert.alert("Images fail to upload");
                 }
@@ -130,7 +125,6 @@ export default function AddPostScreen({ navigation }) {
                 });
               });
           } else {
-            console.log("redirect");
             navigation.reset({
               index: 1,
               routes: [
