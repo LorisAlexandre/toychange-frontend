@@ -91,7 +91,6 @@ const UserInfoComponent = ({ navigation }) => {
 
       if (response.ok) {
         // La mise à jour sur le backend s'est bien déroulée
-        console.log("Mise à jour réussie sur le backend:", data);
       } else {
         // Gère les erreurs si la mise à jour a échoué
         console.error("Erreur lors de la mise à jour sur le backend:", data);
@@ -102,9 +101,13 @@ const UserInfoComponent = ({ navigation }) => {
   };
 
   return (
-    <KeyboardAvoidingView style={styles.container} behavior='padding' keyboardVerticalOffset={Platform.OS === 'ios' ? 100 : 0}>
-   <TouchableOpacity onPress={handleGoBack} style={styles.iconBack}>
-        <FontAwesome name="angle-left" size={56} color="#f56e00" />
+    <KeyboardAvoidingView
+      style={styles.container}
+      behavior="padding"
+      keyboardVerticalOffset={Platform.OS === "ios" ? 100 : 0}
+    >
+      <TouchableOpacity onPress={handleGoBack} style={styles.iconBack}>
+      <FontAwesome name="angle-left" color={"#F56E00"} size={28} />
       </TouchableOpacity>
       <View style={styles.boxTitle}>
         <Text style={styles.title}>Mes informations</Text>
@@ -267,8 +270,8 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 24,
-    color: "#FFF2D3",
     fontWeight: "bold",
+    color: "#461904",
   },
   scrollView: {
     width: 440,
@@ -301,10 +304,18 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     width: "90%",
-    height: 50,
-    backgroundColor: "#f56e00",
+    height: 70,
+    backgroundColor: "#FFFFFF", 
+    shadowColor: "grey",
+    shadowOffset: {
+      width: 0,
+      height: 0,
+    },
+    shadowOpacity: 0.3,
+    shadowRadius: 6,
+    elevation: 5,
     borderRadius: 8,
-    marginTop: 120,
+    marginTop: 100,
   },
   boxFirstname: {
     display: "flex",
@@ -313,7 +324,15 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     width: "80%",
     height: 48,
-    backgroundColor: "#FFF2D3",
+    backgroundColor: "#FFFFFF", 
+    shadowColor: "grey",
+    shadowOffset: {
+      width: 0,
+      height: 0,
+    },
+    shadowOpacity: 0.3,
+    shadowRadius: 6,
+    elevation: 5,
     borderRadius: 8,
     marginTop: 5,
     marginBottom: 20,
@@ -327,7 +346,15 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     width: "80%",
     height: 48,
-    backgroundColor: "#FFF2D3",
+    backgroundColor: "#FFFFFF", // Ajoutez une couleur de fond
+    shadowColor: "grey",
+    shadowOffset: {
+      width: 0,
+      height: 0,
+    },
+    shadowOpacity: 0.3,
+    shadowRadius: 6,
+    elevation: 5,
     borderRadius: 8,
     marginTop: 5,
     marginBottom: 20,
@@ -341,7 +368,15 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     width: "80%",
     height: 48,
-    backgroundColor: "#FFF2D3",
+    backgroundColor: "#FFFFFF", // Ajoutez une couleur de fond
+    shadowColor: "grey",
+    shadowOffset: {
+      width: 0,
+      height: 0,
+    },
+    shadowOpacity: 0.3,
+    shadowRadius: 6,
+    elevation: 5,
     borderRadius: 8,
     marginTop: 5,
     marginBottom: 20,
@@ -355,7 +390,15 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     width: "80%",
     height: 48,
-    backgroundColor: "#FFF2D3",
+    backgroundColor: "#FFFFFF", // Ajoutez une couleur de fond
+    shadowColor: "grey",
+    shadowOffset: {
+      width: 0,
+      height: 0,
+    },
+    shadowOpacity: 0.3,
+    shadowRadius: 6,
+    elevation: 5,
     borderRadius: 8,
     marginTop: 5,
     marginBottom: 20,
@@ -369,7 +412,16 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     width: "80%",
     height: 48,
-    backgroundColor: "#FFF2D3",
+    
+    backgroundColor: "#FFFFFF", // Ajoutez une couleur de fond
+    shadowColor: "grey",
+    shadowOffset: {
+      width: 0,
+      height: 0,
+    },
+    shadowOpacity: 0.3,
+    shadowRadius: 6,
+    elevation: 5,
     borderRadius: 8,
     marginTop: 5,
     marginBottom: 20,
@@ -394,7 +446,15 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     width: "80%",
     height: 58,
-    backgroundColor: "#FFF2D3",
+    backgroundColor: "#FFFFFF", // Ajoutez une couleur de fond
+    shadowColor: "grey",
+    shadowOffset: {
+      width: 0,
+      height: 0,
+    },
+    shadowOpacity: 0.3,
+    shadowRadius: 6,
+    elevation: 5,
     borderRadius: 8,
     marginTop: 5,
     marginBottom: 20,
@@ -402,13 +462,13 @@ const styles = StyleSheet.create({
     paddingRight: 35,
   },
   iconChangePassword: {
-    marginLeft: 45,
+    marginLeft: 43,
   },
   iconBack: {
-    position: 'absolute',
+    position: "absolute",
     top: 50,
     left: 30,
-    backgroundColor: 'transparent',
+    backgroundColor: "transparent",
   },
   token: {
     display: "none",

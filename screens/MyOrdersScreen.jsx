@@ -31,7 +31,12 @@ export default function MyOrdersScreen({ navigation }) {
 
   return (
     <SafeAreaView style={styles.container}>
-      <View style={[styles.margin, { alignItems: "center", gap: 20 }]}>
+      <View
+        style={[
+          styles.margin,
+          { alignItems: "center", gap: 20, marginTop: 30 },
+        ]}
+      >
         <TouchableOpacity onPress={() => navigation.goBack()}>
           <FontAwesome name="angle-left" color={"#F56E00"} size={25} />
         </TouchableOpacity>
@@ -74,7 +79,15 @@ export default function MyOrdersScreen({ navigation }) {
               </TouchableOpacity>
             ))
           ) : (
-            <Text>No orders</Text>
+            <Text
+              style={[
+                styles.margin,
+                styles.title,
+                { textAlign: "center", fontSize: 19 },
+              ]}
+            >
+              Aucune commande pour le moment !
+            </Text>
           )}
         </View>
       </ScrollView>

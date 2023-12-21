@@ -1,16 +1,23 @@
-import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert } from 'react-native';
-import { useDispatch, useSelector } from 'react-redux';
-import { updatePassword } from '../reducers/user';  
-import { useNavigation } from '@react-navigation/native';
-import { FontAwesome } from '@expo/vector-icons';
+import React, { useState } from "react";
+import {
+  View,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  StyleSheet,
+  Alert,
+} from "react-native";
+import { useDispatch, useSelector } from "react-redux";
+import { updatePassword } from "../reducers/user";
+import { useNavigation } from "@react-navigation/native";
+import { FontAwesome } from "@expo/vector-icons";
 
 const ChangePasswordForm = ({ navigation }) => {
   const dispatch = useDispatch();
   const { authToken } = useSelector((state) => state.user.value);
-  const [oldPassword, setOldPassword] = useState('');
-  const [newPassword, setNewPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
+  const [oldPassword, setOldPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
 
   const handleGoBack = () => {
     navigation.goBack();
@@ -20,48 +27,53 @@ const ChangePasswordForm = ({ navigation }) => {
     // Valider que les champs ne sont pas vides
     if (!oldPassword || !newPassword || !confirmPassword) {
       // Gérer l'erreur ou afficher un message à l'utilisateur
-      console.error("Veuillez remplir tous les champs.");
       return;
     }
 
     // Valider que le nouveau mot de passe et la confirmation correspondent
     if (newPassword !== confirmPassword) {
       // Gérer l'erreur ou afficher un message à l'utilisateur
-      Alert.alert("Erreur", "Le nouveau mot de passe et la confirmation ne correspondent pas.");
+      Alert.alert(
+        "Erreur",
+        "Le nouveau mot de passe et la confirmation ne correspondent pas."
+      );
       return;
     }
 
     try {
-      const response = await fetch("https://toychange-backend.vercel.app/users/update-password", {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          'authorization': `Bearer ${authToken}`,
-        },
-        body: JSON.stringify({
-          oldPassword,
-          newPassword,
-          confirmPassword,
-        }),
-      });
+      const response = await fetch(
+        "https://toychange-backend.vercel.app/users/update-password",
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            authorization: `Bearer ${authToken}`,
+          },
+          body: JSON.stringify({
+            oldPassword,
+            newPassword,
+            confirmPassword,
+          }),
+        }
+      );
 
       const data = await response.json();
-      console.log(data);
 
       if (data.result) {
         // Dispatch de l'action pour mettre à jour le mot de passe côté front
         dispatch(updatePassword({ newPassword }));
         // Réinitialiser les champs après la mise à jour réussie
-        setOldPassword('');
-        setNewPassword('');
-        setConfirmPassword('');
+        setOldPassword("");
+        setNewPassword("");
+        setConfirmPassword("");
         Alert.alert("Succès", "Mot de passe mis à jour avec succès.");
       } else {
-        Alert.alert("Erreur", data.error || "Erreur lors de la mise à jour du mot de passe.");
+        Alert.alert(
+          "Erreur",
+          data.error || "Erreur lors de la mise à jour du mot de passe."
+        );
       }
     } catch (error) {
-      console.error("Erreur lors de la mise à jour du mot de passe :", error);
-      console.error("Erreur réseau détaillée :", error.message);
       Alert.alert("Erreur", "Une erreur inattendue s'est produite.");
     }
   };
@@ -97,7 +109,9 @@ const ChangePasswordForm = ({ navigation }) => {
           secureTextEntry
         />
         <TouchableOpacity style={styles.button} onPress={handleSavePassword}>
-          <Text style={styles.buttonText}>Enregistrer le nouveau mot de passe</Text>
+          <Text style={styles.buttonText}>
+            Enregistrer le nouveau mot de passe
+          </Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -107,7 +121,7 @@ const ChangePasswordForm = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'flex-start',
+    justifyContent: "flex-start",
   },
   formContainer: {
     width: "100%",
@@ -141,21 +155,22 @@ const styles = StyleSheet.create({
     borderRadius: 8,
   },
   iconBack: {
-    position: 'absolute',
+    
     top: 50,
     left: 30,
-    backgroundColor: 'transparent',
+    backgroundColor: "transparent",
     zIndex: 100,
   },
   title: {
     marginBottom: 40,
-    marginTop: 70,
+    marginTop: 20,
     fontSize: 24,
     fontWeight: "bold",
+    color: "#461904",
   },
   buttonText: {
     fontSize: 18,
-    color: '#FFF2D3',
+    color: "#FFF2D3",
     fontWeight: "bold",
   },
 });

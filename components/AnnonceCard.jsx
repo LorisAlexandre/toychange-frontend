@@ -1,4 +1,11 @@
-import { StyleSheet, TouchableOpacity, View, Image, Text } from "react-native";
+import {
+  StyleSheet,
+  TouchableOpacity,
+  View,
+  Image,
+  Text,
+  ImageBackground,
+} from "react-native";
 
 import FontAwesome from "react-native-vector-icons/FontAwesome5";
 import { useDispatch, useSelector } from "react-redux";
@@ -22,7 +29,19 @@ export default function AnnonceCard({ item, navigation, km }) {
       style={styles.announces}
       onPress={() => navigation.navigate("PostScreen", item)}
     >
-      <Image source={{ uri: item.images[0] }} width={155} height={176} />
+      <ImageBackground
+        source={{ uri: item.images[0] }}
+        style={{
+          width: 155,
+          height: 176,
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        {!item.images[0] && (
+          <FontAwesome name="image" color={"#F56E00"} size={150} />
+        )}
+      </ImageBackground>
       <TouchableOpacity style={styles.heartBtn} onPress={() => handleFav(item)}>
         <FontAwesome
           name="heart"

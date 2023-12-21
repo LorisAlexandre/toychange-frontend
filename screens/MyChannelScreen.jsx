@@ -3,6 +3,7 @@ import {
   Image,
   ImageBackground,
   KeyboardAvoidingView,
+  SafeAreaView,
   ScrollView,
   StyleSheet,
   Text,
@@ -10,7 +11,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
 import * as ImagePicker from "expo-image-picker";
 import Pusher from "pusher-js/react-native";
@@ -102,7 +103,6 @@ export default function MyChannelScreen({ navigation, route: { params } }) {
     }
 
     if (messageText) {
-      console.log("message pas vide");
       const payloadText = {
         label,
         traded,
@@ -126,9 +126,7 @@ export default function MyChannelScreen({ navigation, route: { params } }) {
         }
       )
         .then((res) => res.json())
-        .then((data) =>
-          console.log(data.channel.messages[data.channel.messages.length - 1])
-        );
+        .then((data) => {});
     }
 
     if (imagesToSend.length) {
@@ -140,7 +138,6 @@ export default function MyChannelScreen({ navigation, route: { params } }) {
           type: "image/jpeg",
         })
       );
-      console.log("imagesToSend", imagesToSend);
       fetch(
         `https://toychange-backend.vercel.app/pusherAPI/${params.channel}/image?sender=${user._id}&label=${label}`,
         {
@@ -149,9 +146,7 @@ export default function MyChannelScreen({ navigation, route: { params } }) {
         }
       )
         .then((res) => res.json())
-        .then((data) =>
-          console.log(data.channel.messages[data.channel.messages.length - 1])
-        );
+        .then((data) => {});
     }
 
     setMessageText("");
@@ -202,166 +197,169 @@ export default function MyChannelScreen({ navigation, route: { params } }) {
   }
 
   return (
-    <KeyboardAwareScrollView
-  style={styles.container}
-  behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-  keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : -150}
->
+    <SafeAreaView style={styles.container}>
+      <KeyboardAvoidingView
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+        style={{ flex: 1 }}
+      >
+        <View style={styles.box}>
+          <View
+            style={[
+              styles.margin,
+              { justifyContent: "space-between", alignItems: "center" },
+            ]}
+          >
+            <TouchableOpacity
+              onPress={() => navigation.goBack()}
+              style={[
+                {
+                  marginTop: 30,
+                  alignItems: "center",
+                  gap: 10,
+                  flexDirection: "row",
+                },
+              ]}
+            >
+              <FontAwesome name="angle-left" color={"#F56E00"} size={28} />
+            </TouchableOpacity>
+          </View>
+          <TouchableOpacity
+            onPress={() => navigation.navigate("PostScreen", announce)}
+            style={[
+              styles.margin,
+              { alignItems: "center", justifyContent: "space-between" },
+            ]}
+          >
+            <ImageBackground
+              source={{ uri: announce?.images[0] }}
+              style={{ width: 75, height: 75 }}
+            >
+              {!announce?.images[0] && (
+                <FontAwesome name="image" color={"#F56E00"} size={75} />
+              )}
+            </ImageBackground>
+            <View style={{ gap: 5, alignItems: "flex-end" }}>
+              <Text style={{ color: "#461904", fontSize: 19, fontWeight: 700 }}>
+                {announce?.title}
+              </Text>
+              <View style={{ flexDirection: "row", gap: 5 }}>
+                <Text style={styles.label}>
+                  {announce?.type === "exchange" ? "Echange" : "Don"}
+                </Text>
+                <Text style={styles.label}>{deliveryMethod}</Text>
+              </View>
+            </View>
+          </TouchableOpacity>
+          {messages.some((e) => e.traded) && (
+            <TouchableOpacity
+              style={{
+                marginHorizontal: 20,
+                borderWidth: 1,
+                borderColor: "#F56E00",
+                paddingVertical: 5,
+                alignItems: "center",
+                borderRadius: 8,
+              }}
+              disabled={messages.find((e) => e.traded).sender === user._id}
+              onPress={() => handleReady(user._id)}
+            >
+              <Text>
+                Accepter l'échange:{" "}
+                {messages.find((e) => e.traded).replyTo.text}
+              </Text>
+              <Text>
+                {messages.find((e) => e.traded).sender === user._id
+                  ? "J'ai"
+                  : `${recipient?.username} a`}{" "}
+                accepté l'échange
+              </Text>
+              {messages.find((e) => e.traded).sender !== user._id && (
+                <Text>Créer le produit à échanger</Text>
+              )}
+            </TouchableOpacity>
+          )}
 
-    <View style={styles.box}>
-      <View
-        style={[
-          styles.margin,
-          { justifyContent: "space-between", alignItems: "center" },
-        ]}
-      >
-        <TouchableOpacity
-          onPress={() => navigation.goBack()}
-          style={[
-            {
-              marginTop: 50,
-             marginBottom:20,
-            },
-          ]}
-        >
-          <FontAwesome name="angle-left" color={"#F56E00"} size={28} />
-        </TouchableOpacity>
-      </View>
-      <TouchableOpacity
-        onPress={() => navigation.navigate("PostScreen", announce)}
-        style={[
-          styles.margin,
-          { alignItems: "center", justifyContent: "space-between",marginBottom: 20, },
-        ]}
-      >
-        <View style={{ position: 'relative' }}>
-  <Image
-    source={{ uri: announce?.images[0] }}
-    style={styles.image}
-  />
-  {!announce?.images[0] && (
-    <FontAwesome name="image" color={"#F56E00"} size={75} />
-  )}
-</View>
-        <View style={{ gap: 5, alignItems: "center", justifyContent:"center", }}>
-          <Text style={{ color: "#461904", fontSize: 19, fontWeight: 700 }}>
-            {announce?.title}
-          </Text>
-          <View style={{ flexDirection: "row", gap: 35 }}>
-            <Text style={styles.label}>
-              {announce?.type === "exchange" ? "Echange" : "Don"}
-            </Text>
-            
-            <Text style={styles.label}>{deliveryMethod}</Text>
+          <ScrollView contentContainerStyle={{ paddingBottom: 100 }}>
+            <View style={styles.messagesContainer}>
+              {messages.length > 0 &&
+                messages.map((mess, i) => (
+                  <TouchableOpacity
+                    style={styles.messages}
+                    key={i}
+                    onLongPress={() => {
+                      setLabel("replyTo");
+                      setReplyToMess(mess);
+                    }}
+                  >
+                    <Message
+                      {...mess}
+                      messSender={
+                        mess.sender === user._id ? "Me" : recipient?.username
+                      }
+                      handleAccept={handleAccept}
+                      handleDecline={handleDecline}
+                    />
+                  </TouchableOpacity>
+                ))}
+            </View>
+          </ScrollView>
+
+          <View style={styles.sendBar}>
+            {imagesToSend.map((img, i) => (
+              <View style={[{ gap: 5 }, styles.margin]}>
+                <Image key={i} source={{ uri: img }} width={50} height={50} />
+              </View>
+            ))}
+            <View style={[{ gap: 20, marginBottom: 10 }, styles.margin]}>
+              <TouchableOpacity onPress={pickImage}>
+                <FontAwesome name="file-image" color={"#FFA732"} size={25} />
+              </TouchableOpacity>
+              {announce?.type === "exchange" &&
+                announce?.donor !== user._id && (
+                  <TouchableOpacity
+                    disabled={announce?.donor === user._id}
+                    onPress={() => {
+                      setLabel("proposal");
+                    }}
+                  >
+                    <FontAwesome
+                      name="exchange-alt"
+                      color={"#FFA732"}
+                      size={25}
+                    />
+                  </TouchableOpacity>
+                )}
+              {label && (
+                <TouchableOpacity
+                  style={[
+                    { flexDirection: "row", alignItems: "center", gap: 5 },
+                    styles.label,
+                  ]}
+                  onPress={() => setLabel("")}
+                >
+                  <Text style={{ color: "#FFF" }}>x</Text>
+                  <Text style={{ color: "#FFF" }}>{label}</Text>
+                </TouchableOpacity>
+              )}
+            </View>
+            <View style={styles.textInputContainer}>
+              <TextInput
+                returnKeyType="send"
+                placeholder="Votre annonce est toujours dispo ?"
+                placeholderTextColor={"#FFA732"}
+                onSubmitEditing={handleSendMessage}
+                style={[styles.textInput]}
+                value={messageText}
+                onChangeText={(value) => setMessageText(value)}
+              />
+              <TouchableOpacity onPress={handleSendMessage}>
+                <FontAwesome name="paper-plane" color={"#FFA732"} size={20} />
+              </TouchableOpacity>
+            </View>
           </View>
         </View>
-      </TouchableOpacity>
-      {messages.some((e) => e.traded) && (
-        <TouchableOpacity
-          style={{
-            marginHorizontal: 20,
-            marginBottom: 20,
-            borderWidth: 1,
-            borderColor: "#F56E00",
-            paddingVertical: 15,
-            alignItems: "center",
-            borderRadius: 8,
-          }}
-          disabled={messages.find((e) => e.traded).sender === user._id}
-          onPress={() => handleReady(user._id)}
-        >
-          <Text>
-            Accepter l'échange: {messages.find((e) => e.traded).replyTo.text}
-          </Text>
-          <Text>
-            {messages.find((e) => e.traded).sender === user._id
-              ? "J'ai"
-              : `${recipient?.username} a`}{" "}
-            accepté l'échange
-          </Text>
-          {messages.find((e) => e.traded).sender !== user._id && (
-            <Text>Créer le produit à échanger</Text>
-          )}
-        </TouchableOpacity>
-      )}
-
-      <ScrollView>
-        <View style={styles.messagesContainer}>
-          {messages.length > 0 &&
-            messages.map((mess, i) => (
-              <TouchableOpacity
-                style={styles.messages}
-                key={i}
-                onLongPress={() => {
-                  setLabel("replyTo");
-                  setReplyToMess(mess);
-                }}
-              >
-                <Message
-                  {...mess}
-                  messSender={
-                    mess.sender === user._id ? "Me" : recipient?.username
-                  }
-                  handleAccept={handleAccept}
-                  handleDecline={handleDecline}
-                />
-              </TouchableOpacity>
-            ))}
-        </View>
-      </ScrollView>
-
-      <View style={[{ gap: 5 }, styles.margin]}>
-        {imagesToSend.map((img, i) => (
-          <Image key={i} source={{ uri: img }} width={50} height={50} />
-        ))}
-      </View>
-      <View style={{ width: "100%" }}>
-        <View style={[{ gap: 20, marginBottom: 10, marginTop: 10, display: "flex", flexDirection: "row"}, styles.margin]}>
-          <TouchableOpacity onPress={pickImage}>
-            <FontAwesome name="file-image" color={"#FFA732"} size={25} />
-            <Text style={ {color:"#FFA732"}}>Inserez une image</Text>
-          </TouchableOpacity>
-          {announce?.type === "exchange" && announce?.donor !== user._id && (
-            <TouchableOpacity
-              disabled={announce?.donor === user._id}
-              onPress={() => {
-                setLabel("proposal");
-              }}
-            >
-              <FontAwesome name="exchange-alt" color={"#FFA732"} size={25} />
-            </TouchableOpacity>
-          )}
-          {label && (
-            <TouchableOpacity
-              style={[
-                { flexDirection: "row", alignItems: "center", gap: 5 },
-                styles.label,
-              ]}
-              onPress={() => setLabel("")}
-            >
-              <Text style={{ color: "#FFF" }}>x</Text>
-              <Text style={{ color: "#FFF" }}>{label}</Text>
-            </TouchableOpacity>
-          )}
-        </View>
-        <View style={styles.textInputContainer}>
-          <TextInput
-            returnKeyType="done"
-            placeholder="Votre annonce est toujours dispo ?"
-            placeholderTextColor={"#FFA732"}
-            style={[styles.textInput]}
-            value={messageText}
-            onChangeText={(value) => setMessageText(value)}
-          />
-          <TouchableOpacity onPress={handleSendMessage}>
-            <FontAwesome name="paper-plane" color={"#FFA732"} size={20} />
-          </TouchableOpacity>
-        </View>
-        </View>
-     
-    </View>
-    </KeyboardAwareScrollView>
-
+      </KeyboardAvoidingView>
+    </SafeAreaView>
   );
 }
 
@@ -374,11 +372,9 @@ const styles = StyleSheet.create({
     gap: 20,
   },
   box: {
-    display: "flex",
-    justifyContent: "space-between",
-    backgroundColor: "white",
-   height :"100%",
-   paddingTop:10,
+    justifyContent: "flex-start",
+    gap: 20,
+    flex: 1,
   },
   margin: {
     flexDirection: "row",
@@ -396,16 +392,12 @@ const styles = StyleSheet.create({
     color: "#CC5302",
     flex: 1,
   },
-    textInputContainer: {
-      
-      flexDirection: "row",
-      alignItems: "center",
-      
-      gap: 5,
-      marginHorizontal: 20,
-      marginBottom: 20,
-      marginTop: 130,
-      paddingBottom: 20,
+  textInputContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    gap: 5,
+    marginHorizontal: 20,
   },
   placeholder: {
     color: "#FFA732",
@@ -424,13 +416,15 @@ const styles = StyleSheet.create({
     borderRadius: 16,
     overflow: "hidden",
   },
-  messages: {},
   messagesContainer: {
     marginHorizontal: 20,
   },
-  image: {
-    height: 75,
-    width: 75,
-    borderRadius: 8,
-  }
+  sendBar: {
+    position: "absolute",
+    width: "100%",
+    paddingBottom: 20,
+    paddingTop: 10,
+    bottom: 0,
+    backgroundColor: "#FFF",
+  },
 });

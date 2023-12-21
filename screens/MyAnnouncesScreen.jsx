@@ -92,28 +92,29 @@ export default function MyAnnouncesScreen({ navigation }) {
                       {announce.type === "exchange" ? "Échange" : "Don"}
                     </Text>
                     <Text style={styles.deliveryMethod}>
-                    {(() => {
-      let deliveryMethod;
+                      {(() => {
+                        let deliveryMethod;
 
-      if (announce.deliveryMethod === "inPerson") {
-        deliveryMethod = "En personne";
-      } else if (announce.deliveryMethod === "postalDelivery") {
-        deliveryMethod = "Livraison";
-      } else if (announce.deliveryMethod === "both") {
-        deliveryMethod = "Au choix";
-      }
+                        if (announce.deliveryMethod === "inPerson") {
+                          deliveryMethod = "En personne";
+                        } else if (
+                          announce.deliveryMethod === "postalDelivery"
+                        ) {
+                          deliveryMethod = "Livraison";
+                        } else if (announce.deliveryMethod === "both") {
+                          deliveryMethod = "Au choix";
+                        }
 
-      return deliveryMethod;
-    })()}
+                        return deliveryMethod;
+                      })()}
                     </Text>
-                    
                   </View>
                 </View>
               </TouchableOpacity>
             ))
           ) : (
-            <Text style={styles.noAnnouncesText}>
-              Aucune annonce disponible.
+            <Text style={[styles.title, { fontSize: 19, textAlign: "center" }]}>
+              Aucune annonce pour le moment !
             </Text>
           )}
         </View>
@@ -188,7 +189,6 @@ const styles = StyleSheet.create({
     marginLeft: 15,
   },
   announceSection: {
-    
     display: "flex",
     flexDirection: "row",
     justifyContent: "space-around",
@@ -212,7 +212,7 @@ const styles = StyleSheet.create({
     overflow: "hidden",
     marginTop: 5,
   },
-  
+
   deliveryMethod: {
     backgroundColor: "#F56E00",
     color: "#FFF2D3",

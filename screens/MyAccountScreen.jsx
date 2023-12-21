@@ -9,7 +9,9 @@ import { FontAwesome } from "@expo/vector-icons";
 export default MyAccountScreen = ({ navigation, route: { params } }) => {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user.value);
-  const [numAnnounces, setNumAnnounces] = useState(0);
+ 
+
+  
 
   const logoutUser = () => {
     dispatch(logout());
@@ -23,22 +25,20 @@ export default MyAccountScreen = ({ navigation, route: { params } }) => {
     // Si l'utilisateur est authentifié, affiche le composant d'informations utilisateur
     return (
       <View style={styles.container}>
-        {/* <InfosUserComponent navigation={navigation}/> */}
-
         <View style={styles.formContainer}>
           <Text style={styles.title}>Mon compte</Text>
           <TouchableOpacity
             onPress={() => navigation.navigate("MyAnnouncesScreen")}
             style={styles.button}
           >
-            <Text style={styles.textLink}>Annonces ({numAnnounces})</Text>
+            <Text style={styles.textLink}>Mes annonces </Text>
             <FontAwesome name="angle-right" size={18} color="#461904" />
           </TouchableOpacity>
           <TouchableOpacity
             onPress={() => navigation.navigate("MyOrdersScreen")}
             style={styles.button}
           >
-            <Text style={styles.textLink}>Commandes (0)</Text>
+            <Text style={styles.textLink}>Mes commandes</Text>
             <FontAwesome name="angle-right" size={18} color="#461904" />
           </TouchableOpacity>
           <TouchableOpacity
@@ -127,8 +127,8 @@ const styles = StyleSheet.create({
     height: 65,
     backgroundColor: "#f56e00",
     borderRadius: 8,
-    marginTop: 180,
-    marginBottom: 0,
+    position: "absolute",
+    bottom: 75,
     color: "FFF2D3",
   },
 });

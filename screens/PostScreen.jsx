@@ -11,6 +11,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { addFav, removeFav } from "../reducers/user";
 
 import FontAwesome from "react-native-vector-icons/FontAwesome5";
+import Carousel from "../components/Carousel";
 
 export default function PostScreen({ navigation, route: { params } }) {
   const { authToken, _id, favAnnounces } = useSelector(
@@ -131,17 +132,7 @@ export default function PostScreen({ navigation, route: { params } }) {
         </View>
       </View>
       <ScrollView>
-        <ImageBackground
-          source={{ uri: params.images[0] }}
-          style={[
-            styles.herobanner,
-            { alignItems: "center", justifyContent: "center" },
-          ]}
-        >
-          {!params.images[0] && (
-            <FontAwesome name="image" size={100} color={"#F56E00"} />
-          )}
-        </ImageBackground>
+        <Carousel images={[...params.images]} />
 
         <Text style={[styles.margin, styles.title, { marginBottom: 10 }]}>
           {params.title}

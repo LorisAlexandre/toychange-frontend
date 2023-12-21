@@ -44,7 +44,6 @@ export default function CheckoutScreen({ navigation, route: { params } }) {
           !value ||
           (typeof value === "object" && !areAllValuesExist(value))
         ) {
-          console.log(obj, key);
           return false;
         }
       }
@@ -123,7 +122,6 @@ export default function CheckoutScreen({ navigation, route: { params } }) {
     );
     const data = await res.json();
     if (data.result) {
-      console.log(data);
       if (data.data) {
         setShippingFees(data.data[1].countries[0].price);
       }
@@ -131,7 +129,6 @@ export default function CheckoutScreen({ navigation, route: { params } }) {
   };
 
   const createParcel = () => {
-    console.log(exchangeProposal);
     fetch("https://toychange-backend.vercel.app/sendcloudAPI/createParcel", {
       method: "POST",
       headers: {
@@ -152,8 +149,6 @@ export default function CheckoutScreen({ navigation, route: { params } }) {
       .then((res) => res.json())
       .then((data) => {
         if (data) {
-          console.log("parcel created");
-          console.log(data);
           const parcel = data.data.parcel;
           fetch(
             `https://toychange-backend.vercel.app/sendcloudAPI/downloadLabel/${parcel.id}`,
@@ -166,9 +161,7 @@ export default function CheckoutScreen({ navigation, route: { params } }) {
           )
             .then((res) => res.json())
             .then((data) => {
-              console.log(data);
               if (data.result) {
-                console.log("label download");
                 fetch(
                   "https://toychange-backend.vercel.app/order/createOrder",
                   {
@@ -218,7 +211,9 @@ export default function CheckoutScreen({ navigation, route: { params } }) {
 
   return (
     <SafeAreaView style={styles.container}>
-      <KeyboardAvoidingView style={{ flex: 1 }}>
+      <KeyboardAvoidingView
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+      >
         <Text
           style={[
             styles.title,
@@ -258,7 +253,7 @@ export default function CheckoutScreen({ navigation, route: { params } }) {
         </View>
         <ScrollView>
           <Text style={[styles.subTitle, styles.margin]}>Your Cart</Text>
-          <View>
+          <View style={styles.inner}>
             <View
               style={[
                 styles.margin,
@@ -394,6 +389,11 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "white",
     gap: 20,
+  },
+  inner: {
+    flex: 1, //
+    justifyContent: "space-around", //
+    paddingBottom: 20,
   },
   margin: {
     flexDirection: "row",
