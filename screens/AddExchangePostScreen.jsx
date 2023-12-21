@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   Alert,
   Image,
@@ -21,6 +21,7 @@ export default function AddExchangePostScreen({
   route: { params },
 }) {
   const { authToken, _id } = useSelector((state) => state.user.value);
+  const [images, setImages] = useState([]);
   const [payloadInput, setPayloadInput] = useState({
     title: "",
     description: "",
@@ -32,7 +33,10 @@ export default function AddExchangePostScreen({
       postalCode: "",
     },
   });
-  const [images, setImages] = useState([]);
+  const titleInput = useRef(null);
+  const descriptionInput = useRef(null);
+  const weightInput = useRef(null);
+  const postalCodeInput = useRef(null);
 
   useEffect(() => {
     if (!authToken) {
@@ -179,6 +183,8 @@ export default function AddExchangePostScreen({
           <View style={{ gap: 20, marginTop: 20 }}>
             <View style={styles.textInputContainer}>
               <TextInput
+                onSubmitEditing={() => weightInput.current.focus()}
+                ref={titleInput}
                 returnKeyType="next"
                 style={[styles.margin, styles.textInput]}
                 placeholderTextColor={styles.textInput.borderColor}
@@ -192,6 +198,8 @@ export default function AddExchangePostScreen({
             </View>
             <View style={styles.textInputContainer}>
               <TextInput
+                onSubmitEditing={() => postalCodeInput.current.focus()}
+                ref={weightInput}
                 returnKeyType="next"
                 style={[styles.margin, styles.textInput]}
                 placeholderTextColor={styles.textInput.borderColor}
@@ -206,6 +214,8 @@ export default function AddExchangePostScreen({
             </View>
             <View style={styles.textInputContainer}>
               <TextInput
+                onSubmitEditing={() => descriptionInput.current.focus()}
+                ref={postalCodeInput}
                 returnKeyType="next"
                 style={[styles.margin, styles.textInput]}
                 placeholderTextColor={styles.textInput.borderColor}
@@ -222,6 +232,7 @@ export default function AddExchangePostScreen({
             </View>
             <View style={styles.textInputContainer}>
               <TextInput
+                ref={descriptionInput}
                 style={[styles.margin, styles.textInput]}
                 placeholderTextColor={styles.textInput.borderColor}
                 placeholder="Doudou neuf reçu en cadeau..."

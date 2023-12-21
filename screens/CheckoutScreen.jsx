@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import {
   Alert,
   Button,
@@ -34,6 +34,12 @@ export default function CheckoutScreen({ navigation, route: { params } }) {
     telephone: "",
     email: "",
   });
+  const addressInput = useRef(null);
+  const houseNumberInput = useRef(null);
+  const cityInput = useRef(null);
+  const telephoneInput = useRef(null);
+  const emailInput = useRef(null);
+  const postalCodeInput = useRef(null);
 
   const areAllValuesExist = (obj) => {
     for (const key in obj) {
@@ -284,7 +290,9 @@ export default function CheckoutScreen({ navigation, route: { params } }) {
             </View>
             <View style={styles.textInputContainer}>
               <TextInput
-                returnKeyType="done"
+                onSubmitEditing={() => addressInput.current.focus()}
+                ref={postalCodeInput}
+                returnKeyType="next"
                 style={[styles.margin, styles.textInput]}
                 placeholder="66000"
                 placeholderTextColor={"#FFA732"}
@@ -305,7 +313,9 @@ export default function CheckoutScreen({ navigation, route: { params } }) {
             </View>
             <View style={styles.textInputContainer}>
               <TextInput
-                returnKeyType="done"
+                onSubmitEditing={() => houseNumberInput.current.focus()}
+                ref={addressInput}
+                returnKeyType="next"
                 style={[styles.margin, styles.textInput]}
                 placeholderTextColor={"#FFA732"}
                 placeholder="rue du pissenlit"
@@ -316,7 +326,9 @@ export default function CheckoutScreen({ navigation, route: { params } }) {
             </View>
             <View style={styles.textInputContainer}>
               <TextInput
-                returnKeyType="done"
+                onSubmitEditing={() => cityInput.current.focus()}
+                ref={houseNumberInput}
+                returnKeyType="next"
                 style={[styles.margin, styles.textInput]}
                 placeholderTextColor={"#FFA732"}
                 keyboardType="number-pad"
@@ -328,7 +340,9 @@ export default function CheckoutScreen({ navigation, route: { params } }) {
             </View>
             <View style={styles.textInputContainer}>
               <TextInput
-                returnKeyType="done"
+                onSubmitEditing={() => telephoneInput.current.focus()}
+                ref={cityInput}
+                returnKeyType="next"
                 style={[styles.margin, styles.textInput]}
                 placeholderTextColor={"#FFA732"}
                 placeholder="Mimizan"
@@ -339,7 +353,9 @@ export default function CheckoutScreen({ navigation, route: { params } }) {
             </View>
             <View style={styles.textInputContainer}>
               <TextInput
-                returnKeyType="done"
+                onSubmitEditing={() => emailInput.current.focus()}
+                ref={telephoneInput}
+                returnKeyType="next"
                 keyboardType="number-pad"
                 style={[styles.margin, styles.textInput]}
                 placeholderTextColor={"#FFA732"}
@@ -352,6 +368,7 @@ export default function CheckoutScreen({ navigation, route: { params } }) {
             </View>
             <View style={styles.textInputContainer}>
               <TextInput
+                ref={emailInput}
                 returnKeyType="done"
                 style={[styles.margin, styles.textInput]}
                 placeholderTextColor={"#FFA732"}

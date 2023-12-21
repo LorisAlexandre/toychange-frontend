@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import {
   Alert,
   Image,
@@ -12,13 +12,12 @@ import {
   View,
 } from "react-native";
 import * as ImagePicker from "expo-image-picker";
+import { Camera } from "expo-camera";
 import { useDispatch, useSelector } from "react-redux";
 
 import FontAwesome from "react-native-vector-icons/FontAwesome5";
 
 export default function AddPostScreen({ navigation }) {
-  const dispatch = useDispatch();
-  const [numAnnounces, setNumAnnounces] = useState(0);
   const { authToken, _id } = useSelector((state) => state.user.value);
   const [payloadInput, setPayloadInput] = useState({
     title: "",
@@ -32,6 +31,10 @@ export default function AddPostScreen({ navigation }) {
     },
   });
   const [images, setImages] = useState([]);
+  const titleInput = useRef(null);
+  const weightInput = useRef(null);
+  const postalCodeInput = useRef(null);
+  const descriptionInput = useRef(null);
 
   useEffect(() => {
     if (!authToken) {
@@ -41,6 +44,7 @@ export default function AddPostScreen({ navigation }) {
     (async () => {
       const { status } =
         await ImagePicker.requestMediaLibraryPermissionsAsync();
+      const { statusCam } = await Camera.requestCameraPermissionsAsync();
     })();
   }, []);
 
@@ -83,6 +87,7 @@ export default function AddPostScreen({ navigation }) {
       ...payloadInput,
       donor: _id,
     };
+    console.log("fetching ??");
     fetch("https://toychange-backend.vercel.app/announce/addAnnounce", {
       method: "POST",
       headers: {
@@ -92,15 +97,13 @@ export default function AddPostScreen({ navigation }) {
     })
       .then((res) => res.json())
       .then(({ result, announce }) => {
+        console.log("annonce créé");
         if (result) {
-          // dispatch(addAnnounce());
           if (images.length) {
             const formData = new FormData();
             images.map((uri) =>
               formData.append("photosFromFront", {
                 uri,
-                name: "image.jpg",
-                type: "image/jpeg",
               })
             );
             fetch(
@@ -110,8 +113,12 @@ export default function AddPostScreen({ navigation }) {
                 body: formData,
               }
             )
-              .then((res) => res.json())
+              .then((res) => {
+                console.log(res);
+                return res.json();
+              })
               .then(({ result, announce }) => {
+                console.log("images created");
                 if (!result) {
                   Alert.alert("Images fail to upload");
                 }
@@ -133,15 +140,14 @@ export default function AddPostScreen({ navigation }) {
                 { name: "MyAnnounceScreen", params: { announce } },
               ],
             });
-            // setNumAnnounces((prevNum) => prevNum + 1);
           }
         }
       });
   };
 
   const pickImage = async () => {
-    if (images.length >= 5) {
-      Alert.alert("Maxi 5 img");
+    if (images.length >= 4) {
+      Alert.alert("Maxi 4 img");
       return;
     }
 
@@ -149,13 +155,29 @@ export default function AddPostScreen({ navigation }) {
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: false,
       quality: 0.7,
-      selectionLimit: 5,
+      selectionLimit: 4,
       allowsMultipleSelection: true,
     });
 
     if (!result.canceled) {
       const imagesUri = result.assets.map(({ uri }) => uri);
-      setImages((images) => [...images, ...imagesUri].filter((e, i) => i < 5));
+      setImages((images) => [...images, ...imagesUri].filter((_, i) => i < 4));
+    }
+  };
+  const takeImage = async () => {
+    if (images.length >= 5) {
+      Alert.alert("Maxi 5 img");
+      return;
+    }
+
+    let result = await ImagePicker.launchCameraAsync({
+      allowsEditing: false,
+      quality: 0.7,
+    });
+
+    if (!result.canceled) {
+      const imagesUri = [result.assets[0].uri];
+      setImages((images) => [...images, ...imagesUri].filter((_, i) => i < 4));
     }
   };
 
@@ -171,6 +193,8 @@ export default function AddPostScreen({ navigation }) {
           <View style={styles.inner}>
             <View style={styles.textInputContainer}>
               <TextInput
+                ref={titleInput}
+                onSubmitEditing={() => weightInput.current.focus()}
                 returnKeyType="done"
                 style={[styles.margin, styles.textInput]}
                 placeholderTextColor={styles.textInput.borderColor}
@@ -224,6 +248,8 @@ export default function AddPostScreen({ navigation }) {
             </View>
             <View style={styles.textInputContainer}>
               <TextInput
+                ref={weightInput}
+                onSubmitEditing={() => postalCodeInput.current.focus()}
                 returnKeyType="done"
                 style={[styles.margin, styles.textInput]}
                 placeholderTextColor={styles.textInput.borderColor}
@@ -238,6 +264,8 @@ export default function AddPostScreen({ navigation }) {
             </View>
             <View style={styles.textInputContainer}>
               <TextInput
+                ref={postalCodeInput}
+                onSubmitEditing={() => descriptionInput.current.focus()}
                 returnKeyType="done"
                 style={[styles.margin, styles.textInput]}
                 placeholderTextColor={styles.textInput.borderColor}
@@ -254,6 +282,8 @@ export default function AddPostScreen({ navigation }) {
             </View>
             <View style={styles.textInputContainer}>
               <TextInput
+                ref={descriptionInput}
+                // onSubmitEditing={() => titleInput.current.focus()}
                 returnKeyType="done"
                 style={[styles.margin, styles.textInput]}
                 placeholderTextColor={styles.textInput.borderColor}
@@ -274,6 +304,14 @@ export default function AddPostScreen({ navigation }) {
                 },
               ]}
             >
+              <TouchableOpacity
+                style={[styles.addImageBtn]}
+                onPress={takeImage}
+                disabled={images.length === 5}
+              >
+                <FontAwesome name="plus" color={"#F56E00"} size={12} />
+                <FontAwesome name="camera" color={"#F56E00"} size={28} />
+              </TouchableOpacity>
               <TouchableOpacity
                 style={[styles.addImageBtn]}
                 onPress={pickImage}
