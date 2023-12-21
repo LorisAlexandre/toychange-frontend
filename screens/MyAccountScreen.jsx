@@ -23,8 +23,6 @@ export default MyAccountScreen = ({ navigation, route: { params } }) => {
     // Si l'utilisateur est authentifié, affiche le composant d'informations utilisateur
     return (
       <View style={styles.container}>
-        {/* <InfosUserComponent navigation={navigation}/> */}
-
         <View style={styles.formContainer}>
           <Text style={styles.title}>Mon compte</Text>
           <TouchableOpacity

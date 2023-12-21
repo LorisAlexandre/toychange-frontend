@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { login } from "../reducers/user";
-import { useNavigation } from "@react-navigation/native"; 
+import { useNavigation } from "@react-navigation/native";
 import {
   KeyboardAvoidingView,
   Platform,
@@ -11,8 +11,9 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
+import { FontAwesome } from "@expo/vector-icons";
 
-function SignUp() {
+export default function SignUp() {
   const dispatch = useDispatch();
   const navigation = useNavigation(); // Initialise useNavigation
 
@@ -21,6 +22,7 @@ function SignUp() {
   const [lastname, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleSubmit = () => {
     fetch("https://toychange-backend.vercel.app/users/signup", {
@@ -61,13 +63,18 @@ function SignUp() {
       });
   };
 
-
   return (
-    <View style={styles.container}>
-      <View style={styles.formContainer}>
-        <View>
-          <Text style={styles.title}>Créer votre compte ToyChange !</Text>
-        </View>
+    //   <Text style={styles.title}>Créer votre compte ToyChange !</Text>
+    <View
+      style={{
+        width: "100%",
+        gap: 20,
+        backgroundColor: "#FFF",
+        paddingBottom: 50,
+      }}
+    >
+      <Text style={styles.title}>Créer votre compte ToyChange !</Text>
+      <View style={styles.inputContainer}>
         <TextInput
           type="text"
           style={styles.input}
@@ -75,6 +82,8 @@ function SignUp() {
           value={username}
           placeholder="Username"
         />
+      </View>
+      <View style={styles.inputContainer}>
         <TextInput
           type="text"
           style={styles.input}
@@ -82,6 +91,8 @@ function SignUp() {
           value={firstname}
           placeholder="Firstname"
         />
+      </View>
+      <View style={styles.inputContainer}>
         <TextInput
           type="text"
           style={styles.input}
@@ -89,6 +100,8 @@ function SignUp() {
           value={lastname}
           placeholder="lastname"
         />
+      </View>
+      <View style={styles.inputContainer}>
         <TextInput
           type="email"
           style={styles.input}
@@ -96,6 +109,8 @@ function SignUp() {
           value={email}
           placeholder="email"
         />
+      </View>
+      <View style={styles.inputContainer}>
         <TextInput
           type="password"
           style={styles.input}
@@ -103,62 +118,54 @@ function SignUp() {
           value={password}
           placeholder="Password"
         />
-        <TouchableOpacity style={styles.button} onPress={() => handleSubmit()}>
-          <Text style={styles.title2}>S'enregistrer</Text>
+        <TouchableOpacity
+          onPress={() => setShowPassword(!showPassword)}
+          style={styles.inputIcon}
+        >
+          <FontAwesome
+            name={showPassword ? "eye" : "eye-slash"}
+            size={20}
+            color="#f56e00"
+          />
         </TouchableOpacity>
       </View>
+      <TouchableOpacity onPress={handleSubmit} style={styles.btn}>
+        <Text style={styles.btnText}>Se connecter</Text>
+      </TouchableOpacity>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  formContainer: {
-    width: "100%",
-    height: "30%",
-    fontSize: 18,
-    color: "#FF8B0A",
-    marginTop: 0,
-    alignItems: "center",
-    justifyContent: "center",
-    paddingTop: 60,
-  },
   title: {
-    fontSize: 20,
-    fontWeight: "bold",
-    marginBottom: 20,
+    fontSize: 19,
+    textAlign: "center",
   },
-  title2: {
-    color: "#ffffff",
-    fontSize: 16,
-    fontWeight: "bold",
+  inputContainer: {
+    flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
   },
   input: {
-    width: 330,
-    height: 48,
-    marginTop: 10,
-    borderColor: "#FF8B0A",
+    flex: 1,
     borderWidth: 1,
+    borderColor: "#f56e00",
+    paddingHorizontal: 24,
+    paddingVertical: 12,
     borderRadius: 8,
-    fontSize: 18,
-    padding: 10,
   },
-  button: {
-    color: "#ffffff",
-    alignItems: "center",
-    justifyContent: "center",
-    width: 330,
-    height: 48,
-    marginTop: 20,
+  btn: {
     backgroundColor: "#f56e00",
+    paddingVertical: 16,
+    paddingHorizontal: 32,
     borderRadius: 8,
+    alignItems: "center",
+  },
+  btnText: {
+    color: "#FFF",
+  },
+  inputIcon: {
+    position: "absolute",
+    right: 16,
   },
 });
-
-export default SignUp;

@@ -13,14 +13,13 @@ import {
 import { login } from "../reducers/user";
 import { FontAwesome } from "@expo/vector-icons";
 
-function SignIn() {
+export default function SignIn() {
   const dispatch = useDispatch();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
 
   const handleSignIn = async () => {
-
     try {
       const response = await fetch(
         "https://toychange-backend.vercel.app/users/signin",
@@ -38,7 +37,7 @@ function SignIn() {
 
       const data = await response.json();
       console.log(data);
-      if(data.result) {
+      if (data.result) {
         dispatch(
           login({
             authToken: data.authToken,
@@ -49,125 +48,94 @@ function SignIn() {
             email: data.email,
           })
         );
-  
+
         Alert.alert("Success !", "Welcome");
-      } else { Alert.alert("Wrong !", "Email ou mot de passe incorrect");}
+      } else {
+        Alert.alert("Wrong !", "Email ou mot de passe incorrect");
+      }
       // Dispatch l'action login avec les informations de l'utilisateur connecté
-     
     } catch (error) {
       console.error("Erreur lors de la connexion :", error);
     }
   };
 
   return (
-    <View style={styles.formContainer}>
-      <Text style={styles.signin}>Connectez-vous à votre compte !</Text>
-      <TextInput
-        placeholder="Votre Email"
-        value={email}
-        onChangeText={(value) => setEmail(value)}
-        style={styles.input}
-      />
-      <View style={styles.passwordContainer}>
-      <TextInput
-        placeholder="Mot de passe"
-        value={password}
-        onChangeText={(value) => setPassword(value)}
-        secureTextEntry={!showPassword}
-        style={styles.inputPassword}
-      />
-      <TouchableOpacity
-        onPress={() => setShowPassword(!showPassword)}
-        style={styles.eyeIcon}
-      >
-        <FontAwesome
-          name={showPassword ? "eye" : "eye-slash"}
-          size={20}
-          color="#f56e00"
-        />
-      </TouchableOpacity>
-    </View>
-      <TouchableOpacity
-        onPress={() => handleSignIn()}
-        style={styles.button}
-        activeOpacity={0.8}
-      >
-        <Text style={styles.textButton}>C'est partit !</Text>
-      </TouchableOpacity>
+    <View style={styles.inner}>
+      <Text style={styles.title}>Connectez-vous à votre compte !</Text>
+      <View style={{ width: "100%", gap: 20 }}>
+        <View style={styles.inputContainer}>
+          <TextInput
+            placeholder="Votre Email"
+            value={email}
+            onChangeText={(value) => setEmail(value)}
+            style={styles.input}
+          />
+        </View>
+        <View style={styles.inputContainer}>
+          <TextInput
+            placeholder="Mot de passe"
+            value={password}
+            onChangeText={(value) => setPassword(value)}
+            secureTextEntry={!showPassword}
+            style={styles.input}
+          />
+          <TouchableOpacity
+            onPress={() => setShowPassword(!showPassword)}
+            style={styles.inputIcon}
+          >
+            <FontAwesome
+              name={showPassword ? "eye" : "eye-slash"}
+              size={20}
+              color="#f56e00"
+            />
+          </TouchableOpacity>
+        </View>
+        <TouchableOpacity onPress={handleSignIn} style={styles.btn}>
+          <Text style={styles.btnText}>Se connecter</Text>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 }
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#ffffff",
-    width: "90%",
-    height: "20%",
-    alignItems: "center",
-    marginTop: 30,
+  },
+  inner: {
+    flex: 1, //
+    justifyContent: "space-around", //
   },
   title: {
-    fontSize: 24,
-    fontWeight: "bold",
-    marginBottom: 20,
+    fontSize: 19,
+    textAlign: "center",
+    marginBottom: 15,
   },
-  signin: {
-    marginTop: 50,
-    fontSize: 20,
-    fontWeight: "bold",
-    marginBottom: 20,
-  },
-  formContainer: {
-    width: "100%",
-    fontSize: 18,
-    color: "#FF8B0A",
-    marginBottom: 20,
+  inputContainer: {
+    flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
   },
   input: {
-    width: 330,
-    height: 48,
-    marginTop: 10,
-    borderColor: "#FF8B0A",
+    flex: 1,
     borderWidth: 1,
+    borderColor: "#f56e00",
+    paddingHorizontal: 24,
+    paddingVertical: 12,
     borderRadius: 8,
-    fontSize: 18,
-    padding: 10,
   },
-  button: {
-    alignItems: "center",
-    justifyContent: "center",
-    width: 330,
-    height: 48,
-    marginTop: 20,
+  btn: {
     backgroundColor: "#f56e00",
+    paddingVertical: 16,
+    paddingHorizontal: 32,
     borderRadius: 8,
+    alignItems: "center",
   },
-  textButton: {
-    color: "#ffffff",
-    fontSize: 16,
+  btnText: {
+    color: "#FFF",
   },
-  passwordContainer: {
-    position: "relative",
-    width: 330,
-    height: 48,
-    marginTop: 10,
-    borderColor: "#FF8B0A",
-    borderWidth: 1,
-    borderRadius: 8,
-    fontSize: 18,
-    padding: 10,
-  },
-  eyeIcon: {
+  inputIcon: {
     position: "absolute",
-    right: 10,
-    top: 10, 
+    right: 16,
   },
-  inputPassword: {
-    fontSize: 18,
-
-  }
 });
-
-export default SignIn;
