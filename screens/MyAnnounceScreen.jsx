@@ -24,7 +24,7 @@ export default function MyAnnounceScreen({ navigation, route: { params } }) {
   const [modification, setModification] = useState(false);
   const [images, setImages] = useState([...announce.images]);
   const [payloadInput, setPayloadInput] = useState({
-    title: announce.title,
+    title: announce?.title,
     description: announce.description,
     type: announce.type,
     condition: announce.condition,
@@ -533,7 +533,7 @@ export default function MyAnnounceScreen({ navigation, route: { params } }) {
         <Carousel images={[...announce.images]} />
 
         <Text style={[styles.margin, styles.title, { marginBottom: 10 }]}>
-          {payloadInput.title}
+          {payloadInput?.title}
         </Text>
         <View style={[styles.margin, { gap: 10, marginBottom: 20 }]}>
           <Text style={styles.label}>
@@ -553,7 +553,7 @@ export default function MyAnnounceScreen({ navigation, route: { params } }) {
         {order && (
           <View style={[{ marginHorizontal: 20, gap: 10 }]}>
             <Text style={{ fontSize: 19 }}>
-              Colis à recevoir: {announce.exchangeProposal.title}
+              Colis à recevoir: {announce.exchangeProposal?.title}
             </Text>
             <View style={{ flexDirection: "row", gap: 10 }}>
               <TouchableOpacity

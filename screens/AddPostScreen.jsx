@@ -104,6 +104,8 @@ export default function AddPostScreen({ navigation }) {
             images.map((uri) =>
               formData.append("photosFromFront", {
                 uri,
+                name: "photo.jpg",
+                type: "image/jpeg",
               })
             );
             fetch(
