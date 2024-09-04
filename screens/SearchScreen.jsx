@@ -1,5 +1,5 @@
+import * as Location from "expo-location";
 import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import {
   SafeAreaView,
   ScrollView,
@@ -9,17 +9,17 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import * as Location from "expo-location";
+import { useDispatch, useSelector } from "react-redux";
 
 import FontAwesome from "react-native-vector-icons/FontAwesome5";
 
+import NearbyAnnounces from "../components/NearbyAnnounces";
+import NewAnnounces from "../components/NewAnnounces";
 import {
   addSearchQuery,
   addUserLocation,
   removeSearchQuery,
 } from "../reducers/user";
-import NearbyAnnounces from "../components/NearbyAnnounces";
-import NewAnnounces from "../components/NewAnnounces";
 
 export default function SearchScreen({ navigation, route: { params } }) {
   const dispatch = useDispatch();
@@ -60,7 +60,7 @@ export default function SearchScreen({ navigation, route: { params } }) {
         style={[
           styles.title,
           styles.margin,
-          { marginTop: 30, marginBottom: 10, textAlign: "center" },
+          { marginTop: 25, marginBottom: 10, textAlign: "center" },
         ]}
       >
         🧸 Toy Change
@@ -142,7 +142,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 20,
   },
   title: {
-    fontSize: 50,
+    fontSize: 45,
     fontWeight: "bold",
     color: "#461904",
   },

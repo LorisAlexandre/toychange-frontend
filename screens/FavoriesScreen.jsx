@@ -8,8 +8,8 @@ import {
   View,
 } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
-import { addFav, removeFav, removeSearchQuery } from "../reducers/user";
 import AnnonceCard from "../components/AnnonceCard";
+import { addFav, removeFav, removeSearchQuery } from "../reducers/user";
 
 import FontAwesome from "react-native-vector-icons/FontAwesome5";
 
@@ -42,7 +42,7 @@ export default function FavoriesScreen({ navigation }) {
   return (
     <SafeAreaView style={styles.container}>
       <Text style={[styles.title, styles.margin, { marginVertical: 20 }]}>
-        Retrouvez les annonces qui vous le donne sourir! 😀
+        Retrouvez les annonces qui vous donne le sourire! 😀
       </Text>
       <View style={[styles.margin, styles.containerBtn]}>
         <TouchableOpacity
@@ -84,7 +84,7 @@ export default function FavoriesScreen({ navigation }) {
               <Text
                 style={[styles.subTitle, { fontSize: 19, textAlign: "center" }]}
               >
-                Aucune annonce ajoutée au favori pour le moment !
+                Aucune annonce ajoutée aux favoris pour le moment !
               </Text>
             )}
           </View>

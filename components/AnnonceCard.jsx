@@ -1,10 +1,9 @@
 import {
+  ImageBackground,
   StyleSheet,
+  Text,
   TouchableOpacity,
   View,
-  Image,
-  Text,
-  ImageBackground,
 } from "react-native";
 
 import FontAwesome from "react-native-vector-icons/FontAwesome5";

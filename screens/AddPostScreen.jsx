@@ -1,8 +1,11 @@
-import { useEffect, useState, useRef } from "react";
+import { Camera } from "expo-camera";
+import * as ImagePicker from "expo-image-picker";
+import { useEffect, useRef, useState } from "react";
 import {
   Alert,
   Image,
   KeyboardAvoidingView,
+  Platform,
   SafeAreaView,
   ScrollView,
   StyleSheet,
@@ -11,9 +14,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import * as ImagePicker from "expo-image-picker";
-import { Camera } from "expo-camera";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 
 import FontAwesome from "react-native-vector-icons/FontAwesome5";
 

@@ -1,19 +1,20 @@
-import { useRef, useState } from "react";
-import { useDispatch } from "react-redux";
-import { login } from "../reducers/user";
+import { FontAwesome } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
+import { useRef, useState } from "react";
 import {
-  KeyboardAvoidingView,
-  Platform,
+  ScrollView,
   StyleSheet,
   Text,
   TextInput,
   TouchableOpacity,
   View,
 } from "react-native";
-import { FontAwesome } from "@expo/vector-icons";
+import { useDispatch, useSelector } from "react-redux";
+import { login } from "../reducers/user";
 
 export default function SignUp() {
+  const user = useSelector((state) => state.user.value);
+
   const dispatch = useDispatch();
   const navigation = useNavigation(); // Initialise useNavigation
 
@@ -38,6 +39,7 @@ export default function SignUp() {
     })
       .then((response) => response.json())
       .then((data) => {
+        console.log("DATA SIGNUP", data);
         if (data.result) {
           // Dispatch l'action addUser avec les informations de l'utilisateur
           dispatch(
@@ -48,6 +50,7 @@ export default function SignUp() {
               lastname: data.lastname,
               _id: data._id,
               email: data.email,
+              registrationDate: data.registrationDate,
             })
           );
 
@@ -70,14 +73,7 @@ export default function SignUp() {
 
   return (
     //   <Text style={styles.title}>Créer votre compte ToyChange !</Text>
-    <View
-      style={{
-        width: "100%",
-        gap: 20,
-        backgroundColor: "#FFF",
-        paddingBottom: 50,
-      }}
-    >
+    <ScrollView contentContainerStyle={styles.container}>
       <Text style={styles.title}>Créer votre compte ToyChange !</Text>
       <View style={styles.inputContainer}>
         <TextInput
@@ -128,8 +124,8 @@ export default function SignUp() {
         />
       </View>
       <View style={styles.inputContainer}>
-        <TextInput 
-          secureTextEntry= {!showPassword}
+        <TextInput
+          secureTextEntry={!showPassword}
           returnKeyType="next"
           ref={passwordInput}
           type="password"
@@ -152,12 +148,22 @@ export default function SignUp() {
       <TouchableOpacity onPress={handleSubmit} style={styles.btn}>
         <Text style={styles.btnText}>Se connecter</Text>
       </TouchableOpacity>
-    </View>
+    </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
+  container: {
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "space-around",
+    width: "100%",
+    gap: 20,
+    backgroundColor: "#FFF",
+    marginBottom: 20,
+  },
   title: {
+    marginTop: 10,
     fontSize: 19,
     textAlign: "center",
   },
@@ -179,6 +185,7 @@ const styles = StyleSheet.create({
     paddingVertical: 16,
     paddingHorizontal: 32,
     borderRadius: 8,
+    marginTop: 30,
     alignItems: "center",
   },
   btnText: {

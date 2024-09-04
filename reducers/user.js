@@ -8,6 +8,7 @@ const initialState = {
     lastname: null,
     firstname: null,
     _id: null,
+    registrationDate: null,
     favAnnounces: [],
     mySearches: [],
     geolocation: {
@@ -22,12 +23,16 @@ export const userSlice = createSlice({
   initialState,
   reducers: {
     login: (state, action) => {
-      Object.assign(state.value, action.payload);
+      state.value = { ...state.value, ...action.payload };
     },
     logout: (state) => {
       // Réinitialiser authToken, email, username, etc. à null
       Object.keys(state.value).forEach((key) => {
-        if (key !== "favAnnounces" && key !== "mySearches" && key !== "geolocation") {
+        if (
+          key !== "favAnnounces" &&
+          key !== "mySearches" &&
+          key !== "geolocation"
+        ) {
           state.value[key] = null;
         }
       });

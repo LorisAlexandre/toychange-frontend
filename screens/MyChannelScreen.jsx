@@ -1,8 +1,9 @@
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Image,
   ImageBackground,
   KeyboardAvoidingView,
+  Platform,
   SafeAreaView,
   ScrollView,
   StyleSheet,
@@ -11,12 +12,11 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
 import * as ImagePicker from "expo-image-picker";
 import Pusher from "pusher-js/react-native";
-import Message from "../components/Message";
 import { useSelector } from "react-redux";
+import Message from "../components/Message";
 
 import FontAwesome from "react-native-vector-icons/FontAwesome5";
 
@@ -231,13 +231,13 @@ export default function MyChannelScreen({ navigation, route: { params } }) {
             ]}
           >
             <ImageBackground
-  source={{ uri: announce?.images && announce.images[0] }}
-  style={{ width: 75, height: 75 }}
->
-  {!announce?.images[0] && (
-    <FontAwesome name="image" color={"#F56E00"} size={75} />
-  )}
-</ImageBackground>
+              source={{ uri: announce?.images && announce.images[0] }}
+              style={{ width: 75, height: 75 }}
+            >
+              {!announce?.images[0] && (
+                <FontAwesome name="image" color={"#F56E00"} size={75} />
+              )}
+            </ImageBackground>
             <View style={{ gap: 5, alignItems: "flex-end" }}>
               <Text style={{ color: "#461904", fontSize: 19, fontWeight: 700 }}>
                 {announce?.title}
@@ -366,8 +366,7 @@ export default function MyChannelScreen({ navigation, route: { params } }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-  
-   
+
     backgroundColor: "white",
     gap: 20,
   },
@@ -381,7 +380,6 @@ const styles = StyleSheet.create({
     marginHorizontal: 20,
     alignContent: "center",
     justifyContent: "space-between",
-    
   },
   textInput: {
     borderWidth: 1,

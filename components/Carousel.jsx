@@ -19,7 +19,7 @@ export default function Carousel({ images }) {
     >
       {images.length ? (
         images.map((uri, i) => (
-          <View>
+          <View key={i}>
             <Image source={{ uri }} width={screenWidth} height={300} />
             <View style={styles.label}>
               <FontAwesome name="camera" size={10} color={"#FFF"} />

@@ -1,23 +1,23 @@
-import React from "react";
-import {
-  View,
-  Text,
-  StyleSheet,
-  TouchableOpacity,
-  TextInput,
-  ScrollView,
-  KeyboardAvoidingView,
-  Alert,
-} from "react-native";
-import { useSelector, useDispatch } from "react-redux";
-import { logout, updateUserInfo } from "../reducers/user";
 import { FontAwesome } from "@expo/vector-icons";
 import { useState } from "react";
+import {
+  Alert,
+  KeyboardAvoidingView,
+  Platform,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from "react-native";
+import { useDispatch, useSelector } from "react-redux";
+import { logout, updateUserInfo } from "../reducers/user";
 
 const UserInfoComponent = ({ navigation }) => {
   const user = useSelector((state) => state.user.value);
+  console.log("salut infoUser", user);
   const dispatch = useDispatch();
-
   const handleGoBack = () => {
     navigation.goBack();
   };
@@ -62,6 +62,10 @@ const UserInfoComponent = ({ navigation }) => {
     setIsEditingEmail(false);
   };
 
+  const [editableregistrationDate, setEditableregistrationDate] = useState(
+    user.registrationDate
+  );
+
   const [showChangePassword, setShowChangePassword] = useState(false);
   const handleShowChangePassword = () => {
     navigation.navigate("PasswordScreen");
@@ -92,7 +96,7 @@ const UserInfoComponent = ({ navigation }) => {
 
       if (response.ok) {
         // La mise à jour sur le backend s'est bien déroulée
-        Alert.alert("Votre modification a bien été pris en compte")
+        Alert.alert("Votre modification a bien été pris en compte");
       } else {
         // Gère les erreurs si la mise à jour a échoué
         console.error("Erreur lors de la mise à jour sur le backend:", data);
@@ -108,11 +112,19 @@ const UserInfoComponent = ({ navigation }) => {
       behavior="padding"
       keyboardVerticalOffset={Platform.OS === "ios" ? 100 : 0}
     >
-      <TouchableOpacity onPress={handleGoBack} style={styles.iconBack}>
-      <FontAwesome name="angle-left" color={"#F56E00"} size={28} />
-      </TouchableOpacity>
       <View style={styles.boxTitle}>
-        <Text style={styles.title}>Mes informations</Text>
+        <TouchableOpacity onPress={handleGoBack} style={styles.iconBack}>
+          <FontAwesome name="angle-left" color={"#F56E00"} size={36} />
+        </TouchableOpacity>
+        <View>
+          <Text style={styles.title}>Mes informations</Text>
+          <Text style={styles.date}>
+            Création du compte le :{" "}
+            <Text style={styles.registrationDate}>
+              {editableregistrationDate}
+            </Text>
+          </Text>
+        </View>
       </View>
       <View style={styles.box}>
         <ScrollView style={styles.scrollView}>
@@ -217,8 +229,8 @@ const UserInfoComponent = ({ navigation }) => {
               )}
             </TouchableOpacity>
           </View>
-          {/* Champ Password */}
 
+          {/* Champ Password */}
           <TouchableOpacity
             onPress={handleShowChangePassword}
             style={styles.changePassword}
@@ -252,13 +264,10 @@ const UserInfoComponent = ({ navigation }) => {
             )}
           </TouchableOpacity>
         </View> */}
-
-          {/* Token et Bouton de déconnexion */}
-          <Text style={styles.token}>Token: {user.authToken}</Text>
-          <TouchableOpacity onPress={logoutUser} style={styles.logoutButton}>
-            <Text style={styles.logoutButtonText}>Déconnexion</Text>
-          </TouchableOpacity>
         </ScrollView>
+        <TouchableOpacity onPress={logoutUser} style={styles.logoutButton}>
+          <Text style={styles.logoutButtonText}>Déconnexion</Text>
+        </TouchableOpacity>
       </View>
     </KeyboardAvoidingView>
   );
@@ -271,12 +280,14 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   title: {
+    marginRight: 20,
     fontSize: 24,
     fontWeight: "bold",
     color: "#461904",
   },
   scrollView: {
-    width: 440,
+    width: 450,
+    paddingVertical: 0,
     paddingLeft: 80,
     marginRight: 0,
     marginHorizontal: 0,
@@ -303,11 +314,12 @@ const styles = StyleSheet.create({
   },
   boxTitle: {
     display: "flex",
+    flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
     width: "90%",
     height: 70,
-    backgroundColor: "#FFFFFF", 
+    backgroundColor: "#FFFFFF",
     shadowColor: "grey",
     shadowOffset: {
       width: 0,
@@ -317,7 +329,7 @@ const styles = StyleSheet.create({
     shadowRadius: 6,
     elevation: 5,
     borderRadius: 8,
-    marginTop: 100,
+    marginTop: 40,
   },
   boxFirstname: {
     display: "flex",
@@ -326,7 +338,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     width: "80%",
     height: 48,
-    backgroundColor: "#FFFFFF", 
+    backgroundColor: "#FFFFFF",
     shadowColor: "grey",
     shadowOffset: {
       width: 0,
@@ -337,7 +349,7 @@ const styles = StyleSheet.create({
     elevation: 5,
     borderRadius: 8,
     marginTop: 5,
-    marginBottom: 20,
+    marginBottom: 10,
     paddingLeft: 25,
     paddingRight: 15,
   },
@@ -414,7 +426,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     width: "80%",
     height: 48,
-    
+
     backgroundColor: "#FFFFFF", // Ajoutez une couleur de fond
     shadowColor: "grey",
     shadowOffset: {
@@ -439,7 +451,6 @@ const styles = StyleSheet.create({
     backgroundColor: "#f56e00",
     borderRadius: 8,
     marginTop: 5,
-    marginBottom: 20,
   },
   changePassword: {
     display: "flex",
@@ -467,15 +478,17 @@ const styles = StyleSheet.create({
     marginLeft: 43,
   },
   iconBack: {
-    position: "absolute",
-    top: 50,
-    left: 30,
+    marginRight: 40,
     backgroundColor: "transparent",
   },
   token: {
     display: "none",
     alignItems: "center",
     justifyContent: "center",
+  },
+  registrationDate: {
+    fontWeight: "bold",
+    color: "green",
   },
 });
 

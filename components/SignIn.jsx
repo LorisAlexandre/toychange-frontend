@@ -1,19 +1,20 @@
-import React, { useRef, useState } from "react";
-import { useDispatch } from "react-redux";
+import { FontAwesome } from "@expo/vector-icons";
+import { useRef, useState } from "react";
 import {
-  View,
-  KeyboardAvoidingView,
-  Platform,
+  Alert,
   StyleSheet,
   Text,
   TextInput,
   TouchableOpacity,
-  Alert,
+  View,
 } from "react-native";
+import { useDispatch, useSelector } from "react-redux";
+
 import { login } from "../reducers/user";
-import { FontAwesome } from "@expo/vector-icons";
 
 export default function SignIn() {
+  const user = useSelector((state) => state.user.value);
+
   const dispatch = useDispatch();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -36,9 +37,10 @@ export default function SignIn() {
           }),
         }
       );
-
       const data = await response.json();
+      console.log("DATA SIGNIN", data);
       if (data.result) {
+        // Dispatch l'action login avec les informations de l'utilisateur connecté
         dispatch(
           login({
             authToken: data.authToken,
@@ -47,14 +49,13 @@ export default function SignIn() {
             lastname: data.lastname,
             _id: data._id,
             email: data.email,
+            registrationDate: data.registrationDate,
           })
         );
-
         Alert.alert("Success !", "Welcome");
       } else {
         Alert.alert("Wrong !", "Email ou mot de passe incorrect");
       }
-      // Dispatch l'action login avec les informations de l'utilisateur connecté
     } catch (error) {
       console.error("Erreur lors de la connexion :", error);
     }
@@ -63,7 +64,7 @@ export default function SignIn() {
   return (
     <View style={styles.inner}>
       <Text style={styles.title}>Connectez-vous à votre compte !</Text>
-      <View style={{ width: "100%", gap: 20, marginTop: 50, }}>
+      <View style={{ width: "100%", gap: 20, marginTop: 50 }}>
         <View style={styles.inputContainer}>
           <TextInput
             onSubmitEditing={() => passwordInput.current.focus()}

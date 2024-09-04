@@ -1,16 +1,15 @@
 import React, { useState } from "react";
-import SignIn from "./SignIn";
-import SignUp from "./SignUp";
 import {
-  View,
+  KeyboardAvoidingView,
+  Platform,
+  SafeAreaView,
   StyleSheet,
   Text,
   TouchableOpacity,
-  KeyboardAvoidingView,
-  Platform,
-  ScrollView,
-  SafeAreaView,
+  View,
 } from "react-native";
+import SignIn from "./SignIn";
+import SignUp from "./SignUp";
 
 export default LoginComponent = ({ navigation }) => {
   const [showSignIn, setShowSignIn] = useState(true);
@@ -28,7 +27,7 @@ export default LoginComponent = ({ navigation }) => {
         behavior={Platform.OS === "ios" ? "padding" : "height"}
         style={styles.container}
       >
-        <View style={[!showSignIn && { flex: 0.5 }, { gap: 10 }]}>
+        <View style={[!showSignIn && { flex: 0.4 }, { gap: 20 }]}>
           <Text style={styles.title}>
             Ensemble, créons des sourires en partageant. 🎁
           </Text>
@@ -85,6 +84,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     marginTop: 30,
+    marginBottom: 10,
     marginHorizontal: 20,
   },
   inner: {
@@ -101,14 +101,14 @@ const styles = StyleSheet.create({
     width: "100%",
     justifyContent: "space-around",
     alignItems: "center",
-    borderRadius: 32,
+    borderRadius: 16,
     backgroundColor: "#FFF2D3",
     paddingVertical: 12,
     paddingHorizontal: 16,
     gap: 10,
   },
   btn: {
-    borderRadius: 32,
+    borderRadius: 8,
     fontSize: 18,
     paddingVertical: 8,
     paddingHorizontal: 16,

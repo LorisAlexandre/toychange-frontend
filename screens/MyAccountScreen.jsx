@@ -1,17 +1,13 @@
-import React, { useEffect, useState } from "react";
-import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
+import { FontAwesome } from "@expo/vector-icons";
+import React from "react";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import LoginComponent from "../components/Login";
-import InfosUserComponent from "../components/InfosUser";
 import { logout } from "../reducers/user";
-import { FontAwesome } from "@expo/vector-icons";
 
 export default MyAccountScreen = ({ navigation, route: { params } }) => {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user.value);
- 
-
-  
 
   const logoutUser = () => {
     dispatch(logout());

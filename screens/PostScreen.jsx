@@ -1,5 +1,4 @@
 import {
-  ImageBackground,
   SafeAreaView,
   ScrollView,
   StyleSheet,
@@ -134,7 +133,7 @@ export default function PostScreen({ navigation, route: { params } }) {
       <ScrollView>
         <Carousel images={[...params.images]} />
 
-        <Text style={[styles.margin, styles.title, { marginBottom: 10 }]}>
+        <Text style={[styles.margin, styles.title, { margin: 20 }]}>
           {params.title}
         </Text>
         <View style={[styles.margin, { gap: 10, marginBottom: 20 }]}>
@@ -203,6 +202,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "white",
     gap: 20,
+    marginBottom: 10,
   },
   title: {
     fontSize: 31,
@@ -217,6 +217,7 @@ const styles = StyleSheet.create({
     backgroundColor: "rgba(255, 255, 255, 0.70)",
     padding: 5,
     borderRadius: 30,
+    marginTop: 25,
   },
   herobanner: {
     height: 300,
@@ -241,5 +242,7 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     color: "#FFF",
+    fontWeight: "bold",
+    fontSize: 21,
   },
 });
